@@ -1,5 +1,19 @@
+import { useEffect } from 'react';
+import PostsList from '../components/PostsList';
+import usePostStore from '../hooks/usePostStore';
+
 export default function PostsListPage() {
+  const postStore = usePostStore();
+
+  useEffect(() => {
+    postStore.fetchPosts();
+  }, []);
+
+  const { posts } = postStore;
+
   return (
-    <p>운동 모집 게시글 목록 보기 페이지</p>
+    <PostsList
+      posts={posts}
+    />
   );
 }
