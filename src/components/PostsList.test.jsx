@@ -7,37 +7,64 @@ describe('PostsList', () => {
     const posts = [
       {
         id: 1,
-        detail: '한화 상대로 함께 경기 뛸 인원 모집합니다.',
-        participants: [
-          { id: 1, name: '참가자 1' },
-          { id: 2, name: '참가자 2' },
+        author: '작성자 1',
+        detail: '동네 야구대회 나가실 분 모집합니다',
+        membersCount: 4,
+        targetMembersCount: 12,
+        positions: [
+          {
+            id: 1,
+            name: '투수',
+            currentParticipants: 0,
+            targetParticipantsCount: 3,
+          },
+          {
+            id: 2,
+            name: '내야수',
+            currentParticipants: 2,
+            targetParticipantsCount: 5,
+          },
+          {
+            id: 3,
+            name: '외야수',
+            currentParticipants: 2,
+            targetParticipantsCount: 4,
+          },
         ],
       },
       {
-        id: 2,
-        detail: '모집한다고',
-        participants: [
-          { id: 1, name: '참가자 1' },
-          { id: 2, name: '참가자 2' },
-          { id: 3, name: '참가자 3' },
-          { id: 4, name: '참가자 4' },
-          { id: 5, name: '참가자 5' },
+        id: 3,
+        author: '작성자 2',
+        detail: '풋살마렵네 재야의 고수들 모여라',
+        membersCount: 5,
+        targetMembersCount: 6,
+        positions: [
+          {
+            id: 4,
+            name: '자유포지션',
+            currentParticipants: 5,
+            targetParticipantsCount: 6,
+          },
         ],
       },
     ];
 
-    it('애플리케이션 이름, 운동 선택하기, 사이드바 메뉴 펼치기 버튼 존재', () => {
+    it('썸네일 출력', () => {
       render((
         <PostsList
           posts={posts}
         />
       ));
 
-      screen.getByText(/한화 상대로 함께 경기 뛸 인원 모집합니다/);
-      screen.getByText(/참가인원: 2명/);
+      screen.getByText(/작성자 1/);
+      screen.getByText(/4명\/12명/);
+      screen.getByText(/투수/);
+      screen.getByText(/내야수/);
+      screen.getByText(/외야수/);
 
-      screen.getByText(/모집한다고/);
-      screen.getByText(/참가인원: 5명/);
+      screen.getByText(/작성자 2/);
+      screen.getByText(/5명\/6명/);
+      screen.getByText(/자유포지션/);
     });
   });
 });

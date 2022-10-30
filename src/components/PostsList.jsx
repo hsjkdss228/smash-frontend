@@ -4,14 +4,27 @@ export default function PostsList({ posts }) {
       {posts.map((post) => (
         <li key={post.id}>
           <p>
+            {post.author}
+          </p>
+          <p>
             {post.detail}
           </p>
           <p>
-            참가인원:
-            {' '}
-            {post.participants.length}
+            {post.membersCount}
+            명/
+            {post.targetMembersCount}
             명
           </p>
+          {post.positions.map((position) => (
+            <p key={position.id}>
+              {position.name}
+              (
+              {position.currentParticipants}
+              /
+              {position.targetParticipantsCount}
+              )
+            </p>
+          ))}
         </li>
       ))}
     </ul>
