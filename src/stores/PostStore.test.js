@@ -18,15 +18,19 @@ afterAll(() => {
 describe('PostStore', () => {
   const postStore = new PostStore();
 
-  context('API 서버에 게시글을 요청할 경우', () => {
-    it('게시글을 가져와 상태에 저장', async () => {
+  context('API 서버에 게시글 리스트 데이터를 요청할 경우', () => {
+    it('게시글, 팀, 포지션 정보를 조합해 게시글 리스트를 생성해 상태로 저장', async () => {
       await postStore.fetchPosts();
 
       expect(postStore.posts.length).toBe(2);
-      expect(postStore.posts[0].detail).toContain('야구한판');
-      expect(postStore.posts[0].participants[3].name).toBe('가르시아');
-      expect(postStore.posts[1].detail).toContain('볼링 한겜 고고씽');
-      expect(postStore.posts[1].participants[1].name).toBe('물트리버');
+      expect(postStore.posts[0].detail).toContain('동네 야구대회');
+      expect(postStore.posts[0].membersCount).toBe(4);
+      expect(postStore.posts[0].targetMembersCount).toBe(12);
+      expect(postStore.posts[0].positions.length).toBe(3);
+      expect(postStore.posts[1].detail).toContain('풋살마렵네');
+      expect(postStore.posts[1].membersCount).toBe(5);
+      expect(postStore.posts[1].targetMembersCount).toBe(6);
+      expect(postStore.posts[1].positions.length).toBe(1);
     });
   });
 });

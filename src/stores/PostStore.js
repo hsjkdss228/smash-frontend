@@ -20,8 +20,39 @@ export default class PostStore {
   }
 
   async fetchPosts() {
-    this.posts = await postApiService.fetchPosts();
+    const data = await postApiService.fetchPosts();
+    this.makePostsList(data);
     this.publish();
+  }
+
+  makePostsList(data) {
+    const fetchedPosts = data.posts;
+    const fetchedTeams = data.teams;
+    const fetchedPositions = data.positions;
+
+    this.posts = Array(fetchedPosts.length).fill({}).map((_, index) => {
+      const post = fetchedPosts[index];
+      const foundTeam = fetchedTeams.find((team) => (
+        team.postId === post.id
+      ));
+      const foundPositions = fetchedPositions.filter((position) => (
+        position.teamId === foundTeam.id
+      ));
+
+      return {
+        id: post.id,
+        author: post.author,
+        detail: post.detail,
+        membersCount: foundTeam.membersCount,
+        targetMembersCount: foundTeam.targetMembersCount,
+        positions: foundPositions.map((position) => ({
+          id: position.id,
+          name: position.name,
+          currentParticipants: position.currentParticipants,
+          targetParticipantsCount: position.targetParticipantsCount,
+        })),
+      };
+    });
   }
 }
 

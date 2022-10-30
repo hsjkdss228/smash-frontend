@@ -10,7 +10,8 @@ export default class PostApiService {
   async fetchPosts() {
     const url = `${apiBaseUrl}/posts/list`;
     const { data } = await axios.get(url);
-    return data.posts;
+    // console.log(data);
+    return data;
   }
 }
 
