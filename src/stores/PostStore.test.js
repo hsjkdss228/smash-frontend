@@ -22,15 +22,15 @@ describe('PostStore', () => {
     it('게시글, 팀, 포지션 정보를 조합해 게시글 리스트를 생성해 상태로 저장', async () => {
       await postStore.fetchPosts();
 
-      expect(postStore.posts.length).toBe(2);
-      expect(postStore.posts[0].detail).toContain('동네 야구대회');
-      expect(postStore.posts[0].membersCount).toBe(4);
-      expect(postStore.posts[0].targetMembersCount).toBe(12);
-      expect(postStore.posts[0].positions.length).toBe(3);
-      expect(postStore.posts[1].detail).toContain('풋살마렵네');
-      expect(postStore.posts[1].membersCount).toBe(5);
-      expect(postStore.posts[1].targetMembersCount).toBe(6);
-      expect(postStore.posts[1].positions.length).toBe(1);
+      const lengthPost = Object.keys(postStore.posts[0]).length;
+
+      expect(lengthPost).toBe(17);
+
+      const { posts } = postStore;
+
+      expect(posts.length).toBe(2);
+      expect(posts[0].positions.length).toBe(3);
+      expect(posts[1].positions.length).toBe(1);
     });
   });
 });
