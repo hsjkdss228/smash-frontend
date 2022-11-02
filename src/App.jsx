@@ -11,10 +11,17 @@ import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
 import CreateClubPage from './pages/CreateClubPage';
 import ClubsPage from './pages/ClubsPage';
+import BottomNavigator from './components/BottomNavigator';
 
 const Container = styled.div`
   max-width: 768px;
   min-height: 1024px;
+`;
+
+const Wrapper = styled.div`
+  margin: 4em auto;
+  height: 100%;
+  width: 100%;
 `;
 
 export default function App() {
@@ -22,18 +29,21 @@ export default function App() {
     <Container>
       <Reset />
       <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
+      <BottomNavigator />
+      <Wrapper>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
 
-        {/* TODO: ExerciseListPage는 파라미터의 전달이 많이 이루어져야 한다. 어떻게 구분할 것인가? */}
-        <Route path="/posts/list" element={<PostsListPage />} />
+          {/* TODO: ExerciseListPage는 파라미터의 전달이 많이 이루어져야 한다. 어떻게 구분할 것인가? */}
+          <Route path="/posts/list" element={<PostsListPage />} />
 
-        <Route path="/posts/map" element={<PostsMapPage />} />
-        <Route path="/posts/:postId" element={<PostPage />} />
-        <Route path="/write" element={<WritePage />} />
-        <Route path="/clubs" element={<ClubsPage />} />
-        <Route path="/clubs/create" element={<CreateClubPage />} />
-      </Routes>
+          <Route path="/posts/map" element={<PostsMapPage />} />
+          <Route path="/posts/:postId" element={<PostPage />} />
+          <Route path="/write" element={<WritePage />} />
+          <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="/clubs/create" element={<CreateClubPage />} />
+        </Routes>
+      </Wrapper>
     </Container>
   );
 }
