@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.header`
-  position: absolute;
+  position: fixed;
+  top: 0;
   height: 4em;
   width: 100%;
   display: grid;

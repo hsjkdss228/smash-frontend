@@ -48,7 +48,7 @@ const server = setupServer(
           exerciseGender: '남성',
           membersCount: 4,
           targetMembersCount: 12,
-          cost: 5000,
+          cost: 10000,
         },
         {
           id: 2,
@@ -134,13 +134,13 @@ const server = setupServer(
       places: [
         {
           id: 1,
+          postId: 1,
           name: '구의야구공원',
-          teamId: 1,
         },
         {
           id: 2,
+          postId: 2,
           name: '자양중학교',
-          teamId: 2,
         },
       ],
     })))),
