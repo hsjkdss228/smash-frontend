@@ -5,8 +5,8 @@ import { Reset } from 'styled-reset';
 
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
-import PostsListPage from './pages/PostsListPage';
-import PostsMapPage from './pages/PostsMapPage';
+import PostListPage from './pages/PostListPage';
+import PostListMapPage from './pages/PostListMapPage';
 import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
 import CreateClubPage from './pages/CreateClubPage';
@@ -33,11 +33,8 @@ export default function App() {
       <Wrapper>
         <Routes>
           <Route path="/" element={<HomePage />} />
-
-          {/* TODO: ExerciseListPage는 파라미터의 전달이 많이 이루어져야 한다. 어떻게 구분할 것인가? */}
-          <Route path="/posts/list" element={<PostsListPage />} />
-
-          <Route path="/posts/map" element={<PostsMapPage />} />
+          <Route path="/posts/list" element={<PostListPage />} />
+          <Route path="/posts/map" element={<PostListMapPage />} />
           <Route path="/posts/:postId" element={<PostPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/clubs" element={<ClubsPage />} />

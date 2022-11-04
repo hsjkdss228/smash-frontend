@@ -22,19 +22,19 @@ export default function BottomNavigator() {
     <Container>
       <button
         type="button"
-        onClick={() => handleClickButton('/home')}
+        onClick={() => handleClickButton('/')}
       >
         홈
       </button>
       <button
         type="button"
-        onClick={() => handleClickButton('/posts')}
+        onClick={() => handleClickButton('/posts/list')}
       >
         운동
       </button>
       <button
         type="button"
-        onClick={() => handleClickButton('/club')}
+        onClick={() => handleClickButton('/clubs')}
       >
         클럽
       </button>
