@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import PostsList from '../components/PostsList';
+import PostList from '../components/PostList';
 import usePostStore from '../hooks/usePostStore';
 
-export default function PostsListPage() {
+export default function PostListPage() {
   const postStore = usePostStore();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function PostsListPage() {
   // TODO: 게시글 클릭 시 게시글 상세 페이지로 링크 연결
 
   return (
-    <PostsList
+    <PostList
       posts={posts}
     />
   );

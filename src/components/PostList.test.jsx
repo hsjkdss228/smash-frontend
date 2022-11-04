@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import PostsList from './PostsList';
+import PostList from './PostList';
 
-describe('PostsList', () => {
+describe('PostList', () => {
   context('등록된 게시글이 존재하는 경우', () => {
     const posts = [
       {
@@ -73,7 +73,7 @@ describe('PostsList', () => {
 
     it('썸네일 출력', () => {
       render((
-        <PostsList
+        <PostList
           posts={posts}
         />
       ));
