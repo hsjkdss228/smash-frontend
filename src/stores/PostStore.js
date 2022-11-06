@@ -9,7 +9,7 @@ export default class PostStore {
 
     // Post
     this.postInformation = {};
-    this.postPositions = [];
+    this.postPositions = {};
 
     this.listeners = new Set();
   }
@@ -61,27 +61,31 @@ export default class PostStore {
       cost: game.cost,
     };
 
-    this.postPositions = game.teams.map((team) => ({
-      id: team.id,
-      name: team.name,
-      membersCount: team.membersCount,
-      targetMembersCount: team.targetMembersCount,
-      roles: team.roles.filter((role) => role.teamId === team.id)
-        .map((foundRole) => ({
-          id: foundRole.id,
-          teamId: foundRole.teamId,
-          name: foundRole.name,
-          currentParticipants: foundRole.currentParticipants,
-          targetParticipantsCount: foundRole.targetParticipantsCount,
-          members: foundRole.members.filter((member) => member.roleId === foundRole.id)
-            .map((foundMember) => ({
-              id: foundMember.id,
-              roleId: foundMember.roleId,
-              name: foundMember.name,
-              mannerScore: foundMember.mannerScore,
-            })),
-        })),
-    }));
+    this.postPositions = {
+      userStatus: game.userStatus,
+      roleIdOfAccessedUser: game.roleIdOfAccessedUser,
+      teams: game.teams.map((team) => ({
+        id: team.id,
+        name: team.name,
+        membersCount: team.membersCount,
+        targetMembersCount: team.targetMembersCount,
+        roles: team.roles.filter((role) => role.teamId === team.id)
+          .map((foundRole) => ({
+            id: foundRole.id,
+            teamId: foundRole.teamId,
+            name: foundRole.name,
+            currentParticipants: foundRole.currentParticipants,
+            targetParticipantsCount: foundRole.targetParticipantsCount,
+            members: foundRole.members.filter((member) => member.roleId === foundRole.id)
+              .map((foundMember) => ({
+                id: foundMember.id,
+                roleId: foundMember.roleId,
+                name: foundMember.name,
+                mannerScore: foundMember.mannerScore,
+              })),
+          })),
+      })),
+    };
   }
 
   calculateAverageMannerScore(teams) {

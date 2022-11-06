@@ -3,6 +3,10 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { Reset } from 'styled-reset';
 
+import { useEffect } from 'react';
+
+import { postApiService } from './services/PostApiService';
+
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import PostListPage from './pages/PostListPage';
@@ -25,6 +29,9 @@ const Wrapper = styled.div`
 `;
 
 export default function App() {
+  const accessToken = localStorage.getItem('accessToken');
+  postApiService.setAccessToken(accessToken);
+
   return (
     <Container>
       <Reset />

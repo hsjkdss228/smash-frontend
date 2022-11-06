@@ -7,6 +7,14 @@ import config from '../config';
 const { apiBaseUrl } = config;
 
 export default class PostApiService {
+  constructor() {
+    this.accessToken = '';
+  }
+
+  setAccessToken(accessToken) {
+    this.accessToken = accessToken;
+  }
+
   async fetchPosts() {
     const url = `${apiBaseUrl}/posts/list`;
     const { data } = await axios.get(url);
@@ -15,7 +23,12 @@ export default class PostApiService {
 
   async fetchPost(postId) {
     const url = `${apiBaseUrl}/posts/${postId}`;
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    console.log(data);
     return data;
   }
 }
