@@ -38,6 +38,7 @@ describe('게시물 정보 컴포넌트', () => {
       screen.getByText(/작성자 1/);
       screen.getByText(/운동 모집 글 내용입니다./);
       screen.getByText(/6\/24명/);
+      screen.getByText(/Image Url 1/);
       screen.getByText(/참가비: 5,000원/);
     });
   });

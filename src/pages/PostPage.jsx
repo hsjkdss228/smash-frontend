@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import styled from 'styled-components';
+
+import { useEffect } from 'react';
+import usePostStore from '../hooks/usePostStore';
+
 import PostInformation from '../components/PostInformation';
 import PostPositions from '../components/PostPositions';
-import usePostStore from '../hooks/usePostStore';
 
 const Container = styled.article`
   
@@ -18,22 +21,26 @@ export default function PostPage() {
 
   const postStore = usePostStore();
 
-  // TODO: id를 넘겨줘야 함
-
   useEffect(() => {
     postStore.fetchPost(postId);
   }, []);
 
-  const { information, teamsAndPositions } = postStore;
+  const { postInformation, postPositions } = postStore;
 
   return (
     <Container>
-      <PostInformation
-        information={information}
-      />
-      <PostPositions
-        teamsAndPositions={teamsAndPositions}
-      />
+      {postInformation && postPositions ? (
+        <>
+          <PostInformation
+            information={postInformation}
+          />
+          <PostPositions
+            teamsAndPositions={postPositions}
+          />
+        </>
+      ) : (
+        <p>Now Loading...</p>
+      )}
     </Container>
   );
 }

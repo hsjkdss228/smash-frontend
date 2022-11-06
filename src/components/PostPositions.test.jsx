@@ -10,7 +10,7 @@ describe('게시물 정보 컴포넌트', () => {
         name: '1팀',
         membersCount: 4,
         targetMembersCount: 12,
-        positions: [
+        roles: [
           {
             id: 1,
             teamId: 1,
@@ -20,19 +20,19 @@ describe('게시물 정보 컴포넌트', () => {
             members: [
               {
                 id: 1,
-                positionId: 1,
+                roleId: 1,
                 name: '참가자 1',
                 mannerScore: 7.5,
               },
               {
                 id: 2,
-                positionId: 1,
+                roleId: 1,
                 name: '참가자 2',
                 mannerScore: 3.3,
               },
               {
                 id: 3,
-                positionId: 1,
+                roleId: 1,
                 name: '참가자 3',
                 mannerScore: 5,
               },
@@ -47,7 +47,7 @@ describe('게시물 정보 컴포넌트', () => {
             members: [
               {
                 id: 4,
-                positionId: 2,
+                roleId: 2,
                 name: '참가자 4',
                 mannerScore: 2,
               },
@@ -68,7 +68,7 @@ describe('게시물 정보 컴포넌트', () => {
         name: '2팀',
         membersCount: 2,
         targetMembersCount: 12,
-        positions: [
+        roles: [
           {
             id: 4,
             teamId: 2,
@@ -78,13 +78,13 @@ describe('게시물 정보 컴포넌트', () => {
             members: [
               {
                 id: 11,
-                positionId: 2,
+                roleId: 2,
                 name: '참가자 11',
                 mannerScore: 6.9,
               },
               {
                 id: 12,
-                positionId: 2,
+                roleId: 2,
                 name: '참가자 12',
                 mannerScore: 8.8,
               },

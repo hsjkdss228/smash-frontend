@@ -34,16 +34,16 @@ export default function PostPositions({ teamsAndPositions }) {
               명
             </p>
             <Position>
-              {team.positions.map((position) => (
-                <li key={position.id}>
-                  <p>{position.name}</p>
+              {team.roles.map((role) => (
+                <li key={role.id}>
+                  <p>{role.name}</p>
                   <p>
-                    {position.currentParticipants}
+                    {role.currentParticipants}
                     명 신청 중/
-                    {position.targetParticipantsCount}
+                    {role.targetParticipantsCount}
                     명
                   </p>
-                  {position.currentParticipants < position.targetParticipantsCount
+                  {role.currentParticipants < role.targetParticipantsCount
                     ? (
                       <button
                         type="button"
@@ -55,7 +55,7 @@ export default function PostPositions({ teamsAndPositions }) {
                       <p>신청마감</p>
                     )}
                   <Member>
-                    {position.members.map((member) => (
+                    {role.members.map((member) => (
                       <li key={member.id}>
                         <p>{member.name}</p>
                         <p>
