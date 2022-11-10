@@ -16,21 +16,45 @@ export default class PostApiService {
   }
 
   async fetchPosts() {
-    const url = `${apiBaseUrl}/posts/list`;
+    const url = `${apiBaseUrl}/posts`;
     const { data } = await axios.get(url);
     return data;
   }
 
-  async fetchPost(postId) {
-    const url = `${apiBaseUrl}/posts/${postId}`;
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
-    console.log(data);
+  async fetchImages() {
+    const url = `${apiBaseUrl}/images/thumbnail`;
+    const { data } = await axios.get(url);
     return data;
   }
+
+  async fetchGames() {
+    const url = `${apiBaseUrl}/games`;
+    const { data } = await axios.get(url);
+    return data;
+  }
+
+  async fetchPlaces() {
+    const url = `${apiBaseUrl}/places`;
+    const { data } = await axios.get(url);
+    return data;
+  }
+
+  async fetchRoles() {
+    const url = `${apiBaseUrl}/roles`;
+    const { data } = await axios.get(url);
+    return data;
+  }
+
+  // async fetchPost(postId) {
+  //   const url = `${apiBaseUrl}/posts/${postId}`;
+  //   const { data } = await axios.get(url, {
+  //     headers: {
+  //       Authorization: `Bearer ${this.accessToken}`,
+  //     },
+  //   });
+  //   // console.log(data);
+  //   return data;
+  // }
 }
 
 export const postApiService = new PostApiService();

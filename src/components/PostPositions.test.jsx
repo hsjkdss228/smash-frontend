@@ -6,6 +6,7 @@ describe('게시물 정보 컴포넌트', () => {
   context('게시물 정보 컴포넌트 내용을 받아온 경우', () => {
     context('현재 접속자가 게시글에 신청하지 않은 사용자인 경우', () => {
       const teamsAndPositions = {
+        gameId: 1,
         userStatus: 'isNotRegistered',
         roleIdOfAccessedUser: 0,
         teams: [{
