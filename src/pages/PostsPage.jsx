@@ -7,25 +7,15 @@ export default function PostsPage() {
 
   useEffect(() => {
     postStore.fetchPosts();
-    postStore.fetchImages();
-    postStore.fetchGames();
-    postStore.fetchPlaces();
-    postStore.fetchRoles();
   }, []);
 
-  const {
-    posts, images, games, places, roles,
-  } = postStore;
+  const { posts } = postStore;
 
   // TODO: 게시글 클릭 시 게시글 상세 페이지로 링크 연결
 
   return (
     <Posts
       posts={posts}
-      images={images}
-      games={games}
-      places={places}
-      roles={roles}
     />
   );
 }
