@@ -13,101 +13,25 @@ const server = setupServer(
       [
         {
           id: 1,
-          userId: 1,
-          author: '황인우',
-          type: '참가자 모집',
-          hits: 100,
+          hits: 334,
+          game: {
+            type: '축구',
+            date: '2022년 10월 19일 13:00~16:00',
+            place: '대전월드컵경기장',
+            currentMemberCount: 16,
+            targetMemberCount: 22,
+          },
         },
         {
           id: 2,
-          userId: 2,
-          author: '전민지',
-          type: '참가자 모집',
-          hits: 10000,
-        },
-      ],
-    ))
-  )),
-  rest.get(`${apiBaseUrl}/images/thumbnail`, (request, response, context) => (
-    response(context.json(
-      [
-        {
-          id: 1,
-          postId: 1,
-          url: 'Image url of Post 1',
-        },
-        {
-          id: 2,
-          postId: 2,
-          url: 'Image url of Post 2',
-        },
-      ],
-    ))
-  )),
-  rest.get(`${apiBaseUrl}/games`, (request, response, context) => (
-    response(context.json(
-      [
-        {
-          id: 1,
-          postId: 1,
-          date: '2022년 11월 9일 09:00~11:00',
-          exercise: '축구',
-          type: '연습경기',
-          level: '아마추어',
-          membersCount: 13,
-          targetMembersCount: 22,
-        },
-        {
-          id: 2,
-          postId: 2,
-          date: '2022년 11월 12일 19:00~22:00',
-          exercise: '야구',
-          type: '경기',
-          level: '선출 경력 1년 이상',
-          membersCount: 8,
-          targetMembersCount: 15,
-        },
-      ],
-    ))
-  )),
-  rest.get(`${apiBaseUrl}/places`, (request, response, context) => (
-    response(context.json(
-      [
-        {
-          id: 1,
-          gameId: 1,
-          name: '상암월드컵경기장',
-        },
-        {
-          id: 2,
-          gameId: 2,
-          name: '고척스카이돔',
-        },
-      ],
-    ))
-  )),
-  rest.get(`${apiBaseUrl}/roles`, (request, response, context) => (
-    response(context.json(
-      [
-        {
-          id: 1,
-          gameId: 1,
-          name: '포지션무관',
-        },
-        {
-          id: 2,
-          gameId: 2,
-          name: '투수',
-        },
-        {
-          id: 3,
-          gameId: 2,
-          name: '야수',
-        },
-        {
-          id: 4,
-          gameId: 2,
-          name: '포수',
+          hits: 10,
+          game: {
+            type: '농구',
+            date: '2022년 10월 20일 15:00~17:00',
+            place: '잠실실내체육관',
+            currentMemberCount: 2,
+            targetMemberCount: 12,
+          },
         },
       ],
     ))

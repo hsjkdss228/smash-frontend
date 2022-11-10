@@ -22,28 +22,12 @@ describe('PostStore', () => {
   context('API 서버에 게시글 리스트 데이터를 요청할 경우', () => {
     it('백엔드 서버에서 응답으로 전달된 post 리스트를 상태로 저장', async () => {
       await postStore.fetchPosts();
-      await postStore.fetchImages();
-      await postStore.fetchGames();
-      await postStore.fetchPlaces();
-      await postStore.fetchRoles();
 
-      const {
-        posts, images, games, places, roles,
-      } = postStore;
+      const { posts } = postStore;
 
       expect(posts.length).toBe(2);
-      expect(posts[0].author).toBe('황인우');
-      expect(posts[1].type).toBe('참가자 모집');
-      expect(images.length).toBe(2);
-      expect(images[0].url).toBe('Image url of Post 1');
-      expect(images[1].url).toContain('2');
-      expect(games.length).toBe(2);
-      expect(games[0].exercise).toBe('축구');
-      expect(games[1].targetMembersCount).toBe(15);
-      expect(places.length).toBe(2);
-      expect(places[0].id).toBe(1);
-      expect(places[1].name).toBe('고척스카이돔');
-      expect(roles.length).toBe(4);
+      expect(posts[0].hits).toBe(334);
+      expect(posts[1].game.targetMemberCount).toBe(12);
     });
   });
 

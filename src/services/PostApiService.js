@@ -18,31 +18,7 @@ export default class PostApiService {
   async fetchPosts() {
     const url = `${apiBaseUrl}/posts`;
     const { data } = await axios.get(url);
-    return data;
-  }
-
-  async fetchImages() {
-    const url = `${apiBaseUrl}/images/thumbnail`;
-    const { data } = await axios.get(url);
-    return data;
-  }
-
-  async fetchGames() {
-    const url = `${apiBaseUrl}/games`;
-    const { data } = await axios.get(url);
-    return data;
-  }
-
-  async fetchPlaces() {
-    const url = `${apiBaseUrl}/places`;
-    const { data } = await axios.get(url);
-    return data;
-  }
-
-  async fetchRoles() {
-    const url = `${apiBaseUrl}/roles`;
-    const { data } = await axios.get(url);
-    return data;
+    return data.posts;
   }
 
   // async fetchPost(postId) {

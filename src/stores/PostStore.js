@@ -5,10 +5,6 @@ import { postApiService } from '../services/PostApiService';
 export default class PostStore {
   constructor() {
     this.posts = [];
-    this.images = [];
-    this.games = [];
-    this.places = [];
-    this.roles = [];
 
     this.listeners = new Set();
   }
@@ -27,26 +23,6 @@ export default class PostStore {
 
   async fetchPosts() {
     this.posts = await postApiService.fetchPosts();
-    this.publish();
-  }
-
-  async fetchImages() {
-    this.images = await postApiService.fetchImages();
-    this.publish();
-  }
-
-  async fetchGames() {
-    this.games = await postApiService.fetchGames();
-    this.publish();
-  }
-
-  async fetchPlaces() {
-    this.places = await postApiService.fetchPlaces();
-    this.publish();
-  }
-
-  async fetchRoles() {
-    this.roles = await postApiService.fetchRoles();
     this.publish();
   }
 }
