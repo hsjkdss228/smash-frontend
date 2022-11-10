@@ -8,305 +8,123 @@ import config from './config';
 const { apiBaseUrl } = config;
 
 const server = setupServer(
-  rest.get(`${apiBaseUrl}/posts/list`, (request, response, context) => (
-    response(context.json({
-      posts: [
+  rest.get(`${apiBaseUrl}/posts`, (request, response, context) => (
+    response(context.json(
+      [
         {
           id: 1,
-          type: '선수 모집',
-          author: '야구선수 1',
-          createdAt: '10/22 18:00:33',
-          hits: 15,
-          detail: '동네 야구대회 나가실 분 모집합니다',
-          images: [
-            { id: 1, url: 'Image Url 1', isThumbnailImage: false },
-            { id: 2, url: 'Image Url 2', isThumbnailImage: false },
-            { id: 3, url: 'Image Url 3', isThumbnailImage: true },
-          ],
-          game: {
-            id: 1,
-            postId: 1,
-            exercise: '야구',
-            exerciseDate: '10월 15일 오후 2시~5시',
-            exerciseType: '연습경기',
-            exerciseLevel: '초보',
-            exerciseGender: '남성',
-            cost: 10000,
-            place: '구의야구공원',
-            teams: [
-              {
-                id: 1,
-                gameId: 1,
-                name: '1팀',
-                membersCount: 2,
-                targetMembersCount: 12,
-                roles: [
-                  {
-                    id: 1,
-                    teamId: 1,
-                    name: '투수',
-                    currentParticipants: 1,
-                    targetParticipantsCount: 3,
-                    members: [
-                      {
-                        id: 1,
-                        teamId: 1,
-                        roleId: 1,
-                        name: '황인우',
-                        mannerScore: 10.0,
-                      },
-                    ],
-                  },
-                  {
-                    id: 2,
-                    teamId: 1,
-                    name: '야수',
-                    currentParticipants: 1,
-                    targetParticipantsCount: 9,
-                    members: [
-                      {
-                        id: 2,
-                        teamId: 1,
-                        roleId: 2,
-                        name: '조성환',
-                        mannerScore: 7.1,
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                id: 2,
-                gameId: 1,
-                name: '2팀',
-                membersCount: 2,
-                targetMembersCount: 12,
-                roles: [
-                  {
-                    id: 3,
-                    teamId: 2,
-                    name: '포지션무관',
-                    currentParticipants: 2,
-                    targetParticipantsCount: 12,
-                    members: [
-                      {
-                        id: 3,
-                        teamId: 2,
-                        roleId: 3,
-                        name: '전민지',
-                        mannerScore: 5.2,
-                      },
-                      {
-                        id: 4,
-                        teamId: 2,
-                        roleId: 3,
-                        name: '김명훈',
-                        mannerScore: 6.7,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+          userId: 1,
+          author: '황인우',
+          type: '참가자 모집',
+          hits: 100,
         },
         {
           id: 2,
-          type: '선수 모집',
-          author: '황인우',
-          createdAt: '10월 15일 오전 9시',
-          hits: 127,
-          detail: '광진축구대회 같이 뛰실 분 모집합니다!',
-          images: [
-            {
-              id: 3,
-              postId: 2,
-              url: 'image url 3',
-              isThumbnailImage: true,
-            },
-          ],
-          game: {
-            id: 2,
-            postId: 2,
-            exercise: '축구',
-            exerciseDate: '10월 25일 오전 9시~11시',
-            exerciseType: '경기',
-            exerciseLevel: '중상급',
-            exerciseGender: '남성',
-            cost: 9000,
-            place: '자양중학교',
-            teams: [
-              {
-                id: 3,
-                gameId: 2,
-                name: '광진1팀',
-                membersCount: 4,
-                targetMembersCount: 11,
-                roles: [
-                  {
-                    id: 4,
-                    teamId: 3,
-                    name: '필드플레이어',
-                    currentParticipants: 3,
-                    targetParticipantsCount: 11,
-                    members: [
-                      {
-                        id: 6,
-                        teamId: 3,
-                        roleId: 4,
-                        name: '노승준',
-                        mannerScore: 5.0,
-                      },
-                      {
-                        id: 7,
-                        teamId: 3,
-                        roleId: 4,
-                        name: '전민지',
-                        mannerScore: 5.2,
-                      },
-                      {
-                        id: 8,
-                        teamId: 3,
-                        roleId: 4,
-                        name: '조성환',
-                        mannerScore: 7.1,
-                      },
-                    ],
-                  },
-                  {
-                    id: 5,
-                    teamId: 3,
-                    name: '골키퍼',
-                    currentParticipants: 1,
-                    targetParticipantsCount: 2,
-                    members: [
-                      {
-                        id: 5,
-                        teamId: 3,
-                        roleId: 5,
-                        name: '황인우',
-                        mannerScore: 10.0,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+          userId: 2,
+          author: '전민지',
+          type: '참가자 모집',
+          hits: 10000,
         },
       ],
-    })))),
-
-  rest.get(`${apiBaseUrl}/posts/:postId`, async (request, response, context) => {
-    const { postId } = await request.params;
-    const accessToken = await request.headers.get('Authorization');
-
-    if (postId === '1' && accessToken) {
-      return response(context.json({
-        id: 1,
-        type: '선수 모집',
-        author: '황인우',
-        createdAt: '10/22 18:00:33',
-        hits: 15,
-        detail: '동네 야구대회 나가실 분 모집합니다',
-        images: [
-          { id: 1, url: 'Image Url 1', isThumbnailImage: false },
-          { id: 2, url: 'Image Url 2', isThumbnailImage: false },
-          { id: 3, url: 'Image Url 3', isThumbnailImage: true },
-        ],
-        game: {
+    ))
+  )),
+  rest.get(`${apiBaseUrl}/images/thumbnail`, (request, response, context) => (
+    response(context.json(
+      [
+        {
           id: 1,
           postId: 1,
-          exercise: '야구',
-          exerciseDate: '10월 15일 오후 2시~5시',
-          exerciseType: '연습경기',
-          exerciseLevel: '초보',
-          exerciseGender: '남성',
-          cost: 10000,
-          place: '구의야구공원',
-          teams: [
-            {
-              id: 1,
-              gameId: 1,
-              name: '1팀',
-              membersCount: 2,
-              targetMembersCount: 12,
-              roles: [
-                {
-                  id: 1,
-                  teamId: 1,
-                  name: '투수',
-                  currentParticipants: 1,
-                  targetParticipantsCount: 3,
-                  members: [
-                    {
-                      id: 1,
-                      teamId: 1,
-                      roleId: 1,
-                      name: '황인우',
-                      mannerScore: 10.0,
-                    },
-                  ],
-                },
-                {
-                  id: 2,
-                  teamId: 1,
-                  name: '야수',
-                  currentParticipants: 1,
-                  targetParticipantsCount: 9,
-                  members: [
-                    {
-                      id: 2,
-                      teamId: 1,
-                      roleId: 2,
-                      name: '조성환',
-                      mannerScore: 7.1,
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              id: 2,
-              gameId: 1,
-              name: '2팀',
-              membersCount: 2,
-              targetMembersCount: 12,
-              roles: [
-                {
-                  id: 3,
-                  teamId: 2,
-                  name: '포지션무관',
-                  currentParticipants: 2,
-                  targetParticipantsCount: 12,
-                  members: [
-                    {
-                      id: 3,
-                      teamId: 2,
-                      roleId: 3,
-                      name: '전민지',
-                      mannerScore: 5.2,
-                    },
-                    {
-                      id: 4,
-                      teamId: 2,
-                      roleId: 3,
-                      name: '김명훈',
-                      mannerScore: 6.7,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          userStatus: 'isAuthor',
-          roleIdOfAccessedUser: 1,
+          url: 'Image url of Post 1',
         },
-      }));
-    }
+        {
+          id: 2,
+          postId: 2,
+          url: 'Image url of Post 2',
+        },
+      ],
+    ))
+  )),
+  rest.get(`${apiBaseUrl}/games`, (request, response, context) => (
+    response(context.json(
+      [
+        {
+          id: 1,
+          postId: 1,
+          date: '2022년 11월 9일 09:00~11:00',
+          exercise: '축구',
+          type: '연습경기',
+          level: '아마추어',
+          membersCount: 13,
+          targetMembersCount: 22,
+        },
+        {
+          id: 2,
+          postId: 2,
+          date: '2022년 11월 12일 19:00~22:00',
+          exercise: '야구',
+          type: '경기',
+          level: '선출 경력 1년 이상',
+          membersCount: 8,
+          targetMembersCount: 15,
+        },
+      ],
+    ))
+  )),
+  rest.get(`${apiBaseUrl}/places`, (request, response, context) => (
+    response(context.json(
+      [
+        {
+          id: 1,
+          gameId: 1,
+          name: '상암월드컵경기장',
+        },
+        {
+          id: 2,
+          gameId: 2,
+          name: '고척스카이돔',
+        },
+      ],
+    ))
+  )),
+  rest.get(`${apiBaseUrl}/roles`, (request, response, context) => (
+    response(context.json(
+      [
+        {
+          id: 1,
+          gameId: 1,
+          name: '포지션무관',
+        },
+        {
+          id: 2,
+          gameId: 2,
+          name: '투수',
+        },
+        {
+          id: 3,
+          gameId: 2,
+          name: '야수',
+        },
+        {
+          id: 4,
+          gameId: 2,
+          name: '포수',
+        },
+      ],
+    ))
+  )),
 
-    return response(context.status(400));
-  }),
+  // rest.get(`${apiBaseUrl}/posts/:postId`, async (request, response, context) => {
+  //   const { postId } = await request.params;
+  //   const accessToken = await request.headers.get('Authorization');
+
+  //   if (postId === '1' && accessToken) {
+  //     return response(context.json({
+
+  //     }));
+  //   }
+
+  //   return response(context.status(400));
+  // }),
 );
 
 export default server;

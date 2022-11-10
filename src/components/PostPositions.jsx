@@ -18,16 +18,16 @@ const Member = styled.ul`
   
 `;
 
-export default function PostPositions({ teamsAndPositions }) {
-  const handleClickRegisterExercise = () => {
-
+export default function PostPositions({
+  teamsAndPositions, handleClickRegister, handleClickCancelRegister,
+}) {
+  const onClickRegister = ({ gameId, teamId, roleId }) => {
+    handleClickRegister({ gameId, teamId, roleId });
   };
 
-  const handleClickCancelRegisterExercise = () => {
-
+  const onClickCancelRegister = (roleId) => {
+    handleClickCancelRegister(roleId);
   };
-
-  console.log(teamsAndPositions);
 
   return (
     <Container>
@@ -58,7 +58,7 @@ export default function PostPositions({ teamsAndPositions }) {
                           ? (
                             <button
                               type="button"
-                              onClick={handleClickCancelRegisterExercise}
+                              onClick={() => onClickCancelRegister(role.id)}
                             >
                               신청취소
                             </button>
@@ -70,7 +70,11 @@ export default function PostPositions({ teamsAndPositions }) {
                           ? (
                             <button
                               type="button"
-                              onClick={handleClickRegisterExercise}
+                              onClick={() => onClickRegister({
+                                gameId: teamsAndPositions.gameId,
+                                teamId: team.id,
+                                roleId: role.id,
+                              })}
                             >
                               신청하기
                             </button>
