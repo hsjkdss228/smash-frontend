@@ -17,7 +17,12 @@ const Thumbnail = styled.li`
 
 // TODO: 작성자 옆에 매너 점수 필드 추가 필요
 
-export default function Posts({ posts }) {
+export default function Posts({ posts, registerToGame }) {
+  const handleRegisterToGameClick = (gameId) => {
+    console.log('gameId in Posts: ', gameId);
+    registerToGame(gameId);
+  };
+
   if (!posts) {
     return (
       <p>등록된 게시물이 존재하지 않습니다.</p>
@@ -55,6 +60,7 @@ export default function Posts({ posts }) {
               ) : (
                 <button
                   type="button"
+                  onClick={() => handleRegisterToGameClick(post.game.id)}
                 >
                   신청
                 </button>

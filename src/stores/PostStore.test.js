@@ -1,27 +1,14 @@
 import context from 'jest-plugin-context';
 import PostStore from './PostStore';
 
-import server from '../testServer';
 import { postApiService } from '../services/PostApiService';
-
-beforeAll(() => {
-  server.listen();
-});
-
-afterEach(() => {
-  server.resetHandlers();
-});
-
-afterAll(() => {
-  server.close();
-});
 
 describe('PostStore', () => {
   const postStore = new PostStore();
 
   context('API 서버에 게시글 리스트 데이터를 요청할 경우', () => {
     it('백엔드 서버에서 응답으로 전달된 post 리스트를 상태로 저장', async () => {
-      postApiService.setAccessToken('userId 1 is Author');
+      postApiService.setAccessToken('userId 1');
       await postStore.fetchPosts();
 
       const { posts } = postStore;

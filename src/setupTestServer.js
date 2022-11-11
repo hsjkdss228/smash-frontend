@@ -1,13 +1,13 @@
-import server from './testServer';
+import testServer from './testServer';
 
 beforeAll(() => {
-  server.listen();
+  testServer.listen();
 });
 
 afterEach(() => {
-  server.resetHandlers();
+  testServer.resetHandlers();
 });
 
 afterAll(() => {
-  server.close();
+  testServer.close();
 });

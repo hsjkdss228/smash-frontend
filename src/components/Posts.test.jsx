@@ -1,12 +1,15 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import Posts from './Posts';
 
 describe('Posts', () => {
+  const registerToGame = jest.fn();
+
   const renderPosts = ({ posts }) => {
     render((
       <Posts
         posts={posts}
+        registerToGame={registerToGame}
       />
     ));
   };
@@ -17,6 +20,7 @@ describe('Posts', () => {
         id: 1,
         hits: 100,
         game: {
+          id: 1,
           type: '야구',
           date: '2022년 12월 19일 08:00~11:00',
           place: '잠실야구장',
@@ -29,6 +33,7 @@ describe('Posts', () => {
         id: 2,
         hits: 259,
         game: {
+          id: 2,
           type: '족구',
           date: '2022년 12월 22일 19:00~20:00',
           place: '세종대학교 운동장',
@@ -54,6 +59,17 @@ describe('Posts', () => {
 
       expect(screen.queryAllByText('신청').length).toBe(1);
       expect(screen.queryAllByText(/신청취소/).length).toBe(1);
+    });
+
+    context('신청 버튼 클릭 시', () => {
+      it('운동 참가 신청 이벤트 핸들러 호출', () => {
+        jest.clearAllMocks();
+        renderPosts({ posts });
+
+        fireEvent.click(screen.getByText('신청'));
+        const expectedGameId = 2;
+        expect(registerToGame).toBeCalledWith(expectedGameId);
+      });
     });
   });
 
