@@ -29,20 +29,37 @@ export default function Posts({ posts }) {
       <Thumbnails>
         {posts.map((post) => (
           <Thumbnail key={post.id}>
-            <p>
-              조회수:
-              {' '}
-              {post.hits}
-            </p>
-            <p>{post.game.type}</p>
-            <p>{post.game.date}</p>
-            <p>{post.game.place}</p>
-            <p>
-              {post.game.currentMemberCount}
-              /
-              {post.game.targetMemberCount}
-              명
-            </p>
+            <div>
+              <p>
+                조회수:
+                {' '}
+                {post.hits}
+              </p>
+              <p>{post.game.type}</p>
+              <p>{post.game.date}</p>
+              <p>{post.game.place}</p>
+              <p>
+                {post.game.currentMemberCount}
+                /
+                {post.game.targetMemberCount}
+                명
+              </p>
+            </div>
+            <div>
+              {post.game.isRegistered ? (
+                <button
+                  type="button"
+                >
+                  신청취소
+                </button>
+              ) : (
+                <button
+                  type="button"
+                >
+                  신청
+                </button>
+              )}
+            </div>
           </Thumbnail>
         ))}
       </Thumbnails>

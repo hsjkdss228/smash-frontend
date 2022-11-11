@@ -22,6 +22,7 @@ describe('Posts', () => {
           place: '잠실야구장',
           currentMemberCount: 4,
           targetMemberCount: 12,
+          isRegistered: true,
         },
       },
       {
@@ -33,6 +34,7 @@ describe('Posts', () => {
           place: '세종대학교 운동장',
           currentMemberCount: 7,
           targetMemberCount: 8,
+          isRegistered: false,
         },
       },
     ];
@@ -49,6 +51,9 @@ describe('Posts', () => {
       screen.getByText(/2022년 12월 22일 19:00~20:00/);
       screen.getByText(/세종대학교 운동장/);
       screen.getByText(/7/);
+
+      expect(screen.queryAllByText('신청').length).toBe(1);
+      expect(screen.queryAllByText(/신청취소/).length).toBe(1);
     });
   });
 
