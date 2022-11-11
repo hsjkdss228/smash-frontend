@@ -1,24 +1,14 @@
 /* eslint-disable class-methods-use-this */
 
+import Store from './Store';
+
 import { postApiService } from '../services/PostApiService';
 
-export default class PostStore {
+export default class PostStore extends Store {
   constructor() {
+    super();
+
     this.posts = [];
-
-    this.listeners = new Set();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-  }
-
-  unsubscribe(listener) {
-    this.listeners.delete(listener);
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 
   async fetchPosts() {

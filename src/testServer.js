@@ -7,7 +7,7 @@ import config from './config';
 
 const { apiBaseUrl } = config;
 
-const server = setupServer(
+const postTestServer = setupServer(
   rest.get(`${apiBaseUrl}/posts`, async (request, response, context) => {
     const accessToken = await request.headers.get('Authorization');
 
@@ -45,6 +45,22 @@ const server = setupServer(
     return response(context.status(400));
   }),
 
+  rest.post(`${apiBaseUrl}/registers/games/:gameId`, async (request, response, context) => {
+    // TODO: 진짜 accessToken으로 하고 싶다면 .get().substring
+    // localStorage.setItem() 계열로 직접 설정해주고
+
+    const accessToken = await request.headers.get('Authorization');
+    const { gameId } = await request.params;
+
+    if (gameId === '1' && accessToken) {
+      return response(context.json({
+        gameId: 1,
+      }));
+    }
+
+    return response(context.status(400));
+  }),
+
   // rest.get(`${apiBaseUrl}/posts/:postId`, async (request, response, context) => {
   //   const { postId } = await request.params;
   //   const accessToken = await request.headers.get('Authorization');
@@ -59,4 +75,4 @@ const server = setupServer(
   // }),
 );
 
-export default server;
+export default postTestServer;

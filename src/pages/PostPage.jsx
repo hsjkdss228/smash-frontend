@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 import usePostStore from '../hooks/usePostStore';
 
 import PostInformation from '../components/PostInformation';
-import PostPositions from '../components/PostPositions';
-import useMemberStore from '../hooks/useMemberStore';
+// import PostPositions from '../components/PostPositions';
+// import useMemberStore from '../hooks/useMemberStore';
 
 const Container = styled.article`
   
@@ -22,7 +22,7 @@ export default function PostPage() {
     : Number(location.pathname.split('/')[2]);
 
   const postStore = usePostStore();
-  const memberStore = useMemberStore();
+  // const memberStore = useMemberStore();
 
   useEffect(() => {
     postStore.fetchPost(postId);
@@ -30,15 +30,15 @@ export default function PostPage() {
 
   const { postInformation, postPositions } = postStore;
 
-  const register = ({ gameId, teamId, roleId }) => {
-    memberStore.register({ gameId, teamId, roleId });
-    postStore.fetchPost(postId);
-  };
+  // const register = ({ gameId, teamId, roleId }) => {
+  //   memberStore.register({ gameId, teamId, roleId });
+  //   postStore.fetchPost(postId);
+  // };
 
-  const cancelRegister = (roleId) => {
-    memberStore.cancelRegister(roleId);
-    postStore.fetchPost(postId);
-  };
+  // const cancelRegister = (roleId) => {
+  //   memberStore.cancelRegister(roleId);
+  //   postStore.fetchPost(postId);
+  // };
 
   return (
     <Container>
@@ -47,11 +47,11 @@ export default function PostPage() {
           <PostInformation
             information={postInformation}
           />
-          <PostPositions
+          {/* <PostPositions
             teamsAndPositions={postPositions}
             handleClickRegister={register}
             handleClickCancelRegister={cancelRegister}
-          />
+          /> */}
         </>
       ) : (
         <p>Now Loading...</p>

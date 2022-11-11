@@ -14,7 +14,7 @@ import WritePage from './pages/WritePage';
 import CreateClubPage from './pages/CreateClubPage';
 import ClubsPage from './pages/ClubsPage';
 import BottomNavigator from './components/BottomNavigator';
-import { memberApiService } from './services/MemberApiService';
+import { registerApiService } from './services/RegisterApiService';
 
 const Container = styled.div`
   max-width: 768px;
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 export default function App() {
   const accessToken = localStorage.getItem('accessToken');
   postApiService.setAccessToken(accessToken);
-  memberApiService.setAccessToken(accessToken);
+  registerApiService.setAccessToken(accessToken);
 
   return (
     <Container>
