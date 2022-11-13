@@ -9,11 +9,19 @@ export default class PostStore extends Store {
     super();
 
     this.posts = [];
+    this.errorMessage = '';
   }
 
   async fetchPosts() {
-    this.posts = await postApiService.fetchPosts();
-    this.publish();
+    try {
+      const { posts } = await postApiService.fetchPosts();
+      this.posts = posts;
+      this.publish();
+    } catch (error) {
+      const { errorMessage } = error.response.data;
+      this.errorMessage = errorMessage;
+      this.publish();
+    }
   }
 }
 
