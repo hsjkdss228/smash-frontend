@@ -24,7 +24,7 @@ export default function PostsPage() {
     }
   };
 
-  const { registeredGameId, registerErrorCodeAndMessage } = registerStore;
+  const { registerErrorCodeAndMessage } = registerStore;
 
   const cancelRegisterGame = async (gameId) => {
     await memberStore.cancelParticipateGame(gameId);
@@ -35,6 +35,7 @@ export default function PostsPage() {
     <Posts
       posts={posts}
       postsErrorMessage={postsErrorMessage}
+      registerErrorCodeAndMessage={registerErrorCodeAndMessage}
       registerToGame={registerToGame}
       cancelRegisterGame={cancelRegisterGame}
     />

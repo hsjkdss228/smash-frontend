@@ -11,7 +11,6 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import PostsPage from './pages/PostsPage';
 import PostListMapPage from './pages/PostListMapPage';
-import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
 import CreateClubPage from './pages/CreateClubPage';
 import ClubsPage from './pages/ClubsPage';
@@ -45,7 +44,6 @@ export default function App() {
           <Route path="/posts/list" element={<PostsPage />} />
 
           <Route path="/posts/map" element={<PostListMapPage />} />
-          <Route path="/posts/:postId" element={<PostPage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/clubs" element={<ClubsPage />} />
           <Route path="/clubs/create" element={<CreateClubPage />} />
