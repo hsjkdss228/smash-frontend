@@ -9,9 +9,10 @@ const { apiBaseUrl } = config;
 
 const postTestServer = setupServer(
   rest.get(`${apiBaseUrl}/posts`, async (request, response, context) => {
-    const accessToken = await request.headers.get('Authorization');
+    const accessToken = await request.headers.get('Authorization')
+      .substring('bearer '.length);
 
-    if (accessToken) {
+    if (accessToken === 'userId 1') {
       return response(context.json({
         posts: [
           {
@@ -40,6 +41,15 @@ const postTestServer = setupServer(
           },
         ],
       }));
+    }
+
+    if (accessToken === 'userId 4') {
+      return response(
+        context.status(400),
+        context.json({
+          errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+        }),
+      );
     }
 
     return response(context.status(400));

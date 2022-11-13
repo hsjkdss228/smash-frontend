@@ -15,7 +15,9 @@ const Thumbnail = styled.li`
   margin-block: 3em;
 `;
 
-export default function Posts({ posts, registerToGame, cancelRegisterGame }) {
+export default function Posts({
+  posts, errorMessage, registerToGame, cancelRegisterGame,
+}) {
   const handleRegisterToGameClick = (gameId) => {
     registerToGame(gameId);
   };
@@ -24,7 +26,13 @@ export default function Posts({ posts, registerToGame, cancelRegisterGame }) {
     cancelRegisterGame(gameId);
   };
 
-  if (!posts) {
+  if (errorMessage) {
+    return (
+      <p>{errorMessage}</p>
+    );
+  }
+
+  if (posts.length === 0) {
     return (
       <p>등록된 게시물이 존재하지 않습니다.</p>
     );

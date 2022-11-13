@@ -22,7 +22,7 @@ export default class PostApiService {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-    return data.posts;
+    return data;
   }
 }
 
