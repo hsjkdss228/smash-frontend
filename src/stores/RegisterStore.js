@@ -6,6 +6,7 @@ export default class RegisterStore extends Store {
     super();
 
     this.registeredGameId = -1;
+    this.registerErrorCodeAndMessage = {};
   }
 
   async registerToGame(gameId) {
@@ -13,7 +14,11 @@ export default class RegisterStore extends Store {
       this.registeredGameId = await registerApiService.registerToGame(gameId);
       return this.registeredGameId;
     } catch (error) {
-      // TODO: 에러 코드와 메세지를 설정하고 publish
+      const { errorCode, errorMessage } = error.response.data;
+      this.registerErrorCodeAndMessage = {
+        code: errorCode,
+        message: errorMessage,
+      };
       return '';
     }
   }
