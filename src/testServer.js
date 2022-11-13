@@ -56,16 +56,44 @@ const postTestServer = setupServer(
   }),
 
   rest.post(`${apiBaseUrl}/registers/games/:gameId`, async (request, response, context) => {
-    // TODO: 진짜 accessToken으로 하고 싶다면 .get().substring
-    // localStorage.setItem() 계열로 직접 설정해주고
-
-    const accessToken = await request.headers.get('Authorization');
+    const accessToken = await request.headers.get('Authorization')
+      .substring('bearer '.length);
     const { gameId } = await request.params;
 
-    if (gameId === '1' && accessToken) {
+    if (gameId === '1' && accessToken === 'userId 1') {
       return response(context.json({
         gameId: 1,
       }));
+    }
+
+    if (gameId === '100' && accessToken === 'userId 1') {
+      return response(
+        context.status(400),
+        context.json({
+          errorCode: 100,
+          errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+        }),
+      );
+    }
+
+    if (gameId === '1' && accessToken === 'already registered userId 2') {
+      return response(
+        context.status(400),
+        context.json({
+          errorCode: 101,
+          errorMessage: '이미 신청이 완료된 운동입니다.',
+        }),
+      );
+    }
+
+    if (gameId === '1' && accessToken === 'not existed userId 3') {
+      return response(
+        context.status(400),
+        context.json({
+          errorCode: 102,
+          errorMessage: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
+        }),
+      );
     }
 
     return response(context.status(400));

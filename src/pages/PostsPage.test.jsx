@@ -6,11 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import PostsPage from './PostsPage';
 
 let posts;
-let errorMessage;
 const fetchPosts = jest.fn();
 jest.mock('../hooks/usePostStore', () => () => ({
   posts,
-  errorMessage,
   fetchPosts,
 }));
 
@@ -64,8 +62,6 @@ describe('PostsPage', () => {
         },
       },
     ];
-    errorMessage = '';
-    registerToGame = jest.fn();
     it('운동 모집 게시글 상태를 가져오기 위한 fetchPost 수행', async () => {
       renderPostsPage();
 

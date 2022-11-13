@@ -9,7 +9,7 @@ export default class PostStore extends Store {
     super();
 
     this.posts = [];
-    this.errorMessage = '';
+    this.postsErrorMessage = '';
   }
 
   async fetchPosts() {
@@ -19,7 +19,7 @@ export default class PostStore extends Store {
       this.publish();
     } catch (error) {
       const { errorMessage } = error.response.data;
-      this.errorMessage = errorMessage;
+      this.postsErrorMessage = errorMessage;
       this.publish();
     }
   }

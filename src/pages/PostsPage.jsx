@@ -13,7 +13,7 @@ export default function PostsPage() {
     postStore.fetchPosts();
   }, []);
 
-  const { posts, errorMessage } = postStore;
+  const { posts, postsErrorMessage } = postStore;
 
   // TODO: 게시글 클릭 시 게시글 상세 페이지로 링크 연결
 
@@ -24,6 +24,8 @@ export default function PostsPage() {
     }
   };
 
+  const { registeredGameId, registerErrorCodeAndMessage } = registerStore;
+
   const cancelRegisterGame = async (gameId) => {
     await memberStore.cancelParticipateGame(gameId);
     await postStore.fetchPosts();
@@ -32,7 +34,7 @@ export default function PostsPage() {
   return (
     <Posts
       posts={posts}
-      errorMessage={errorMessage}
+      postsErrorMessage={postsErrorMessage}
       registerToGame={registerToGame}
       cancelRegisterGame={cancelRegisterGame}
     />

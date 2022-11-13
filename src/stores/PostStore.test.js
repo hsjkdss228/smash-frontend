@@ -15,14 +15,14 @@ describe('PostStore', () => {
       postApiService.setAccessToken('userId 1');
       await postStore.fetchPosts();
 
-      const { posts, errorMessage } = postStore;
+      const { posts, postsErrorMessage } = postStore;
 
       expect(posts.length).toBe(2);
       expect(posts[0].hits).toBe(334);
       expect(posts[0].game.isRegistered).toBe(false);
       expect(posts[1].game.targetMemberCount).toBe(12);
       expect(posts[1].game.isRegistered).toBe(true);
-      expect(errorMessage).toBeFalsy();
+      expect(postsErrorMessage).toBeFalsy();
     });
   });
 
@@ -35,10 +35,10 @@ describe('PostStore', () => {
       postApiService.setAccessToken('userId 4');
       await postStore.fetchPosts();
 
-      const { posts, errorMessage } = postStore;
+      const { posts, postsErrorMessage } = postStore;
 
       expect(posts).toStrictEqual([]);
-      expect(errorMessage).toBe('주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.');
+      expect(postsErrorMessage).toBe('주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.');
     });
   });
 });

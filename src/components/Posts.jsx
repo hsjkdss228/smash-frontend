@@ -16,7 +16,7 @@ const Thumbnail = styled.li`
 `;
 
 export default function Posts({
-  posts, errorMessage, registerToGame, cancelRegisterGame,
+  posts, postsErrorMessage, registerToGame, cancelRegisterGame,
 }) {
   const handleRegisterToGameClick = (gameId) => {
     registerToGame(gameId);
@@ -26,9 +26,9 @@ export default function Posts({
     cancelRegisterGame(gameId);
   };
 
-  if (errorMessage) {
+  if (postsErrorMessage) {
     return (
-      <p>{errorMessage}</p>
+      <p>{postsErrorMessage}</p>
     );
   }
 
