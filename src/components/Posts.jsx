@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import PostsContent from './PostsContent';
+import PostsRegisterButton from './PostsRegisterButton';
+
 const Container = styled.article`
   margin-inline: 10em;
   display: flex;
@@ -16,16 +19,12 @@ const Thumbnail = styled.li`
 `;
 
 export default function Posts({
-  posts, postsErrorMessage, registerToGame, cancelRegisterGame,
+  posts,
+  postsErrorMessage,
+  registerErrorCodeAndMessage,
+  registerToGame,
+  cancelRegisterGame,
 }) {
-  const handleRegisterToGameClick = (gameId) => {
-    registerToGame(gameId);
-  };
-
-  const handleCancelRegisterGameClick = (gameId) => {
-    cancelRegisterGame(gameId);
-  };
-
   if (postsErrorMessage) {
     return (
       <p>{postsErrorMessage}</p>
@@ -43,39 +42,21 @@ export default function Posts({
       <Thumbnails>
         {posts.map((post) => (
           <Thumbnail key={post.id}>
-            <div>
-              <p>
-                조회수:
-                {' '}
-                {post.hits}
-              </p>
-              <p>{post.game.type}</p>
-              <p>{post.game.date}</p>
-              <p>{post.game.place}</p>
-              <p>
-                {post.game.currentMemberCount}
-                /
-                {post.game.targetMemberCount}
-                명
-              </p>
-            </div>
-            <div>
-              {post.game.isRegistered ? (
-                <button
-                  type="button"
-                  onClick={() => handleCancelRegisterGameClick(post.game.id)}
-                >
-                  신청취소
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => handleRegisterToGameClick(post.game.id)}
-                >
-                  신청
-                </button>
-              )}
-            </div>
+            <PostsContent
+              hits={post.hits}
+              type={post.game.type}
+              date={post.game.date}
+              place={post.game.place}
+              currentMemberCount={post.game.currentMemberCount}
+              targetMemberCount={post.game.targetMemberCount}
+            />
+            <PostsRegisterButton
+              gameId={post.game.id}
+              isRegistered={post.game.isRegistered}
+              registerToGame={registerToGame}
+              cancelRegisterGame={cancelRegisterGame}
+              registerErrorCodeAndMessage={registerErrorCodeAndMessage}
+            />
           </Thumbnail>
         ))}
       </Thumbnails>
