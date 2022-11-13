@@ -6,7 +6,7 @@ import config from '../config';
 
 const { apiBaseUrl } = config;
 
-export default class PostApiService {
+export default class MemberApiService {
   constructor() {
     this.accessToken = '';
   }
@@ -15,15 +15,15 @@ export default class PostApiService {
     this.accessToken = accessToken;
   }
 
-  async fetchPosts() {
-    const url = `${apiBaseUrl}/posts`;
-    const { data } = await axios.get(url, {
+  async cancelParticipateGame(gameId) {
+    const url = `${apiBaseUrl}/members/games/${gameId}`;
+
+    await axios.delete(url, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-    return data.posts;
   }
 }
 
-export const postApiService = new PostApiService();
+export const memberApiService = new MemberApiService();

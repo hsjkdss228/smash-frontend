@@ -15,12 +15,13 @@ const Thumbnail = styled.li`
   margin-block: 3em;
 `;
 
-// TODO: 작성자 옆에 매너 점수 필드 추가 필요
-
-export default function Posts({ posts, registerToGame }) {
+export default function Posts({ posts, registerToGame, cancelRegisterGame }) {
   const handleRegisterToGameClick = (gameId) => {
-    console.log('gameId in Posts: ', gameId);
     registerToGame(gameId);
+  };
+
+  const handleCancelRegisterGameClick = (gameId) => {
+    cancelRegisterGame(gameId);
   };
 
   if (!posts) {
@@ -54,6 +55,7 @@ export default function Posts({ posts, registerToGame }) {
               {post.game.isRegistered ? (
                 <button
                   type="button"
+                  onClick={() => handleCancelRegisterGameClick(post.game.id)}
                 >
                   신청취소
                 </button>
