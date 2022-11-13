@@ -19,6 +19,11 @@ jest.mock('../hooks/useRegisterStore', () => () => ({
   registerToGame,
 }));
 
+let cancelParticipateGame;
+jest.mock('../hooks/useMemberStore', () => () => ({
+  cancelParticipateGame,
+}));
+
 describe('PostsPage', () => {
   function renderPostsPage() {
     render((
@@ -43,10 +48,22 @@ describe('PostsPage', () => {
           isRegistered: false,
         },
       },
+      {
+        id: 2,
+        hits: 5000,
+        game: {
+          id: 48,
+          type: '야구',
+          date: '2022년 10월 17일 13:00~17:00',
+          place: '문학야구장',
+          currentMemberCount: 17,
+          targetMemberCount: 30,
+          isRegistered: true,
+        },
+      },
     ];
     registerToGame = jest.fn();
     it('운동 모집 게시글 상태를 가져오기 위한 fetchPost 수행', async () => {
-      console.log('그냥 부르기만 하는 테스트');
       renderPostsPage();
 
       await waitFor(() => {
@@ -58,10 +75,8 @@ describe('PostsPage', () => {
       const expectedGameId = 22;
       registeredGameId = expectedGameId;
 
-      it('운동 신청을 위한 registerToGame 수행 후'
-        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 수행', async () => {
-        console.log('불러서 신청까지 하는 테스트');
-
+      it('운동 신청을 위한 registerToGame 호출 후'
+        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {
         jest.clearAllMocks();
         registerToGame = jest.fn(() => registeredGameId);
 
@@ -71,6 +86,24 @@ describe('PostsPage', () => {
         await waitFor(() => {
           expect(registerToGame).toBeCalledWith(expectedGameId);
           expect(registerToGame).toReturnWith(registeredGameId);
+          expect(fetchPosts).toBeCalledTimes(2);
+        });
+      });
+    });
+
+    context('운동 참가 취소 버튼을 누르면', () => {
+      const expectedGameId = 48;
+
+      it('운동 참가 취소를 위한 cancelParticipateGame 호출 후'
+        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {
+        jest.clearAllMocks();
+        cancelParticipateGame = jest.fn();
+
+        renderPostsPage();
+
+        fireEvent.click(screen.getByText('신청취소'));
+        await waitFor(() => {
+          expect(cancelParticipateGame).toBeCalledWith(expectedGameId);
           expect(fetchPosts).toBeCalledTimes(2);
         });
       });

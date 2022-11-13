@@ -61,18 +61,16 @@ const postTestServer = setupServer(
     return response(context.status(400));
   }),
 
-  // rest.get(`${apiBaseUrl}/posts/:postId`, async (request, response, context) => {
-  //   const { postId } = await request.params;
-  //   const accessToken = await request.headers.get('Authorization');
+  rest.delete(`${apiBaseUrl}/members/games/:gameId`, async (request, response, context) => {
+    const accessToken = await request.headers.get('Authorization');
+    const { gameId } = await request.params;
 
-  //   if (postId === '1' && accessToken) {
-  //     return response(context.json({
+    if (gameId === '1' && accessToken) {
+      return response(context.status(204));
+    }
 
-  //     }));
-  //   }
-
-  //   return response(context.status(400));
-  // }),
+    return response(context.status(400));
+  }),
 );
 
 export default postTestServer;

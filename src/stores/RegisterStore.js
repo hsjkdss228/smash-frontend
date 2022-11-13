@@ -10,7 +10,6 @@ export default class RegisterStore extends Store {
 
   async registerToGame(gameId) {
     try {
-      console.log('gameId in RegisterStore: ', gameId);
       this.registeredGameId = await registerApiService.registerToGame(gameId);
       return this.registeredGameId;
     } catch (error) {

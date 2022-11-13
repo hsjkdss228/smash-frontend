@@ -4,12 +4,14 @@ import Posts from './Posts';
 
 describe('Posts', () => {
   const registerToGame = jest.fn();
+  const cancelRegisterGame = jest.fn();
 
   const renderPosts = ({ posts }) => {
     render((
       <Posts
         posts={posts}
         registerToGame={registerToGame}
+        cancelRegisterGame={cancelRegisterGame}
       />
     ));
   };
@@ -69,6 +71,17 @@ describe('Posts', () => {
         fireEvent.click(screen.getByText('신청'));
         const expectedGameId = 2;
         expect(registerToGame).toBeCalledWith(expectedGameId);
+      });
+    });
+
+    context('신청 취소 버튼 클릭 시', () => {
+      it('운동 참가 취소 이벤트 핸들러 호출', () => {
+        jest.clearAllMocks();
+        renderPosts({ posts });
+
+        fireEvent.click(screen.getByText('신청취소'));
+        const expectedGameId = 1;
+        expect(cancelRegisterGame).toBeCalledWith(expectedGameId);
       });
     });
   });

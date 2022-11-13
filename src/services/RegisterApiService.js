@@ -16,8 +16,6 @@ export default class RegisterApiService {
   }
 
   async registerToGame(gameId) {
-    console.log('gameId in RegisterApiService: ', gameId);
-
     const url = `${apiBaseUrl}/registers/games/${gameId}`;
 
     const { data } = await axios.post(url, {}, {
@@ -26,28 +24,7 @@ export default class RegisterApiService {
       },
     });
     return data.gameId;
-
-    // const url = `${apiBaseUrl}/member/register`;
-    // const { data } = await axios.post(url, {
-    //   gameId, teamId, roleId,
-    // }, {
-    //   headers: {
-    //     Authorization: `Bearer ${this.accessToken}`,
-    //   },
-    // });
-    // // console.log(data);
-    // return data;
   }
-
-  // async cancelRegister(roleId) {
-  //   const url = `${apiBaseUrl}/member/user`;
-  //   await axios.delete(url, {
-  //     data: { roleId },
-  //     headers: {
-  //       Authorization: `Bearer ${this.accessToken}`,
-  //     },
-  //   });
-  // }
 }
 
 export const registerApiService = new RegisterApiService();
