@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import PostsContent from './PostsContent';
 
 describe('PostsContent', () => {
+  const onClickPost = jest.fn();
+
   const renderPostsContent = ({
     hits,
     type,
@@ -19,6 +21,7 @@ describe('PostsContent', () => {
         place={place}
         currentMemberCount={currentMemberCount}
         targetMemberCount={targetMemberCount}
+        onClickPost={onClickPost}
       />
     ));
   };
@@ -47,6 +50,22 @@ describe('PostsContent', () => {
       screen.getByText(/잠실야구장/);
       screen.getByText(/4/);
       screen.getByText(/12/);
+    });
+
+    context('게시물 내용 클릭 시', () => {
+      it('해당 게시물 상세 정보 보기로 이동하는 핸들러 함수 호출', () => {
+        renderPostsContent({
+          hits,
+          type,
+          date,
+          place,
+          currentMemberCount,
+          targetMemberCount,
+        });
+
+        fireEvent.click(screen.getByText('야구'));
+        expect(onClickPost).toBeCalled();
+      });
     });
   });
 });

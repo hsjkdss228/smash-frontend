@@ -2,8 +2,14 @@ import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import { MemoryRouter } from 'react-router-dom';
 import PostsPage from './PostsPage';
+
+const navigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  useNavigate: () => (
+    navigate
+  ),
+}));
 
 let posts;
 let postsErrorMessage;
@@ -31,9 +37,7 @@ jest.mock('../hooks/useMemberStore', () => () => ({
 describe('PostsPage', () => {
   function renderPostsPage() {
     render((
-      <MemoryRouter>
-        <PostsPage />
-      </MemoryRouter>
+      <PostsPage />
     ));
   }
 
@@ -72,6 +76,21 @@ describe('PostsPage', () => {
 
       await waitFor(() => {
         expect(fetchPosts).toBeCalled();
+      });
+    });
+
+    context('운동 모집 게시글 리스트 중 하나의 내용을 클릭하면', () => {
+      it('운동 게시글 상세 보기로 이동하는 navigate 함수 호출', () => {
+        jest.clearAllMocks();
+
+        renderPostsPage();
+
+        fireEvent.click(screen.getByText('문학야구장'));
+        expect(navigate).toBeCalledWith('/posts/2', {
+          state: {
+            postId: 2,
+          },
+        });
       });
     });
 

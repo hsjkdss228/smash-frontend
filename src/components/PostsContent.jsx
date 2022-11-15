@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Container = styled.section`
+const Container = styled.button`
   
 `;
 
@@ -11,9 +11,17 @@ export default function PostsContent({
   place,
   currentMemberCount,
   targetMemberCount,
+  onClickPost,
 }) {
+  const handleClickPostButton = () => {
+    onClickPost();
+  };
+
   return (
-    <Container>
+    <Container
+      type="button"
+      onClick={handleClickPostButton}
+    >
       <p>
         조회수:
         {' '}

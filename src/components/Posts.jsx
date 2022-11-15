@@ -20,11 +20,16 @@ const Thumbnail = styled.li`
 
 export default function Posts({
   posts,
+  navigateToPost,
   postsErrorMessage,
   registerErrorCodeAndMessage,
   registerToGame,
   cancelRegisterGame,
 }) {
+  const onClickPost = (postId) => {
+    navigateToPost(postId);
+  };
+
   if (postsErrorMessage) {
     return (
       <p>{postsErrorMessage}</p>
@@ -49,6 +54,7 @@ export default function Posts({
               place={post.game.place}
               currentMemberCount={post.game.currentMemberCount}
               targetMemberCount={post.game.targetMemberCount}
+              onClickPost={() => onClickPost(post.id)}
             />
             <PostsRegisterButton
               gameId={post.game.id}
