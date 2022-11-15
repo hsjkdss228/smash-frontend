@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
-import Posts from '../components/Posts';
+import { useNavigate } from 'react-router-dom';
+
 import usePostStore from '../hooks/usePostStore';
 import useRegisterStore from '../hooks/useRegisterStore';
 import useMemberStore from '../hooks/useMemberStore';
 
+import Posts from '../components/Posts';
+
 export default function PostsPage() {
+  const navigate = useNavigate();
+
   const postStore = usePostStore();
   const registerStore = useRegisterStore();
   const memberStore = useMemberStore();
@@ -15,7 +20,13 @@ export default function PostsPage() {
 
   const { posts, postsErrorMessage } = postStore;
 
-  // TODO: 게시글 클릭 시 게시글 상세 페이지로 링크 연결
+  const navigateToPost = (postId) => {
+    navigate(`/posts/${postId}`, {
+      state: {
+        postId,
+      },
+    });
+  };
 
   const registerToGame = async (gameId) => {
     const registeredGameId = await registerStore.registerToGame(gameId);
@@ -24,16 +35,18 @@ export default function PostsPage() {
     }
   };
 
-  const { registerErrorCodeAndMessage } = registerStore;
-
   const cancelRegisterGame = async (gameId) => {
     await memberStore.cancelParticipateGame(gameId);
     await postStore.fetchPosts();
   };
 
+  const { registerErrorCodeAndMessage } = registerStore;
+
   return (
     <Posts
+      id="posts"
       posts={posts}
+      navigateToPost={navigateToPost}
       postsErrorMessage={postsErrorMessage}
       registerErrorCodeAndMessage={registerErrorCodeAndMessage}
       registerToGame={registerToGame}

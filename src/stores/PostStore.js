@@ -14,8 +14,8 @@ export default class PostStore extends Store {
 
   async fetchPosts() {
     try {
-      const { posts } = await postApiService.fetchPosts();
-      this.posts = posts;
+      const data = await postApiService.fetchPosts();
+      this.posts = data.posts;
       this.publish();
     } catch (error) {
       const { errorMessage } = error.response.data;
