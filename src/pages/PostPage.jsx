@@ -1,5 +1,15 @@
+import Post from '../components/Post';
+
 export default function PostPage() {
+  const post = {};
+  const game = {};
+  const members = [];
+
   return (
-    <p>게시글 상세 페이지</p>
+    <Post
+      post={post}
+      game={game}
+      members={members}
+    />
   );
 }

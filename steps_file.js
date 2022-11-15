@@ -13,6 +13,8 @@ module.exports = function () {
       this.amOnPage(`${backdoorBaseUrl}/empty-members`);
     },
 
+    // Operations
+
     // Seeing UI Components
     seeHeader() {
       this.see('SMASH');
