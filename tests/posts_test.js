@@ -5,6 +5,7 @@ Feature('게시글 목록 보기');
 Scenario('등록된 게시글이 없는 경우', ({ I }) => {
   // Given
   I.clearPosts();
+  I.login({ userId: 1 });
 
   // When
   I.amOnPage('/posts/list');
@@ -16,6 +17,7 @@ Scenario('등록된 게시글이 없는 경우', ({ I }) => {
 Scenario('동록된 게시글이 존재하는 경우', ({ I }) => {
   // Given
   I.setupPosts();
+  I.login({ userId: 1 });
 
   // When
   I.amOnPage('/');
@@ -31,6 +33,6 @@ Scenario('동록된 게시글이 존재하는 경우', ({ I }) => {
   I.see('배구');
   I.see('2022년 11월 14일 15:00~17:00');
   I.see('장충체육관');
-  I.see('2/12명');
+  I.see('1/12명');
   I.see('조회수: 5593');
 });
