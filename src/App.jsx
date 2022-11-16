@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { Reset } from 'styled-reset';
 
+import { useLocalStorage } from 'usehooks-ts';
+import { useEffect } from 'react';
 import { postApiService } from './services/PostApiService';
 import { registerApiService } from './services/RegisterApiService';
 import { memberApiService } from './services/MemberApiService';
@@ -29,10 +31,13 @@ const Wrapper = styled.div`
 `;
 
 export default function App() {
-  const accessToken = localStorage.getItem('accessToken');
-  postApiService.setAccessToken(accessToken);
-  registerApiService.setAccessToken(accessToken);
-  memberApiService.setAccessToken(accessToken);
+  const [accessToken] = useLocalStorage('accessToken', '');
+
+  useEffect(() => {
+    postApiService.setAccessToken(accessToken);
+    registerApiService.setAccessToken(accessToken);
+    memberApiService.setAccessToken(accessToken);
+  }, [accessToken]);
 
   return (
     <Container>

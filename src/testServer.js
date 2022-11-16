@@ -109,6 +109,44 @@ const postTestServer = setupServer(
 
     return response(context.status(400));
   }),
+
+  rest.post(`${apiBaseUrl}/session`, async (request, response, context) => {
+    const { userId } = await request.json();
+
+    if (userId === 10) {
+      return response(
+        context.status(201),
+        context.json({
+          accessToken: 'TOKEN',
+        }),
+      );
+    }
+
+    if (userId === '') {
+      return response(
+        context.status(400),
+        context.json({
+          errorMessage: 'user Id를 입력해주세요. (200)',
+        }),
+      );
+    }
+
+    if (userId === 1234) {
+      return response(
+        context.status(400),
+        context.json({
+          errorMessage: 'user Id 인코딩 과정에서 문제가 발생했습니다. (202)',
+        }),
+      );
+    }
+
+    return response(
+      context.status(400),
+      context.json({
+        errorMessage: '존재하지 않는 user Id 입니다. (201)',
+      }),
+    );
+  }),
 );
 
 export default postTestServer;
