@@ -4,22 +4,28 @@ module.exports = function () {
   return actor({
     // Setup Databases
     clearPosts() {
-      this.amOnPage(`${backdoorBaseUrl}/empty-posts`);
+      this.amOnPage(`${backdoorBaseUrl}/clear-posts`);
     },
     setupPosts() {
       this.amOnPage(`${backdoorBaseUrl}/setup-posts`);
     },
-    emptyMembers() {
-      this.amOnPage(`${backdoorBaseUrl}/empty-members`);
+    clearMembers() {
+      this.amOnPage(`${backdoorBaseUrl}/clear-members`);
+    },
+    setupMembers() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members`);
     },
 
     // Operations
+    login({ userId }) {
+      this.amOnPage('/');
+      this.fillField('User Id:', userId);
+      this.click('로그인');
+    },
 
     // Seeing UI Components
     seeHeader() {
       this.see('SMASH');
-      this.see('운동 선택하기');
-      this.see('사이드바 메뉴');
     },
   });
 };

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocalStorage } from 'usehooks-ts';
+
 import usePostStore from '../hooks/usePostStore';
 import useRegisterStore from '../hooks/useRegisterStore';
 import useMemberStore from '../hooks/useMemberStore';
@@ -10,13 +12,15 @@ import Posts from '../components/Posts';
 export default function PostsPage() {
   const navigate = useNavigate();
 
+  const [accessToken] = useLocalStorage('accessToken', '');
+
   const postStore = usePostStore();
   const registerStore = useRegisterStore();
   const memberStore = useMemberStore();
 
   useEffect(() => {
     postStore.fetchPosts();
-  }, []);
+  }, [accessToken]);
 
   const { posts, postsErrorMessage } = postStore;
 
