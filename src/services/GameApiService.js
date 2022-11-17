@@ -6,7 +6,7 @@ import config from '../config';
 
 const { apiBaseUrl } = config;
 
-export default class PostApiService {
+export default class GameApiService {
   constructor() {
     this.accessToken = '';
   }
@@ -15,18 +15,8 @@ export default class PostApiService {
     this.accessToken = accessToken;
   }
 
-  async fetchPosts() {
-    const url = `${apiBaseUrl}/posts`;
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
-    return data;
-  }
-
-  async fetchPost(postId) {
-    const url = `${apiBaseUrl}/posts/${postId}`;
+  async fetchGame(postId) {
+    const url = `${apiBaseUrl}/games/${postId}`;
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
@@ -36,4 +26,4 @@ export default class PostApiService {
   }
 }
 
-export const postApiService = new PostApiService();
+export const gameApiService = new GameApiService();

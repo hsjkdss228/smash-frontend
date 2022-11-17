@@ -3,6 +3,7 @@ import {
 } from '@testing-library/react';
 
 import context from 'jest-plugin-context';
+import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 
 import Header from './Header';
@@ -40,28 +41,32 @@ describe('Header', () => {
       });
 
       context('값을 입력할 경우', () => {
-        it('입력한 user Id 값을 변경하는 UserStore의 changeUserId 함수 호출', () => {
+        it('입력한 user Id 값을 변경하는 UserStore의 changeUserId 함수 호출', async () => {
           localStorage.setItem('accessToken', '');
           renderHeader();
 
+          // await act(() => {
           fireEvent.change(screen.getByLabelText(/User Id/), {
             target: { value: 2 },
           });
           expect(changeUserId).toBeCalledWith(2);
+          // });
         });
       });
 
       context('로그인 버튼을 누를 경우', () => {
         const expectedAccessToken = 'VALID ACCESS TOKEN';
 
-        it('accessToken을 받아오기 위한 UserStore의 login 함수 호출', () => {
+        it('accessToken을 받아오기 위한 UserStore의 login 함수 호출', async () => {
           login = jest.fn(() => expectedAccessToken);
           localStorage.setItem('accessToken', '');
           renderHeader();
 
+          // await act(() => {
           fireEvent.click(screen.getByText('로그인'));
 
           expect(login).toBeCalled();
+          // });
         });
       });
     });
@@ -75,13 +80,15 @@ describe('Header', () => {
       });
 
       context('로그아웃 버튼을 누를 경우', () => {
-        it('accessToken을 비움', () => {
+        it('accessToken을 비움', async () => {
           localStorage.setItem('accessToken', JSON.stringify('TOKEN'));
           renderHeader();
 
+          // await act(() => {
           fireEvent.click(screen.getByText('로그아웃'));
           const accessToken = localStorage.getItem('accessToken');
           expect(JSON.parse(accessToken)).toBe('');
+          // });
         });
       });
     });
