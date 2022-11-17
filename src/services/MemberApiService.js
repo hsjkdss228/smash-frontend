@@ -15,6 +15,16 @@ export default class MemberApiService {
     this.accessToken = accessToken;
   }
 
+  async fetchMembers(gameId) {
+    const url = `${apiBaseUrl}/members/${gameId}`;
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    return data;
+  }
+
   async cancelParticipateGame(gameId) {
     const url = `${apiBaseUrl}/members/games/${gameId}`;
 

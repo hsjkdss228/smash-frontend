@@ -41,4 +41,19 @@ describe('PostStore', () => {
       expect(postsErrorMessage).toBe('주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.');
     });
   });
+
+  context('API 서버에 게시글 상세 정보 데이터를 요청할 경우', () => {
+    const postId = 1;
+
+    it('백엔드 서버에서 응답으로 전달된 단일 post를 상태로 저장', async () => {
+      postApiService.setAccessToken('userId 1');
+      await postStore.fetchPost(postId);
+
+      const { post, postErrorMessage } = postStore;
+
+      expect(Object.keys(post).length).toBe(6);
+      expect(post.authorPhoneNumber).toBe('010-1111-2222');
+      expect(postErrorMessage).toBeFalsy();
+    });
+  });
 });
