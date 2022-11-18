@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import Post from '../components/Post';
 import usePostStore from '../hooks/usePostStore';
@@ -10,6 +10,7 @@ export default function PostPage() {
   const [accessToken] = useLocalStorage('accessToken', '');
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const postId = location.state !== null
     ? location.state.postId
@@ -35,8 +36,13 @@ export default function PostPage() {
   const { game } = gameStore;
   const { members } = memberStore;
 
+  const navigateToBackward = () => {
+    navigate(-1);
+  };
+
   return (
     <Post
+      navigateToBackward={navigateToBackward}
       post={post}
       game={game}
       members={members}

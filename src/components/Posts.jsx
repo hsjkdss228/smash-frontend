@@ -10,6 +10,10 @@ const Container = styled.article`
   align-items: center;
 `;
 
+const Backward = styled.button`
+  
+`;
+
 const Thumbnails = styled.ul`
   
 `;
@@ -19,6 +23,7 @@ const Thumbnail = styled.li`
 `;
 
 export default function Posts({
+  navigateToBackward,
   posts,
   navigateToPost,
   postsErrorMessage,
@@ -26,6 +31,10 @@ export default function Posts({
   registerToGame,
   cancelRegisterGame,
 }) {
+  const onClickBackward = () => {
+    navigateToBackward();
+  };
+
   const onClickPost = (postId) => {
     navigateToPost(postId);
   };
@@ -44,6 +53,12 @@ export default function Posts({
 
   return (
     <Container>
+      <Backward
+        type="button"
+        onClick={onClickBackward}
+      >
+        ⬅️
+      </Backward>
       <Thumbnails>
         {posts.map((post) => (
           <Thumbnail key={post.id}>

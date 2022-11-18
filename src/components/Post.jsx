@@ -3,15 +3,24 @@ import PostGameInformation from './PostGameInformation';
 import PostInformation from './PostInformation';
 import PostMemberInformation from './PostMemberInformation';
 
+const Backward = styled.button`
+  
+`;
+
 const Container = styled.article`
   
 `;
 
 export default function Post({
+  navigateToBackward,
   post,
   game,
   members,
 }) {
+  const onClickBackward = () => {
+    navigateToBackward();
+  };
+
   if (!post || !game || !members
     || Object.keys(post).length === 0
     || Object.keys(game).length === 0) {
@@ -22,6 +31,12 @@ export default function Post({
 
   return (
     <Container>
+      <Backward
+        type="button"
+        onClick={onClickBackward}
+      >
+        ⬅️
+      </Backward>
       <PostInformation
         hits={post.hits}
         authorName={post.authorName}
