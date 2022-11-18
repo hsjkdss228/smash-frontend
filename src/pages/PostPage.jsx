@@ -19,12 +19,16 @@ export default function PostPage() {
   const gameStore = useGameStore();
   const memberStore = useMemberStore();
 
-  useEffect(() => {
-    postStore.fetchPost(postId);
-    const gameId = gameStore.fetchGame(postId);
+  const fetchData = async () => {
+    await postStore.fetchPost(postId);
+    const gameId = await gameStore.fetchGame(postId);
     if (gameId) {
-      memberStore.fetchMembers(gameId);
+      await memberStore.fetchMembers(gameId);
     }
+  };
+
+  useEffect(() => {
+    fetchData(postId);
   }, [accessToken]);
 
   const { post } = postStore;

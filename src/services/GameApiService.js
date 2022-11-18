@@ -16,7 +16,7 @@ export default class GameApiService {
   }
 
   async fetchGame(postId) {
-    const url = `${apiBaseUrl}/games/${postId}`;
+    const url = `${apiBaseUrl}/games/posts/${postId}`;
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,

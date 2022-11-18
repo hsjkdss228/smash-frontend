@@ -12,12 +12,12 @@ export default class GameStore extends Store {
   async fetchGame(postId) {
     try {
       const data = await gameApiService.fetchGame(postId);
-      this.game = data.game;
-      this.publish();
+      this.game = data;
+      return this.game.id;
     } catch (error) {
       const { errorMessage } = error.response.data;
       this.gameErrorMessage = errorMessage;
-      this.publish();
+      return '';
     }
   }
 }

@@ -176,14 +176,12 @@ const postTestServer = setupServer(
         return response(
           context.status(200),
           context.json({
-            post: {
-              id: 1,
-              hits: 223,
-              authorName: '작성자',
-              authorPhoneNumber: '010-1111-2222',
-              detail: '점심먹고 가볍게 탁구하실분?',
-              isAuthor: true,
-            },
+            id: 1,
+            hits: 223,
+            authorName: '작성자',
+            authorPhoneNumber: '010-1111-2222',
+            detail: '점심먹고 가볍게 탁구하실분?',
+            isAuthor: true,
           }),
         );
       }
@@ -196,7 +194,7 @@ const postTestServer = setupServer(
 
   // fetchGame
   rest.get(
-    `${apiBaseUrl}/games/:postId`,
+    `${apiBaseUrl}/games/posts/:postId`,
     async (request, response, context) => {
       const accessToken = await request.headers.get('Authorization')
         .substring('bearer '.length);
@@ -206,15 +204,13 @@ const postTestServer = setupServer(
         return response(
           context.status(200),
           context.json({
-            game: {
-              id: 1,
-              type: '탁구',
-              date: '2022년 10월 19일 12:30~13:30',
-              place: '서울숲탁구클럽',
-              currentMemberCount: 2,
-              targetMemberCount: 4,
-              isRegistered: true,
-            },
+            id: 1,
+            type: '탁구',
+            date: '2022년 10월 19일 12:30~13:30',
+            place: '서울숲탁구클럽',
+            currentMemberCount: 2,
+            targetMemberCount: 4,
+            isRegistered: true,
           }),
         );
       }
@@ -227,13 +223,11 @@ const postTestServer = setupServer(
 
   // fetchMembers
   rest.get(
-    `${apiBaseUrl}/members/:gameId`,
+    `${apiBaseUrl}/members/games/:gameId`,
     async (request, response, context) => {
-      const accessToken = await request.headers.get('Authorization')
-        .substring('bearer '.length);
       const { gameId } = await request.params;
 
-      if (gameId === '1' && accessToken === 'userId 1') {
+      if (gameId === '1') {
         return response(
           context.status(200),
           context.json({

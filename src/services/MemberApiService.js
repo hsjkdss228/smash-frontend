@@ -16,12 +16,8 @@ export default class MemberApiService {
   }
 
   async fetchMembers(gameId) {
-    const url = `${apiBaseUrl}/members/${gameId}`;
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
+    const url = `${apiBaseUrl}/members/games/${gameId}`;
+    const { data } = await axios.get(url);
     return data;
   }
 
