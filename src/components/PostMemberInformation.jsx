@@ -9,6 +9,12 @@ const Member = styled.li`
 `;
 
 export default function PostMemberInformation({ members }) {
+  if (members.length === 0) {
+    return (
+      <p>참가자가 없습니다.</p>
+    );
+  }
+
   return (
     <Container>
       <p>참가자 정보</p>

@@ -12,9 +12,9 @@ export default function Post({
   game,
   members,
 }) {
-  if (!Object.keys(post).length
-    || !Object.keys(game).length
-    || !members.length) {
+  if (!post || !game || !members
+    || Object.keys(post).length === 0
+    || Object.keys(game).length === 0) {
     return (
       <p>정보를 불러오고 있습니다...</p>
     );

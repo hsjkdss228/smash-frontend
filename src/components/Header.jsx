@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import useUserStore from '../hooks/useUserStore';
-import { postApiService } from '../services/PostApiService';
 
 const Container = styled.header`
   position: fixed;
@@ -45,14 +44,12 @@ export default function Header() {
     const verifiedAccessToken = await userStore.login();
     if (verifiedAccessToken) {
       setAccessToken(verifiedAccessToken);
-      postApiService.setAccessToken(verifiedAccessToken);
       userStore.changeUserId('');
     }
   };
 
   const handleClickLogout = () => {
     setAccessToken('');
-    postApiService.setAccessToken('');
     navigate('/');
   };
 
