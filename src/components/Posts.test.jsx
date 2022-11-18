@@ -3,6 +3,7 @@ import context from 'jest-plugin-context';
 import Posts from './Posts';
 
 describe('Posts', () => {
+  const navigateToBackward = jest.fn();
   const navigateToPost = jest.fn();
   const registerToGame = jest.fn();
   const cancelRegisterGame = jest.fn();
@@ -14,6 +15,7 @@ describe('Posts', () => {
   }) => {
     render((
       <Posts
+        navigateToBackward={navigateToBackward}
         posts={posts}
         navigateToPost={navigateToPost}
         postsErrorMessage={postsErrorMessage}
@@ -45,7 +47,6 @@ describe('Posts', () => {
     const postsErrorMessage = '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.';
     const registerErrorCodeAndMessage = '';
 
-
     it('에러 메세지 출력', () => {
       renderPosts({
         posts,
@@ -74,6 +75,17 @@ describe('Posts', () => {
     ];
     const postsErrorMessage = '';
     const registerErrorCodeAndMessage = '';
+
+    it('뒤로가기 버튼을 누를 시 뒤로가기로 이동하는 navigate 함수 호출', () => {
+      renderPosts({
+        posts,
+        postsErrorMessage,
+        registerErrorCodeAndMessage,
+      });
+
+      fireEvent.click(screen.getByText('⬅️'));
+      expect(navigateToBackward).toBeCalled();
+    });
 
     it('게시물 내용 클릭 시 해당 게시물 상세 정보 보기로 이동하는 navigate 함수 호출', () => {
       renderPosts({

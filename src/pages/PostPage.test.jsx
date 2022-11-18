@@ -5,12 +5,16 @@ import context from 'jest-plugin-context';
 import PostPage from './PostPage';
 
 let postId;
+const navigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   useLocation: () => ({
     state: {
       postId,
     },
   }),
+  useNavigate: () => (
+    navigate
+  ),
 }));
 
 let post;

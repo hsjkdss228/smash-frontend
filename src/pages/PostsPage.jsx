@@ -24,6 +24,10 @@ export default function PostsPage() {
 
   const { posts, postsErrorMessage } = postStore;
 
+  const navigateToBackward = () => {
+    navigate(-1);
+  };
+
   const navigateToPost = (postId) => {
     navigate(`/posts/${postId}`, {
       state: {
@@ -48,9 +52,9 @@ export default function PostsPage() {
 
   return (
     <Posts
-      id="posts"
       posts={posts}
       navigateToPost={navigateToPost}
+      navigateToBackward={navigateToBackward}
       postsErrorMessage={postsErrorMessage}
       registerErrorCodeAndMessage={registerErrorCodeAndMessage}
       registerToGame={registerToGame}
