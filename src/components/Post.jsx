@@ -3,11 +3,14 @@ import PostGameInformation from './PostGameInformation';
 import PostInformation from './PostInformation';
 import PostMemberInformation from './PostMemberInformation';
 
-const Backward = styled.button`
-  
+const Container = styled.article`
+  margin-inline: 10em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const Container = styled.article`
+const Backward = styled.button`
   
 `;
 

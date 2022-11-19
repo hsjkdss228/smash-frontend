@@ -10,6 +10,22 @@ describe('RegisterStore', () => {
     registerStore = new RegisterStore();
   });
 
+  context('API 서버에 게시글 게임의 참가자 상세 정보 데이터를 요청할 경우', () => {
+    const gameId = 1;
+
+    it('백엔드 서버에서 응답으로 전달된 member 컬렉션을 상태로 저장', async () => {
+      registerApiService.setAccessToken('userId 1');
+      await registerStore.fetchMembers(gameId);
+
+      const { members, membersErrorMessage } = registerStore;
+
+      expect(members.length).toBe(2);
+      expect(members[0].name).toBe('작성자');
+      expect(members[1].gender).toBe('여성');
+      expect(membersErrorMessage).toBeFalsy();
+    });
+  });
+
   context('운동 참가 신청 API를 요청할 경우 (정상 케이스)', () => {
     it('registerApiService API 요청을 호출하고 응답으로 받은 gameId를 반환', async () => {
       // cf. localStorage.setItem()으로 token을 설정해줄 수도 있다.
@@ -69,6 +85,14 @@ describe('RegisterStore', () => {
         code: 102,
         message: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
       });
+    });
+  });
+
+  context('운동 참가 취소 API를 요청할 경우', () => {
+    it('memberApiService API 요청을 호출', async () => {
+      registerApiService.setAccessToken('userId 1');
+      const gameId = 1;
+      await registerStore.cancelParticipateGame(gameId);
     });
   });
 });

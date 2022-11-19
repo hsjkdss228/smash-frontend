@@ -108,8 +108,8 @@ const postTestServer = setupServer(
   ),
 
   // cancelParticipateGame
-  rest.delete(
-    `${apiBaseUrl}/members/games/:gameId`,
+  rest.patch(
+    `${apiBaseUrl}/registers/games/:gameId`,
     async (request, response, context) => {
       const accessToken = await request.headers.get('Authorization');
       const { gameId } = await request.params;
@@ -223,7 +223,7 @@ const postTestServer = setupServer(
 
   // fetchMembers
   rest.get(
-    `${apiBaseUrl}/members/games/:gameId`,
+    `${apiBaseUrl}/registers/members/games/:gameId`,
     async (request, response, context) => {
       const { gameId } = await request.params;
 

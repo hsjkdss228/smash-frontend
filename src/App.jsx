@@ -7,7 +7,6 @@ import { useLocalStorage } from 'usehooks-ts';
 import { useEffect } from 'react';
 import { postApiService } from './services/PostApiService';
 import { registerApiService } from './services/RegisterApiService';
-import { memberApiService } from './services/MemberApiService';
 
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
@@ -36,7 +35,6 @@ export default function App() {
   useEffect(() => {
     postApiService.setAccessToken(accessToken);
     registerApiService.setAccessToken(accessToken);
-    memberApiService.setAccessToken(accessToken);
   }, [accessToken]);
 
   return (
