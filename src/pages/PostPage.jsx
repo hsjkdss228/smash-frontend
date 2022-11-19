@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import Post from '../components/Post';
 import usePostStore from '../hooks/usePostStore';
 import useGameStore from '../hooks/useGameStore';
-import useMemberStore from '../hooks/useMemberStore';
+import useRegisterStore from '../hooks/useRegisterStore';
 
 export default function PostPage() {
   const [accessToken] = useLocalStorage('accessToken', '');
@@ -18,13 +18,13 @@ export default function PostPage() {
 
   const postStore = usePostStore();
   const gameStore = useGameStore();
-  const memberStore = useMemberStore();
+  const registerStore = useRegisterStore();
 
   const fetchData = async () => {
     await postStore.fetchPost(postId);
     const gameId = await gameStore.fetchGame(postId);
     if (gameId) {
-      await memberStore.fetchMembers(gameId);
+      await registerStore.fetchMembers(gameId);
     }
   };
 
@@ -34,7 +34,7 @@ export default function PostPage() {
 
   const { post } = postStore;
   const { game } = gameStore;
-  const { members } = memberStore;
+  const { members } = registerStore;
 
   const navigateToBackward = () => {
     navigate(-1);

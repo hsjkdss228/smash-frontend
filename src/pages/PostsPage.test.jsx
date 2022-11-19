@@ -23,14 +23,11 @@ jest.mock('../hooks/usePostStore', () => () => ({
 let registeredGameId;
 let registerErrorCodeAndMessage;
 let registerToGame;
+let cancelParticipateGame;
 jest.mock('../hooks/useRegisterStore', () => () => ({
   registeredGameId,
   registerErrorCodeAndMessage,
   registerToGame,
-}));
-
-let cancelParticipateGame;
-jest.mock('../hooks/useMemberStore', () => () => ({
   cancelParticipateGame,
 }));
 
@@ -70,6 +67,7 @@ describe('PostsPage', () => {
         },
       },
     ];
+    registerErrorCodeAndMessage = {};
     postsErrorMessage = '';
     it('운동 모집 게시글 상태를 가져오기 위한 fetchPost 수행', async () => {
       renderPostsPage();
@@ -97,7 +95,6 @@ describe('PostsPage', () => {
     context('운동 신청 버튼을 누르면', () => {
       const expectedGameId = 22;
       registeredGameId = expectedGameId;
-      registerErrorCodeAndMessage = {};
 
       it('운동 신청을 위한 registerToGame 호출 후'
         + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {

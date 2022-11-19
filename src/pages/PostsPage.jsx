@@ -5,7 +5,6 @@ import { useLocalStorage } from 'usehooks-ts';
 
 import usePostStore from '../hooks/usePostStore';
 import useRegisterStore from '../hooks/useRegisterStore';
-import useMemberStore from '../hooks/useMemberStore';
 
 import Posts from '../components/Posts';
 
@@ -16,7 +15,6 @@ export default function PostsPage() {
 
   const postStore = usePostStore();
   const registerStore = useRegisterStore();
-  const memberStore = useMemberStore();
 
   useEffect(() => {
     postStore.fetchPosts();
@@ -44,7 +42,7 @@ export default function PostsPage() {
   };
 
   const cancelRegisterGame = async (gameId) => {
-    await memberStore.cancelParticipateGame(gameId);
+    await registerStore.cancelParticipateGame(gameId);
     await postStore.fetchPosts();
   };
 

@@ -33,7 +33,7 @@ jest.mock('../hooks/useGameStore', () => () => ({
 
 let members;
 const fetchMembers = jest.fn();
-jest.mock('../hooks/useMemberStore', () => () => ({
+jest.mock('../hooks/useRegisterStore', () => () => ({
   members,
   fetchMembers,
 }));

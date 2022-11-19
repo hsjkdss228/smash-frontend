@@ -15,15 +15,29 @@ export default class RegisterApiService {
     this.accessToken = accessToken;
   }
 
+  async fetchMembers(gameId) {
+    const url = `${apiBaseUrl}/registers/members/games/${gameId}`;
+    const { data } = await axios.get(url);
+    return data;
+  }
+
   async registerToGame(gameId) {
     const url = `${apiBaseUrl}/registers/games/${gameId}`;
-
     const { data } = await axios.post(url, {}, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
     return data.gameId;
+  }
+
+  async cancelParticipateGame(gameId) {
+    const url = `${apiBaseUrl}/registers/games/${gameId}`;
+    await axios.patch(url, { }, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
   }
 }
 

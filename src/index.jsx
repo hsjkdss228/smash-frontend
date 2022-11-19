@@ -3,13 +3,13 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { postApiService } from './services/PostApiService';
 import { gameApiService } from './services/GameApiService';
-import { memberApiService } from './services/MemberApiService';
+import { registerApiService } from './services/RegisterApiService';
 
 const data = localStorage.getItem('accessToken');
 const accessToken = JSON.parse(data);
 postApiService.setAccessToken(accessToken);
 gameApiService.setAccessToken(accessToken);
-memberApiService.setAccessToken(accessToken);
+registerApiService.setAccessToken(accessToken);
 
 const container = document.getElementById('app');
 const root = ReactDOM.createRoot(container);
