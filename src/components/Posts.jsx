@@ -23,13 +23,14 @@ const Thumbnail = styled.li`
 `;
 
 export default function Posts({
-  navigateToBackward,
   posts,
+  navigateToBackward,
   navigateToPost,
+  registerToGame,
+  cancelRegisterToGame,
+  cancelParticipateToGame,
   postsErrorMessage,
   registerErrorCodeAndMessage,
-  registerToGame,
-  cancelRegisterGame,
 }) {
   const onClickBackward = () => {
     navigateToBackward();
@@ -71,13 +72,29 @@ export default function Posts({
               targetMemberCount={post.game.targetMemberCount}
               onClickPost={() => onClickPost(post.id)}
             />
-            <PostsRegisterButton
-              gameId={post.game.id}
-              isRegistered={post.game.isRegistered}
-              registerToGame={registerToGame}
-              cancelRegisterGame={cancelRegisterGame}
-              registerErrorCodeAndMessage={registerErrorCodeAndMessage}
-            />
+            {
+              post.isAuthor ? (
+                null
+              ) : (
+                <>
+                  <PostsRegisterButton
+                    gameId={post.game.id}
+                    registerId={post.game.registerId}
+                    registerStatus={post.game.registerStatus}
+                    registerToGame={registerToGame}
+                    cancelRegisterToGame={cancelRegisterToGame}
+                    cancelParticipateToGame={cancelParticipateToGame}
+                  />
+                  {registerErrorCodeAndMessage.message ? (
+                    <p>
+                      {registerErrorCodeAndMessage.message}
+                    </p>
+                  ) : (
+                    null
+                  )}
+                </>
+              )
+            }
           </Thumbnail>
         ))}
       </Thumbnails>

@@ -8,7 +8,7 @@ const Member = styled.li`
   display: flex;
 `;
 
-export default function PostMemberInformation({ members }) {
+export default function PostGameMembersInformation({ members }) {
   if (members.length === 0) {
     return (
       <p>참가자가 없습니다.</p>

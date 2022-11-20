@@ -15,8 +15,9 @@ describe('GameStore', () => {
 
       const { game, gameErrorMessage } = gameStore;
 
-      expect(Object.keys(game).length).toBe(7);
+      expect(Object.keys(game).length).toBe(8);
       expect(game.place).toBe('서울숲탁구클럽');
+      expect(game.registerStatus).toBe('none');
       expect(gameErrorMessage).toBeFalsy();
     });
   });
