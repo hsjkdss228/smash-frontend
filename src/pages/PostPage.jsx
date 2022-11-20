@@ -23,8 +23,14 @@ export default function PostPage() {
   const fetchData = async () => {
     await postStore.fetchPost(postId);
     const gameId = await gameStore.fetchGame(postId);
-    if (gameId) {
+    const { isAuthor } = postStore.post;
+    if (gameId && !isAuthor) {
       await registerStore.fetchMembers(gameId);
+    }
+    if (gameId && isAuthor) {
+      console.log('접속자는 작성자이다.');
+      await registerStore.fetchMembers(gameId);
+      await registerStore.fetchApplicants(gameId);
     }
   };
 
@@ -34,10 +40,37 @@ export default function PostPage() {
 
   const { post } = postStore;
   const { game } = gameStore;
-  const { members } = registerStore;
+  const { members, applicants } = registerStore;
 
   const navigateToBackward = () => {
     navigate(-1);
+  };
+
+  const handleClickRegister = async (gameId) => {
+    const applicationId = await registerStore.registerToGame(gameId);
+    if (applicationId) {
+      await fetchData(postId);
+    }
+  };
+
+  const handleClickRegisterCancel = async (registerId) => {
+    await registerStore.cancelRegisterToGame(registerId);
+    await fetchData(postId);
+  };
+
+  const handleClickParticipateCancel = async (registerId) => {
+    await registerStore.cancelParticipateToGame(registerId);
+    await fetchData(postId);
+  };
+
+  const acceptRegister = async (registerId) => {
+    await registerStore.acceptRegister(registerId);
+    await fetchData(postId);
+  };
+
+  const rejectRegister = async (registerId) => {
+    await registerStore.rejectRegister(registerId);
+    await fetchData(postId);
   };
 
   return (
@@ -46,6 +79,12 @@ export default function PostPage() {
       post={post}
       game={game}
       members={members}
+      applicants={applicants}
+      handleClickRegister={handleClickRegister}
+      handleClickRegisterCancel={handleClickRegisterCancel}
+      handleClickParticipateCancel={handleClickParticipateCancel}
+      acceptRegister={acceptRegister}
+      rejectRegister={rejectRegister}
     />
   );
 }

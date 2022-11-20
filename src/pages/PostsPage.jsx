@@ -35,14 +35,19 @@ export default function PostsPage() {
   };
 
   const registerToGame = async (gameId) => {
-    const registeredGameId = await registerStore.registerToGame(gameId);
-    if (registeredGameId) {
+    const applicationId = await registerStore.registerToGame(gameId);
+    if (applicationId) {
       await postStore.fetchPosts();
     }
   };
 
-  const cancelRegisterGame = async (gameId) => {
-    await registerStore.cancelParticipateGame(gameId);
+  const cancelRegisterToGame = async (registerId) => {
+    await registerStore.cancelRegisterToGame(registerId);
+    await postStore.fetchPosts();
+  };
+
+  const cancelParticipateToGame = async (registerId) => {
+    await registerStore.cancelParticipateToGame(registerId);
     await postStore.fetchPosts();
   };
 
@@ -51,12 +56,13 @@ export default function PostsPage() {
   return (
     <Posts
       posts={posts}
-      navigateToPost={navigateToPost}
       navigateToBackward={navigateToBackward}
+      navigateToPost={navigateToPost}
+      registerToGame={registerToGame}
+      cancelRegisterToGame={cancelRegisterToGame}
+      cancelParticipateToGame={cancelParticipateToGame}
       postsErrorMessage={postsErrorMessage}
       registerErrorCodeAndMessage={registerErrorCodeAndMessage}
-      registerToGame={registerToGame}
-      cancelRegisterGame={cancelRegisterGame}
     />
   );
 }

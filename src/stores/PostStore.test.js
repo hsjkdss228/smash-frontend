@@ -19,9 +19,10 @@ describe('PostStore', () => {
 
       expect(posts.length).toBe(2);
       expect(posts[0].hits).toBe(334);
-      expect(posts[0].game.isRegistered).toBe(false);
+      expect(posts[0].isAuthor).toBe(false);
+      expect(posts[0].game.registerId).toBe(-1);
       expect(posts[1].game.targetMemberCount).toBe(12);
-      expect(posts[1].game.isRegistered).toBe(true);
+      expect(posts[1].game.registerStatus).toBe('accepted');
       expect(postsErrorMessage).toBeFalsy();
     });
   });

@@ -3,7 +3,6 @@ import {
 } from '@testing-library/react';
 
 import context from 'jest-plugin-context';
-import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 
 import Header from './Header';

@@ -26,8 +26,24 @@ describe('RegisterStore', () => {
     });
   });
 
+  context('API 서버에 게시글 게임의 신청자 상세 정보 데이터를 요청할 경우', () => {
+    const gameId = 2;
+
+    it('백엔드 서버에서 응답으로 전달된 applicant 컬렉션을 상태로 저장', async () => {
+      registerApiService.setAccessToken('userId 1');
+      await registerStore.fetchApplicants(gameId);
+
+      const { applicants, applicantsErrorMessage } = registerStore;
+
+      expect(applicants.length).toBe(2);
+      expect(applicants[0].name).toBe('신청자 1');
+      expect(applicants[1].gender).toBe('남성');
+      expect(applicantsErrorMessage).toBeFalsy();
+    });
+  });
+
   context('운동 참가 신청 API를 요청할 경우 (정상 케이스)', () => {
-    it('registerApiService API 요청을 호출하고 응답으로 받은 gameId를 반환', async () => {
+    it('registerApiService 신청자 생성 POST API 요청을 호출하고 응답으로 받은 gameId를 반환', async () => {
       // cf. localStorage.setItem()으로 token을 설정해줄 수도 있다.
       registerApiService.setAccessToken('userId 1');
       const gameId = 1;
@@ -88,11 +104,35 @@ describe('RegisterStore', () => {
     });
   });
 
-  context('운동 참가 취소 API를 요청할 경우', () => {
-    it('memberApiService API 요청을 호출', async () => {
+  context('운동 참가 신청 취소 API를 요청할 경우', () => {
+    it('RegisterApiService 신청자 상태를 취소로 변경하는 PATCH API 요청 호출', async () => {
       registerApiService.setAccessToken('userId 1');
-      const gameId = 1;
-      await registerStore.cancelParticipateGame(gameId);
+      const registerId = 1;
+      await registerStore.cancelRegisterToGame(registerId);
+    });
+  });
+
+  context('운동 참가 취소 API를 요청할 경우', () => {
+    it('RegisterApiService 신청자 상태를 취소로 변경하는 PATCH API 요청 호출', async () => {
+      registerApiService.setAccessToken('userId 1');
+      const registerId = 1;
+      await registerStore.cancelParticipateToGame(registerId);
+    });
+  });
+
+  context('운동 참가 수락 API를 요청할 경우', () => {
+    it('RegisterApiService 신청자 상태를 참가로 변경하는 PATCH API 요청 호출', async () => {
+      registerApiService.setAccessToken('userId 1');
+      const registerId = 1;
+      await registerStore.acceptRegister(registerId);
+    });
+  });
+
+  context('운동 참가 거절 API를 요청할 경우', () => {
+    it('RegisterApiService 신청자 상태를 거절로 변경하는 PATCH API 요청 호출', async () => {
+      registerApiService.setAccessToken('userId 1');
+      const registerId = 1;
+      await registerStore.rejectRegister(registerId);
     });
   });
 });

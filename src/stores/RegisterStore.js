@@ -12,6 +12,9 @@ export default class RegisterStore extends Store {
 
     this.members = [];
     this.membersErrorMessage = '';
+
+    this.applicants = [];
+    this.applicantsErrorMessage = '';
   }
 
   async fetchMembers(gameId) {
@@ -22,6 +25,21 @@ export default class RegisterStore extends Store {
     } catch (error) {
       const { errorMessage } = error.response.data;
       this.membersErrorMessage = errorMessage;
+      this.publish();
+    }
+  }
+
+  async fetchApplicants(gameId) {
+    try {
+      const data = await registerApiService.fetchApplicants(gameId);
+      this.applicants = data.applicants;
+      console.log(data);
+      console.log('RegisterStore After fetchApplicants');
+      console.log(this.applicants);
+      this.publish();
+    } catch (error) {
+      const { errorMessage } = error.response.data;
+      this.applicantsErrorMessage = errorMessage;
       this.publish();
     }
   }
@@ -40,8 +58,20 @@ export default class RegisterStore extends Store {
     }
   }
 
-  async cancelParticipateGame(gameId) {
-    await registerApiService.cancelParticipateGame(gameId);
+  async cancelRegisterToGame(registerId) {
+    await registerApiService.cancelRegisterToGame(registerId);
+  }
+
+  async cancelParticipateToGame(registerId) {
+    await registerApiService.cancelParticipateToGame(registerId);
+  }
+
+  async acceptRegister(registerId) {
+    await registerApiService.acceptRegister(registerId);
+  }
+
+  async rejectRegister(registerId) {
+    await registerApiService.rejectRegister(registerId);
   }
 }
 

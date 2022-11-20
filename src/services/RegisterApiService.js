@@ -21,6 +21,12 @@ export default class RegisterApiService {
     return data;
   }
 
+  async fetchApplicants(gameId) {
+    const url = `${apiBaseUrl}/registers/applicants/games/${gameId}`;
+    const { data } = await axios.get(url);
+    return data;
+  }
+
   async registerToGame(gameId) {
     const url = `${apiBaseUrl}/registers/games/${gameId}`;
     const { data } = await axios.post(url, {}, {
@@ -31,9 +37,40 @@ export default class RegisterApiService {
     return data.gameId;
   }
 
-  async cancelParticipateGame(gameId) {
-    const url = `${apiBaseUrl}/registers/games/${gameId}`;
+  async cancelRegisterToGame(registerId) {
+    const url = `${apiBaseUrl}/registers/${registerId}`;
     await axios.patch(url, { }, {
+      params: { status: 'canceled' },
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+  }
+
+  async cancelParticipateToGame(registerId) {
+    const url = `${apiBaseUrl}/registers/${registerId}`;
+    await axios.patch(url, { }, {
+      params: { status: 'canceled' },
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+  }
+
+  async acceptRegister(registerId) {
+    const url = `${apiBaseUrl}/registers/${registerId}`;
+    await axios.patch(url, { }, {
+      params: { status: 'accepted' },
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+  }
+
+  async rejectRegister(registerId) {
+    const url = `${apiBaseUrl}/registers/${registerId}`;
+    await axios.patch(url, { }, {
+      params: { status: 'rejected' },
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },

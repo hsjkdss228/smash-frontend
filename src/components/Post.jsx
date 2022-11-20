@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import PostGameInformation from './PostGameInformation';
 import PostInformation from './PostInformation';
-import PostMemberInformation from './PostMemberInformation';
+import PostMemberInformation from './PostGameMembersInformation';
+import PostRegisterButton from './PostRegisterButton';
+import PostGameApplicantsInformation from './PostGameApplicantsInformation';
 
 const Container = styled.article`
   margin-inline: 10em;
@@ -19,9 +21,27 @@ export default function Post({
   post,
   game,
   members,
+  applicants,
+  handleClickRegister,
+  handleClickRegisterCancel,
+  handleClickParticipateCancel,
+  acceptRegister,
+  rejectRegister,
 }) {
   const onClickBackward = () => {
     navigateToBackward();
+  };
+
+  const onClickRegister = () => {
+    handleClickRegister(game.id);
+  };
+
+  const onClickRegisterCancel = () => {
+    handleClickRegisterCancel(game.registerId);
+  };
+
+  const onClickParticipateCancel = () => {
+    handleClickParticipateCancel(game.registerId);
   };
 
   if (!post || !game || !members
@@ -56,8 +76,20 @@ export default function Post({
       <PostMemberInformation
         members={members}
       />
-      {/* TODO: post.isAuthor를 기준으로
-          PostRegisterButton, PostApplicants? 컴포넌트 구분 */}
+      {post.isAuthor ? (
+        <PostGameApplicantsInformation
+          applicants={applicants}
+          acceptRegister={acceptRegister}
+          rejectRegister={rejectRegister}
+        />
+      ) : (
+        <PostRegisterButton
+          registerStatus={game.registerStatus}
+          onClickRegister={onClickRegister}
+          onClickRegisterCancel={onClickRegisterCancel}
+          onClickParticipateCancel={onClickParticipateCancel}
+        />
+      )}
     </Container>
   );
 }

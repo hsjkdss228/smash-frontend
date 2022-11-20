@@ -21,25 +21,29 @@ const postTestServer = setupServer(
             {
               id: 1,
               hits: 334,
+              isAuthor: false,
               game: {
                 type: '축구',
                 date: '2022년 10월 19일 13:00~16:00',
                 place: '대전월드컵경기장',
                 currentMemberCount: 16,
                 targetMemberCount: 22,
-                isRegistered: false,
+                registerId: -1,
+                registerStatus: 'none',
               },
             },
             {
               id: 2,
               hits: 10,
+              isAuthor: false,
               game: {
                 type: '농구',
                 date: '2022년 10월 20일 15:00~17:00',
                 place: '잠실실내체육관',
                 currentMemberCount: 2,
                 targetMemberCount: 12,
-                isRegistered: true,
+                registerId: 10,
+                registerStatus: 'accepted',
               },
             },
           ],
@@ -210,7 +214,8 @@ const postTestServer = setupServer(
             place: '서울숲탁구클럽',
             currentMemberCount: 2,
             targetMemberCount: 4,
-            isRegistered: true,
+            registerId: -1,
+            registerStatus: 'none',
           }),
         );
       }
@@ -246,6 +251,60 @@ const postTestServer = setupServer(
               },
             ],
           }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // fetchApplicants
+  rest.get(
+    `${apiBaseUrl}/registers/applicants/games/:gameId`,
+    async (request, response, context) => {
+      const { gameId } = await request.params;
+
+      if (gameId === '2') {
+        return response(
+          context.status(200),
+          context.json({
+            applicants: [
+              {
+                id: 1,
+                name: '신청자 1',
+                gender: '여성',
+                phoneNumber: '010-1357-1357',
+              },
+              {
+                id: 2,
+                name: '신청자 2',
+                gender: '남성',
+                phoneNumber: '010-2468-2468',
+              },
+            ],
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // change register state methods
+  rest.patch(
+    `${apiBaseUrl}/registers/:registerId`,
+    async (request, response, context) => {
+      const status = await request.url.searchParams.get('status');
+
+      if (status === 'canceled'
+        || status === 'accepted'
+        || status === 'rejected') {
+        return response(
+          context.status(204),
         );
       }
 
