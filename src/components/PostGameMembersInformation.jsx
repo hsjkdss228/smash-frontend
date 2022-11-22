@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Container = styled.article`
-  
+  margin-block: 1em;
 `;
 
 const Member = styled.li`

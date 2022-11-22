@@ -12,8 +12,23 @@ module.exports = function () {
     clearMembers() {
       this.amOnPage(`${backdoorBaseUrl}/clear-members`);
     },
-    setupMembers() {
-      this.amOnPage(`${backdoorBaseUrl}/setup-members`);
+    setupMembersPosts() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-posts`);
+    },
+    setupMembersNotFinished() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-not-finished`);
+    },
+    setupMembersFinished() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-finished`);
+    },
+    setupMembersWhenRegistered() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-registered`);
+    },
+    setupMembersWithApplicants() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-with-applicants`);
+    },
+    setupMembersWithoutApplicants() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-members-without-applicants`);
     },
 
     // Operations
@@ -21,6 +36,10 @@ module.exports = function () {
       this.amOnPage('/');
       this.fillField('User Id:', userId);
       this.click('로그인');
+    },
+    logout() {
+      this.amOnPage('/');
+      this.click('로그아웃');
     },
 
     // Seeing UI Components

@@ -21,6 +21,7 @@ export default function PostsRegisterButton({
   if (registerStatus === 'none') {
     return (
       <button
+        id={`posts-register-button-${gameId}`}
         type="button"
         onClick={() => handleClickRegister(gameId)}
       >
@@ -32,6 +33,7 @@ export default function PostsRegisterButton({
   if (registerStatus === 'processing') {
     return (
       <button
+        id={`posts-register-button-${gameId}`}
         type="button"
         onClick={() => handleClickCancelRegister(registerId)}
       >
@@ -43,6 +45,7 @@ export default function PostsRegisterButton({
   // if (registerStatus === 'accepted')
   return (
     <button
+      id={`posts-register-button-${gameId}`}
       type="button"
       onClick={() => handleClickCancelParticipate(registerId)}
     >

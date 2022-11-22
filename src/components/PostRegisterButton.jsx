@@ -4,8 +4,6 @@ export default function PostRegisterButton({
   onClickRegisterCancel,
   onClickParticipateCancel,
 }) {
-  console.log(registerStatus);
-
   if (registerStatus === 'none') {
     return (
       <button
