@@ -2,16 +2,13 @@ import styled from 'styled-components';
 
 import PostsContent from './PostsContent';
 import PostsRegisterButton from './PostsRegisterButton';
+import BackwardButton from './ui/BackwardButton';
 
 const Container = styled.article`
-  margin-inline: 10em;
+  padding-block: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Backward = styled.button`
-  
 `;
 
 const Thumbnails = styled.ul`
@@ -19,7 +16,10 @@ const Thumbnails = styled.ul`
 `;
 
 const Thumbnail = styled.li`
-  margin-block: 3em;
+  margin: 1em 0 3em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 `;
 
 export default function Posts({
@@ -54,12 +54,12 @@ export default function Posts({
 
   return (
     <Container>
-      <Backward
+      <BackwardButton
         type="button"
         onClick={onClickBackward}
       >
         ⬅️
-      </Backward>
+      </BackwardButton>
       <Thumbnails>
         {posts.map((post) => (
           <Thumbnail key={post.id}>

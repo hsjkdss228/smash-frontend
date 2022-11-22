@@ -18,16 +18,19 @@ import WritePage from './pages/WritePage';
 import CreateClubPage from './pages/CreateClubPage';
 import ClubsPage from './pages/ClubsPage';
 import BottomNavigator from './components/BottomNavigator';
+import GlobalStyle from './styles/GlobalStyle';
 
 const Container = styled.div`
-  max-width: 768px;
-  min-height: 1024px;
+  height: 100vh;
+  padding: 60px calc((100% - 500px) / 2);
+  background-color: #eeb65d;
 `;
 
 const Wrapper = styled.div`
-  margin: 4em auto;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  overflow: scroll;
+  background-color: #F0F2F5;
 `;
 
 export default function App() {
@@ -40,22 +43,25 @@ export default function App() {
   }, [accessToken]);
 
   return (
-    <Container>
+    <>
       <Reset />
+      <GlobalStyle />
       <Header />
-      <BottomNavigator />
-      <Wrapper>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/posts/list" element={<PostsPage />} />
-          <Route path="/posts/:postId" element={<PostPage />} />
+      <Container>
+        <Wrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/posts/list" element={<PostsPage />} />
+            <Route path="/posts/:postId" element={<PostPage />} />
 
-          <Route path="/posts/map" element={<PostListMapPage />} />
-          <Route path="/write" element={<WritePage />} />
-          <Route path="/clubs" element={<ClubsPage />} />
-          <Route path="/clubs/create" element={<CreateClubPage />} />
-        </Routes>
-      </Wrapper>
-    </Container>
+            <Route path="/posts/map" element={<PostListMapPage />} />
+            <Route path="/write" element={<WritePage />} />
+            <Route path="/clubs" element={<ClubsPage />} />
+            <Route path="/clubs/create" element={<CreateClubPage />} />
+          </Routes>
+        </Wrapper>
+      </Container>
+      <BottomNavigator />
+    </>
   );
 }

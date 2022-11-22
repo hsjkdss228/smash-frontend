@@ -1,3 +1,21 @@
+import styled from 'styled-components';
+
+const RegisterButtonSection = styled.div`
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-right: .7em;
+  }
+`;
+
+const Button = styled.button`
+  font-size: 1em;
+  padding: .3em;
+  border: 1px solid #000;
+`;
+
 export default function PostRegisterButton({
   registerStatus,
   onClickRegister,
@@ -6,33 +24,39 @@ export default function PostRegisterButton({
 }) {
   if (registerStatus === 'none') {
     return (
-      <button
-        type="button"
-        onClick={onClickRegister}
-      >
-        신청
-      </button>
+      <RegisterButtonSection>
+        <Button
+          type="button"
+          onClick={onClickRegister}
+        >
+          신청
+        </Button>
+      </RegisterButtonSection>
     );
   }
 
   if (registerStatus === 'processing') {
     return (
-      <button
-        type="button"
-        onClick={onClickRegisterCancel}
-      >
-        신청취소
-      </button>
+      <RegisterButtonSection>
+        <Button
+          type="button"
+          onClick={onClickRegisterCancel}
+        >
+          신청취소
+        </Button>
+      </RegisterButtonSection>
     );
   }
 
   // if (registerStatus === 'accepted')
   return (
-    <button
-      type="button"
-      onClick={onClickParticipateCancel}
-    >
-      참가취소
-    </button>
+    <RegisterButtonSection>
+      <Button
+        type="button"
+        onClick={onClickParticipateCancel}
+      >
+        참가취소
+      </Button>
+    </RegisterButtonSection>
   );
 }

@@ -6,15 +6,18 @@ import useUserStore from '../hooks/useUserStore';
 const Container = styled.header`
   position: fixed;
   top: 0;
-  height: 4em;
+  height: 60px;
   width: 100%;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 2fr 4fr;
   gap: 50%;
+  border-bottom: 1px solid black;
+  background-color: #FFF;
 `;
 
 const Title = styled.h1`
+  font-size: 1.5em;
   display: flex;
   justify-content: flex-end;
   align-items: center;
