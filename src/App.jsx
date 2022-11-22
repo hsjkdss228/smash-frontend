@@ -6,6 +6,7 @@ import { Reset } from 'styled-reset';
 import { useLocalStorage } from 'usehooks-ts';
 import { useEffect } from 'react';
 import { postApiService } from './services/PostApiService';
+import { gameApiService } from './services/GameApiService';
 import { registerApiService } from './services/RegisterApiService';
 
 import Header from './components/Header';
@@ -34,6 +35,7 @@ export default function App() {
 
   useEffect(() => {
     postApiService.setAccessToken(accessToken);
+    gameApiService.setAccessToken(accessToken);
     registerApiService.setAccessToken(accessToken);
   }, [accessToken]);
 

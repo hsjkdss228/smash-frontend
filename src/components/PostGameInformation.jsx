@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Container = styled.section`
-  
+  margin-block: 1em;
 `;
 
 export default function PostGameInformation({

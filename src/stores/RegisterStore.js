@@ -33,9 +33,6 @@ export default class RegisterStore extends Store {
     try {
       const data = await registerApiService.fetchApplicants(gameId);
       this.applicants = data.applicants;
-      console.log(data);
-      console.log('RegisterStore After fetchApplicants');
-      console.log(this.applicants);
       this.publish();
     } catch (error) {
       const { errorMessage } = error.response.data;

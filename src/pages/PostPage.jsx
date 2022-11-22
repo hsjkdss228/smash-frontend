@@ -28,7 +28,6 @@ export default function PostPage() {
       await registerStore.fetchMembers(gameId);
     }
     if (gameId && isAuthor) {
-      console.log('접속자는 작성자이다.');
       await registerStore.fetchMembers(gameId);
       await registerStore.fetchApplicants(gameId);
     }
