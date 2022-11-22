@@ -2,19 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.article`
-  height: 100vh;
+  
 `;
 
 const Menus = styled.section`
-  height: 100%;
+  padding-block: 30px;
   display: grid;
-  grid-template-rows: 1fr 2fr 1.5fr 1.5fr 2fr 1fr;
-`;
-
-const NoticeSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-template-rows: 1fr 1fr;
 `;
 
 const PostSection = styled.section`
@@ -29,9 +23,28 @@ const LeftPostSection = styled.section`
   justify-content: center;
 `;
 
+const RecommendedPosts = styled.div`
+  padding: 2em;
+`;
+
+const PostsButton = styled.button`
+  font-size: 1.5em;
+  padding: 2em;
+`;
+
 const RightPostSection = styled.section`
   display: flex;
   flex-direction: column;
+`;
+
+const PostsMapButton = styled.button`
+  font-size: 1.2em;
+  padding: 2em;
+`;
+
+const CreatePostButton = styled.button`
+  font-size: 1.2em;
+  padding: 2em;
 `;
 
 const MyPostSection = styled.section`
@@ -39,23 +52,31 @@ const MyPostSection = styled.section`
   justify-content: center;
 `;
 
-const CreateClubSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const EnrolledPostsButton = styled.button`
+  padding: 2em;
 `;
 
-const BestClubsSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const MyPostsButton = styled.button`
+  padding: 2em;
 `;
 
-const ClubsSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const CreateClubSection = styled.section`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+// const BestClubsSection = styled.section`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+// const ClubsSection = styled.section`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -67,53 +88,51 @@ export default function HomePage() {
   return (
     <Container>
       <Menus>
-        <NoticeSection>
-          <p>
-            공지사항 표출 화면이 나타날 자리
-          </p>
-        </NoticeSection>
         <PostSection>
           <LeftPostSection>
-            <p>
-              긴급 모집 글이 리스트업될 자리
-            </p>
-            <button
+            <RecommendedPosts>
+              <p>마감 임박 모집 글</p>
+              <p>Comming soon...</p>
+            </RecommendedPosts>
+            <PostsButton
               type="button"
               onClick={() => handleClickButtons('posts/list')}
             >
               운동 찾기
-            </button>
+            </PostsButton>
           </LeftPostSection>
           <RightPostSection>
-            <button
+            <PostsMapButton
               type="button"
               onClick={() => handleClickButtons('posts/map')}
             >
               지도에서 운동 찾기
-            </button>
-            <button
+            </PostsMapButton>
+            <CreatePostButton
               type="button"
               onClick={() => handleClickButtons('write')}
             >
               운동 모집하기
-            </button>
+            </CreatePostButton>
           </RightPostSection>
         </PostSection>
         <MyPostSection>
-          <button
+          <EnrolledPostsButton
             type="button"
             onClick={() => handleClickButtons('posts/list/enroll')}
           >
-            내가 참가하는 운동 보기
-          </button>
-          <button
+            <p>내가 참가하는 운동 보기</p>
+            <p>Comming Soon...</p>
+          </EnrolledPostsButton>
+          <MyPostsButton
             type="button"
             onClick={() => handleClickButtons('posts/list/me')}
           >
-            내가 모집하는 운동 보기
-          </button>
+            <p>내가 모집하는 운동 보기</p>
+            <p>Comming Soon...</p>
+          </MyPostsButton>
         </MyPostSection>
-        <CreateClubSection>
+        {/* <CreateClubSection>
           <button
             type="button"
             onClick={() => handleClickButtons('clubs/create')}
@@ -133,7 +152,7 @@ export default function HomePage() {
           >
             클럽 보러 가기
           </button>
-        </ClubsSection>
+        </ClubsSection> */}
       </Menus>
     </Container>
   );

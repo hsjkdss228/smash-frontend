@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 import PostGameInformation from './PostGameInformation';
-import PostInformation from './PostInformation';
-import PostMemberInformation from './PostGameMembersInformation';
+import PostGameMemberInformation from './PostGameMembersInformation';
 import PostRegisterButton from './PostRegisterButton';
 import PostGameApplicantsInformation from './PostGameApplicantsInformation';
+import BackwardButton from './ui/BackwardButton';
+import PostAuthorInformation from './PostAuthorInformation';
+import PostDetail from './PostDetail';
 
 const Container = styled.article`
-  margin-inline: 10em;
+  padding: 30px 0 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const Backward = styled.button`
+const PostInformation = styled.div`
   
 `;
 
@@ -54,42 +56,46 @@ export default function Post({
 
   return (
     <Container>
-      <Backward
+      <BackwardButton
         type="button"
         onClick={onClickBackward}
       >
         ⬅️
-      </Backward>
-      <PostInformation
-        hits={post.hits}
-        authorName={post.authorName}
-        authorPhoneNumber={post.authorPhoneNumber}
-        detail={post.detail}
-      />
-      <PostGameInformation
-        type={game.type}
-        date={game.date}
-        place={game.place}
-        currentMemberCount={game.currentMemberCount}
-        targetMemberCount={game.targetMemberCount}
-      />
-      <PostMemberInformation
-        members={members}
-      />
-      {post.isAuthor ? (
-        <PostGameApplicantsInformation
-          applicants={applicants}
-          acceptRegister={acceptRegister}
-          rejectRegister={rejectRegister}
+      </BackwardButton>
+      <PostInformation>
+        <PostGameInformation
+          type={game.type}
+          date={game.date}
+          place={game.place}
+          currentMemberCount={game.currentMemberCount}
+          targetMemberCount={game.targetMemberCount}
+          hits={post.hits}
         />
-      ) : (
-        <PostRegisterButton
-          registerStatus={game.registerStatus}
-          onClickRegister={onClickRegister}
-          onClickRegisterCancel={onClickRegisterCancel}
-          onClickParticipateCancel={onClickParticipateCancel}
+        <PostAuthorInformation
+          authorName={post.authorName}
+          authorPhoneNumber={post.authorPhoneNumber}
         />
-      )}
+        <PostDetail
+          detail={post.detail}
+        />
+        <PostGameMemberInformation
+          members={members}
+        />
+        {post.isAuthor ? (
+          <PostGameApplicantsInformation
+            applicants={applicants}
+            acceptRegister={acceptRegister}
+            rejectRegister={rejectRegister}
+          />
+        ) : (
+          <PostRegisterButton
+            registerStatus={game.registerStatus}
+            onClickRegister={onClickRegister}
+            onClickRegisterCancel={onClickRegisterCancel}
+            onClickParticipateCancel={onClickParticipateCancel}
+          />
+        )}
+      </PostInformation>
     </Container>
   );
 }

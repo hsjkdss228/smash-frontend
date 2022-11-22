@@ -44,7 +44,7 @@ describe('PostsContent', () => {
         targetMemberCount,
       });
 
-      screen.getByText('조회수: 100');
+      screen.getByText('100 hits');
       screen.getByText('야구');
       screen.getByText(/2022년 10월 19일 08:00~11:00/);
       screen.getByText(/잠실야구장/);

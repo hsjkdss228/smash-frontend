@@ -4,11 +4,13 @@ import styled from 'styled-components';
 const Container = styled.nav`
   position: fixed;
   bottom: 0;
-  height: 4em;
+  height: 60px;
   width: 100%;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  border-top: 1px solid #000;
+  background-color: #FFF;
 `;
 
 export default function BottomNavigator() {
