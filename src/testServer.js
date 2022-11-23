@@ -130,9 +130,9 @@ const postTestServer = setupServer(
   rest.post(
     `${apiBaseUrl}/session`,
     async (request, response, context) => {
-      const { userId } = await request.json();
+      const { identifier, password } = await request.json();
 
-      if (userId === 10) {
+      if (identifier === 'hsjkdss228' && password === 'Password!1') {
         return response(
           context.status(201),
           context.json({
@@ -141,20 +141,38 @@ const postTestServer = setupServer(
         );
       }
 
-      if (userId === '') {
+      if (identifier === '' && password === 'Password!1') {
         return response(
           context.status(400),
           context.json({
-            errorMessage: 'user Id를 입력해주세요. (200)',
+            errorMessage: '아이디를 입력해주세요.',
           }),
         );
       }
 
-      if (userId === 1234) {
+      if (identifier === 'notexistingid12' && password === 'Password!1') {
         return response(
           context.status(400),
           context.json({
-            errorMessage: 'user Id 인코딩 과정에서 문제가 발생했습니다. (202)',
+            errorMessage: '존재하지 않는 아이디입니다.',
+          }),
+        );
+      }
+
+      if (identifier === 'hsjkdss228' && password === '') {
+        return response(
+          context.status(400),
+          context.json({
+            errorMessage: '비밀번호를 입력해주세요.',
+          }),
+        );
+      }
+
+      if (identifier === 'hsjkdss228' && password === 'wrongPassword!1') {
+        return response(
+          context.status(400),
+          context.json({
+            errorMessage: '비밀번호가 일치하지 않습니다.',
           }),
         );
       }
@@ -162,7 +180,7 @@ const postTestServer = setupServer(
       return response(
         context.status(400),
         context.json({
-          errorMessage: '존재하지 않는 user Id 입니다. (201)',
+          errorMessage: '알 수 없는 에러입니다.',
         }),
       );
     },

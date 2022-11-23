@@ -7,9 +7,9 @@ import config from '../config';
 const { apiBaseUrl } = config;
 
 export default class UserApiService {
-  async postSession(userId) {
+  async postSession({ identifier, password }) {
     const url = `${apiBaseUrl}/session`;
-    const { data } = await axios.post(url, { userId });
+    const { data } = await axios.post(url, { identifier, password });
     return data;
   }
 }

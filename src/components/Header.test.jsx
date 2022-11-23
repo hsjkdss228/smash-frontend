@@ -3,23 +3,20 @@ import {
 } from '@testing-library/react';
 
 import context from 'jest-plugin-context';
-import { MemoryRouter } from 'react-router-dom';
 
 import Header from './Header';
 
-const changeUserId = jest.fn();
-let login;
-jest.mock('../hooks/useUserStore', () => () => ({
-  changeUserId,
-  login,
+const navigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  useNavigate: () => (
+    navigate
+  ),
 }));
 
 describe('Header', () => {
   const renderHeader = () => {
     render((
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
+      <Header />
     ));
   };
 
@@ -31,41 +28,21 @@ describe('Header', () => {
     });
 
     context('로그인이 되어있지 않은 경우', () => {
-      it('User 식별자 입력란, 로그인 버튼 출력', () => {
+      it('로그인 페이지 이동 링크 버튼 출력', () => {
         localStorage.setItem('accessToken', '');
         renderHeader();
 
-        screen.getByLabelText('User Id:');
-        screen.getByText('로그인');
-      });
-
-      context('값을 입력할 경우', () => {
-        it('입력한 user Id 값을 변경하는 UserStore의 changeUserId 함수 호출', async () => {
-          localStorage.setItem('accessToken', '');
-          renderHeader();
-
-          // await act(() => {
-          fireEvent.change(screen.getByLabelText(/User Id/), {
-            target: { value: 2 },
-          });
-          expect(changeUserId).toBeCalledWith(2);
-          // });
-        });
+        screen.getByText('LOGIN');
       });
 
       context('로그인 버튼을 누를 경우', () => {
-        const expectedAccessToken = 'VALID ACCESS TOKEN';
-
-        it('accessToken을 받아오기 위한 UserStore의 login 함수 호출', async () => {
-          login = jest.fn(() => expectedAccessToken);
+        it('로그인 페이지로 이동하는 navigate 함수 호출', async () => {
           localStorage.setItem('accessToken', '');
           renderHeader();
 
-          // await act(() => {
-          fireEvent.click(screen.getByText('로그인'));
+          fireEvent.click(screen.getByText('LOGIN'));
 
-          expect(login).toBeCalled();
-          // });
+          expect(navigate).toBeCalledWith('/login');
         });
       });
     });
@@ -83,11 +60,9 @@ describe('Header', () => {
           localStorage.setItem('accessToken', JSON.stringify('TOKEN'));
           renderHeader();
 
-          // await act(() => {
           fireEvent.click(screen.getByText('로그아웃'));
           const accessToken = localStorage.getItem('accessToken');
           expect(JSON.parse(accessToken)).toBe('');
-          // });
         });
       });
     });
