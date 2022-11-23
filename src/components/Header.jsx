@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
-import useUserStore from '../hooks/useUserStore';
 
 const Container = styled.header`
   position: fixed;
@@ -33,27 +32,13 @@ export default function Header() {
 
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
-  const userStore = useUserStore();
-
-  const { userId } = userStore;
-
-  const handleChangeUserId = (event) => {
-    const value = Number(event.target.value);
-    userStore.changeUserId(value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const verifiedAccessToken = await userStore.login();
-    if (verifiedAccessToken) {
-      setAccessToken(verifiedAccessToken);
-      userStore.changeUserId('');
-    }
-  };
-
   const handleClickLogout = () => {
     setAccessToken('');
     navigate('/');
+  };
+
+  const navigateToLoginPage = () => {
+    navigate('/login');
   };
 
   return (
@@ -68,19 +53,12 @@ export default function Header() {
             로그아웃
           </button>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="userId">User Id:</label>
-            <input
-              id="userId"
-              value={userId}
-              onChange={(event) => handleChangeUserId(event)}
-            />
-            <button
-              type="submit"
-            >
-              로그인
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={navigateToLoginPage}
+          >
+            LOGIN
+          </button>
         )}
       </Side>
     </Container>

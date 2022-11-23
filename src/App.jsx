@@ -15,10 +15,9 @@ import PostsPage from './pages/PostsPage';
 import PostListMapPage from './pages/PostListMapPage';
 import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
-import CreateClubPage from './pages/CreateClubPage';
-import ClubsPage from './pages/ClubsPage';
 import BottomNavigator from './components/BottomNavigator';
 import GlobalStyle from './styles/GlobalStyle';
+import LoginPage from './pages/LoginPage';
 
 const Container = styled.div`
   height: 100vh;
@@ -53,11 +52,10 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/posts/list" element={<PostsPage />} />
             <Route path="/posts/:postId" element={<PostPage />} />
+            <Route path="/login" element={<LoginPage />} />
 
-            <Route path="/posts/map" element={<PostListMapPage />} />
             <Route path="/write" element={<WritePage />} />
-            <Route path="/clubs" element={<ClubsPage />} />
-            <Route path="/clubs/create" element={<CreateClubPage />} />
+            <Route path="/posts/map" element={<PostListMapPage />} />
           </Routes>
         </Wrapper>
       </Container>
