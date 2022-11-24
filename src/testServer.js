@@ -331,6 +331,42 @@ const postTestServer = setupServer(
       );
     },
   ),
+
+  // createPost
+  rest.post(
+    `${apiBaseUrl}/posts`,
+    async (request, response, context) => {
+      const {
+        gameExercise,
+        gameDate,
+        gameTime,
+        gamePlace,
+        gameTargetMemberCount,
+        postDetail,
+      } = await request.json();
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+
+      if (gameExercise === '스케이트'
+        && gameDate === '2022년 12월 31일'
+        && gameTime === '10,00,12,30'
+        && gamePlace === '롯데월드 아이스링크'
+        && gameTargetMemberCount === '12'
+        && postDetail === '스케이트 입문자 모집!'
+        && accessToken === 'userId 1') {
+        return response(
+          context.status(201),
+          context.json({
+            postId: 1,
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
 );
 
 export default postTestServer;

@@ -14,7 +14,7 @@ import HomePage from './pages/HomePage';
 import PostsPage from './pages/PostsPage';
 import PostListMapPage from './pages/PostListMapPage';
 import PostPage from './pages/PostPage';
-import WritePage from './pages/WritePage';
+import PostFormPage from './pages/PostFormPage';
 import BottomNavigator from './components/BottomNavigator';
 import GlobalStyle from './styles/GlobalStyle';
 import LoginPage from './pages/LoginPage';
@@ -53,8 +53,7 @@ export default function App() {
             <Route path="/posts/list" element={<PostsPage />} />
             <Route path="/posts/:postId" element={<PostPage />} />
             <Route path="/login" element={<LoginPage />} />
-
-            <Route path="/write" element={<WritePage />} />
+            <Route path="/write" element={<PostFormPage />} />
             <Route path="/posts/map" element={<PostListMapPage />} />
           </Routes>
         </Wrapper>
