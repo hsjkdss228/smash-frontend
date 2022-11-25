@@ -72,7 +72,7 @@ describe('PostForm', () => {
     context('각 입력 폼에 내용을 입력하면', () => {
       const dataWithSpecificDate = {
         gameExercise: '',
-        gameDate: new Date('2022-11-24T00:00:00.000Z'),
+        gameDate: new Date('2022-11-23T00:00:00.000Z'),
         gamePlace: '',
         gameTargetMemberCount: 0,
         postDetail: '',
@@ -89,9 +89,10 @@ describe('PostForm', () => {
         expect(changeGameExercise).toBeCalledWith('야구');
 
         fireEvent.change(screen.getByLabelText('날짜를 선택하세요:'), {
-          target: { value: '2022년 11월 25일' },
+          target: { value: '2022년 11월 24일' },
         });
-        expect(changeGameDate).toBeCalled();
+        expect(changeGameDate)
+          .toBeCalledWith(new Date('2022-11-24T00:00:00.000Z'));
 
         fireEvent.change(screen.getByLabelText(/start hour/), {
           target: { value: '05' },

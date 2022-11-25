@@ -8,15 +8,25 @@ describe('PostFormStore', () => {
 
   // TODO: change 계열 메서드 호출 시 상태 변경 검증
 
-  context('게시글 생성 API에 상태로 저장하고 있는 데이터를 전달해 호출하면', () => {
-    beforeEach(() => {
-      postFormStore = new PostFormStore();
-    });
+  beforeEach(() => {
+    postFormStore = new PostFormStore();
+  });
 
+  context('상태 변경 함수가 호출되면', () => {
+    const date = new Date('2022-11-26T00:00:00.000Z');
+    it('받아온 값을 상태에 반영 후 publish', () => {
+      postFormStore.changeGameDate(date);
+
+      const { gameDate } = postFormStore;
+      expect(gameDate).toStrictEqual(new Date('2022-11-26T00:00:00.000Z'));
+    });
+  });
+
+  context('게시글 생성 API에 상태로 저장하고 있는 데이터를 전달해 호출하면', () => {
     it('생성된 게시글 id를 반환해 반환', async () => {
       postApiService.setAccessToken('userId 1');
       postFormStore.gameExercise = '스케이트';
-      postFormStore.gameDate = '2022년 12월 31일';
+      postFormStore.gameDate = new Date('2022-12-31T00:00:00.000Z');
       postFormStore.gameStartHour = '10';
       postFormStore.gameStartMinute = '00';
       postFormStore.gameEndHour = '12';

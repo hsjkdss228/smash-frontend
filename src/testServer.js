@@ -348,7 +348,7 @@ const postTestServer = setupServer(
         .substring('bearer '.length);
 
       if (gameExercise === '스케이트'
-        && gameDate === '2022년 12월 31일'
+        && gameDate === new Date('2022-12-31T00:00:00.000Z').toISOString()
         && gameTime === '10,00,12,30'
         && gamePlace === '롯데월드 아이스링크'
         && gameTargetMemberCount === '12'

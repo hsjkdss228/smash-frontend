@@ -127,12 +127,14 @@ export default function PostForm({
             onChange={handleChangeGameStartHour}
             type="start"
             time="hour"
+            value={data.gameStartHour}
           />
           <SelectTime
             id="input-game-start-minute"
             onChange={handleChangeGameStartMinute}
             type="start"
             time="minute"
+            value={data.gameStartMinute}
           />
           <p>부터</p>
           <SelectTime
@@ -140,12 +142,14 @@ export default function PostForm({
             onChange={handleChangeGameEndHour}
             type="end"
             time="hour"
+            value={data.gameEndHour}
           />
           <SelectTime
             id="input-game-end-minute"
             onChange={handleChangeGameEndMinute}
             type="end"
             time="minute"
+            value={data.gameEndMinute}
           />
           <p>까지</p>
         </div>

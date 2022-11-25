@@ -44,6 +44,7 @@ export default class PostApiService {
     postDetail,
   }) {
     const url = `${apiBaseUrl}/posts`;
+    console.log(gameTime);
     const { data } = await axios.post(url, {
       gameExercise,
       gameDate,

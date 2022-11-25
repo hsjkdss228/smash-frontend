@@ -60,7 +60,7 @@ describe('PostFormPage', () => {
   context('게시글 작성하기 페이지에 접속해 각 입력 폼의 내용을 수정하면', () => {
     beforeEach(() => {
       gameExercise = '';
-      gameDate = new Date();
+      gameDate = new Date('2022-11-23T00:00:00.000Z');
       gamePlace = '';
       gameTargetMemberCount = 0;
       postDetail = '';
@@ -75,9 +75,10 @@ describe('PostFormPage', () => {
       expect(changeGameExercise).toBeCalledWith('야구');
 
       fireEvent.change(screen.getByLabelText('날짜를 선택하세요:'), {
-        target: { value: '2022년 11월 25일' },
+        target: { value: '2022년 11월 24일' },
       });
-      expect(changeGameDate).toBeCalled();
+      expect(changeGameDate)
+        .toBeCalledWith(new Date('2022-11-24T00:00:00.000Z'));
 
       fireEvent.change(screen.getByLabelText(/start hour/), {
         target: { value: '05' },

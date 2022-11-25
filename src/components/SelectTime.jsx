@@ -3,6 +3,7 @@ export default function SelectTime({
   onChange,
   type,
   time,
+  value,
 }) {
   return (
     <div>
@@ -13,10 +14,11 @@ export default function SelectTime({
       </label>
       <select
         id={id}
+        value={value}
         onChange={onChange}
       >
         <option
-          defaultValue
+          value=""
           disabled
           hidden
         >
@@ -24,23 +26,29 @@ export default function SelectTime({
         </option>
         {time === 'hour' ? (
           Array(12).fill(0).map((_, index) => {
-            const value = index + 1 < 10
+            const number = index + 1 < 10
               ? `0${index + 1}`
               : (index + 1).toString();
             return ((
-              <option key={value}>
-                {value}
+              <option
+                key={number}
+                value={number}
+              >
+                {number}
               </option>
             ));
           })
         ) : (
           Array(60).fill(0).map((_, index) => {
-            const value = index < 10
+            const number = index < 10
               ? `0${index}`
               : index.toString();
             return ((
-              <option key={value}>
-                {value}
+              <option
+                key={number}
+                value={number}
+              >
+                {number}
               </option>
             ));
           })
