@@ -71,7 +71,7 @@ export default class PostFormStore extends Store {
       const gameTime = `${this.gameStartHour},${this.gameStartMinute},${this.gameEndHour},${this.gameEndMinute}`;
       const data = await postApiService.createPost({
         gameExercise: this.gameExercise,
-        gameDate: this.gameDate,
+        gameDate: this.gameDate.toISOString(),
         gameTime,
         gamePlace: this.gamePlace,
         gameTargetMemberCount: this.gameTargetMemberCount,

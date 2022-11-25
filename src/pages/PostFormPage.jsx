@@ -9,6 +9,10 @@ export default function PostFormPage() {
 
   const {
     gameExercise,
+    gameStartHour,
+    gameStartMinute,
+    gameEndHour,
+    gameEndMinute,
     gameDate,
     gamePlace,
     gameTargetMemberCount,
@@ -17,6 +21,10 @@ export default function PostFormPage() {
 
   const data = {
     gameExercise,
+    gameStartHour,
+    gameStartMinute,
+    gameEndHour,
+    gameEndMinute,
     gameDate,
     gamePlace,
     gameTargetMemberCount,
