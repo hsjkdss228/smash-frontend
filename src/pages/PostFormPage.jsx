@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostForm from '../components/PostForm';
 import usePostFormStore from '../hooks/usePostFormStore';
@@ -6,6 +7,10 @@ export default function PostFormPage() {
   const navigate = useNavigate();
 
   const postFormStore = usePostFormStore();
+
+  useEffect(() => {
+    postFormStore.clearStates();
+  }, []);
 
   const {
     gameExercise,
@@ -17,6 +22,7 @@ export default function PostFormPage() {
     gamePlace,
     gameTargetMemberCount,
     postDetail,
+    errorCodeAndMessages,
   } = postFormStore;
 
   const data = {
@@ -32,6 +38,7 @@ export default function PostFormPage() {
   };
 
   const navigateToBackward = () => {
+    postFormStore.clearStates();
     navigate(-1);
   };
 
@@ -93,6 +100,7 @@ export default function PostFormPage() {
       changeGameTargetMemberCount={changeGameTargetMemberCount}
       changePostDetail={changePostDetail}
       createPost={createPost}
+      errors={errorCodeAndMessages}
     />
   );
 }

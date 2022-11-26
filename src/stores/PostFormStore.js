@@ -18,7 +18,7 @@ export default class PostFormStore extends Store {
     this.gameTargetMemberCount = '';
     this.postDetail = '';
 
-    this.createPostErrorMessage = '';
+    this.errorCodeAndMessages = {};
   }
 
   changeGameExercise(exercise) {
@@ -71,7 +71,7 @@ export default class PostFormStore extends Store {
       const gameTime = `${this.gameStartHour},${this.gameStartMinute},${this.gameEndHour},${this.gameEndMinute}`;
       const data = await postApiService.createPost({
         gameExercise: this.gameExercise,
-        gameDate: this.gameDate.toISOString(),
+        gameDate: this.gameDate,
         gameTime,
         gamePlace: this.gamePlace,
         gameTargetMemberCount: this.gameTargetMemberCount,
@@ -79,8 +79,9 @@ export default class PostFormStore extends Store {
       });
       return data.postId;
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.createPostErrorMessage = errorMessage;
+      const { errorCodeAndMessages } = error.response.data;
+      this.errorCodeAndMessages = errorCodeAndMessages;
+      this.publish();
       return '';
     }
   }
@@ -95,6 +96,9 @@ export default class PostFormStore extends Store {
     this.gamePlace = '';
     this.gameTargetMemberCount = '';
     this.postDetail = '';
+    this.errorCodeAndMessages = {};
+
+    this.publish();
   }
 }
 

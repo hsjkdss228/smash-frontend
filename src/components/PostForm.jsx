@@ -33,6 +33,7 @@ export default function PostForm({
   changeGameTargetMemberCount,
   changePostDetail,
   createPost,
+  errors,
 }) {
   const handleClickBackward = () => {
     navigateToBackward();
@@ -98,7 +99,7 @@ export default function PostForm({
       <Form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="input-game-exercise">
-            종목을 입력하세요:
+            종목
           </label>
           <input
             id="input-game-exercise"
@@ -107,9 +108,12 @@ export default function PostForm({
             onChange={(event) => handleChangeGameExercise(event)}
           />
         </div>
+        {errors['100'] ? (
+          <p>{errors['100']}</p>
+        ) : null}
         <div>
           <label htmlFor="input-game-date">
-            날짜를 선택하세요:
+            날짜
           </label>
           <DatePicker
             id="input-game-date"
@@ -117,10 +121,13 @@ export default function PostForm({
             onChange={(date) => handleChangeGameDate(date)}
             dateFormat="yyyy년 MM월 dd일"
           />
+          {errors['101'] ? (
+            <p>{errors['101']}</p>
+          ) : null}
         </div>
         <div>
           <p>
-            시간을 선택하세요:
+            시간
           </p>
           <SelectTime
             id="input-game-start-hour"
@@ -152,10 +159,16 @@ export default function PostForm({
             value={data.gameEndMinute}
           />
           <p>까지</p>
+          {errors['102'] ? (
+            <p>{errors['102']}</p>
+          ) : null}
+          {errors['103'] ? (
+            <p>{errors['103']}</p>
+          ) : null}
         </div>
         <div>
           <label htmlFor="input-game-place">
-            장소를 입력하세요:
+            장소
           </label>
           <input
             id="input-game-place"
@@ -163,10 +176,13 @@ export default function PostForm({
             value={data.gamePlace}
             onChange={handleChangeGamePlace}
           />
+          {errors['104'] ? (
+            <p>{errors['104']}</p>
+          ) : null}
         </div>
         <div>
           <label htmlFor="input-game-target-member-count">
-            모집할 인원 수를 입력하세요:
+            모집 인원
           </label>
           <input
             id="input-game-target-member-count"
@@ -175,15 +191,21 @@ export default function PostForm({
             onChange={handleChangeGameTargetMemberCount}
           />
         </div>
+        {errors['105'] ? (
+          <p>{errors['105']}</p>
+        ) : null}
         <div>
           <label htmlFor="input-post-detail">
-            상세 내용을 입력하세요:
+            상세 내용
           </label>
           <textarea
             id="input-post-detail"
             value={data.postDetail}
             onChange={handleChangePostDetail}
           />
+          {errors['106'] ? (
+            <p>{errors['106']}</p>
+          ) : null}
         </div>
         <SubmitButton
           type="submit"
@@ -191,6 +213,12 @@ export default function PostForm({
           작성하기
         </SubmitButton>
       </Form>
+      {errors['107'] ? (
+        <p>{errors['107']}</p>
+      ) : null}
+      {errors['108'] ? (
+        <p>{errors['108']}</p>
+      ) : null}
     </Container>
   );
 }
