@@ -17,6 +17,7 @@ describe('PostForm', () => {
 
   const renderPostForm = ({
     data,
+    errors,
   }) => {
     render((
       <PostForm
@@ -32,6 +33,7 @@ describe('PostForm', () => {
         changeGameTargetMemberCount={changeGameTargetMemberCount}
         changePostDetail={changePostDetail}
         createPost={createPost}
+        errors={errors}
       />
     ));
   };
@@ -44,17 +46,19 @@ describe('PostForm', () => {
       gameTargetMemberCount: 0,
       postDetail: '',
     };
+    const errors = {};
 
     it('게시글 작성 폼을 화면에 출력', () => {
       renderPostForm({
         data,
+        errors,
       });
 
       screen.getByText(/종목/);
       screen.getByText(/날짜/);
       screen.getByText(/시간/);
       screen.getByText(/장소/);
-      screen.getByText(/모집할 인원 수/);
+      screen.getByText(/모집 인원/);
       screen.getByText(/상세 내용/);
     });
 
@@ -62,6 +66,7 @@ describe('PostForm', () => {
       it('뒤로 가기 핸들러 함수 호출', () => {
         renderPostForm({
           data,
+          errors,
         });
 
         fireEvent.click(screen.getByText('⬅️'));
@@ -81,6 +86,7 @@ describe('PostForm', () => {
       it('입력되는 내용을 상태로 저장하는 핸들러 함수 호출', () => {
         renderPostForm({
           data: dataWithSpecificDate,
+          errors,
         });
 
         fireEvent.change(screen.getByLabelText(/종목/), {
@@ -88,7 +94,7 @@ describe('PostForm', () => {
         });
         expect(changeGameExercise).toBeCalledWith('야구');
 
-        fireEvent.change(screen.getByLabelText('날짜를 선택하세요:'), {
+        fireEvent.change(screen.getByLabelText(/날짜/), {
           target: { value: '2022년 11월 24일' },
         });
         expect(changeGameDate)
@@ -119,7 +125,7 @@ describe('PostForm', () => {
         });
         expect(changeGamePlace).toBeCalledWith('고척스카이돔');
 
-        fireEvent.change(screen.getByLabelText(/모집할 인원 수/), {
+        fireEvent.change(screen.getByLabelText(/모집 인원/), {
           target: { value: 20 },
         });
         expect(changeGameTargetMemberCount).toBeCalledWith('20');
@@ -134,12 +140,37 @@ describe('PostForm', () => {
         it('입력되는 내용을 상태로 저장하는 핸들러 함수 호출', () => {
           renderPostForm({
             data,
+            errors,
           });
 
           fireEvent.click(screen.getByText(/작성하기/));
           expect(createPost).toBeCalled();
         });
       });
+    });
+  });
+
+  context('게시글 작성 페이지로부터 에러 메세지가 전달되면', () => {
+    const data = {
+      gameExercise: '',
+      gameDate: new Date(),
+      gamePlace: '',
+      gameTargetMemberCount: 0,
+      postDetail: '',
+    };
+    const errors = {
+      104: '운동 장소 이름을 입력해주세요.',
+      105: '사용자 수를 입력해주세요.',
+    };
+
+    it('에러 메세지를 컴포넌트에 출력', () => {
+      renderPostForm({
+        data,
+        errors,
+      });
+
+      screen.getByText('운동 장소 이름을 입력해주세요.');
+      screen.getByText('사용자 수를 입력해주세요.');
     });
   });
 });

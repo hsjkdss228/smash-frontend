@@ -16,6 +16,7 @@ let gameDate;
 let gamePlace;
 let gameTargetMemberCount;
 let postDetail;
+let errorCodeAndMessages;
 const changeGameExercise = jest.fn();
 const changeGameDate = jest.fn();
 const changeGameStartHour = jest.fn();
@@ -33,6 +34,7 @@ jest.mock('../hooks/usePostFormStore', () => () => ({
   gamePlace,
   gameTargetMemberCount,
   postDetail,
+  errorCodeAndMessages,
   changeGameExercise,
   changeGameDate,
   changeGameStartHour,
@@ -64,6 +66,7 @@ describe('PostFormPage', () => {
       gamePlace = '';
       gameTargetMemberCount = 0;
       postDetail = '';
+      errorCodeAndMessages = {};
     });
 
     it('입력되는 내용을 상태로 저장하는 Store의 메서드 호출', () => {
@@ -74,7 +77,7 @@ describe('PostFormPage', () => {
       });
       expect(changeGameExercise).toBeCalledWith('야구');
 
-      fireEvent.change(screen.getByLabelText('날짜를 선택하세요:'), {
+      fireEvent.change(screen.getByLabelText(/날짜/), {
         target: { value: '2022년 11월 24일' },
       });
       expect(changeGameDate)
@@ -105,7 +108,7 @@ describe('PostFormPage', () => {
       });
       expect(changeGamePlace).toBeCalledWith('고척스카이돔');
 
-      fireEvent.change(screen.getByLabelText(/모집할 인원 수/), {
+      fireEvent.change(screen.getByLabelText(/모집 인원/), {
         target: { value: 20 },
       });
       expect(changeGameTargetMemberCount).toBeCalledWith('20');
