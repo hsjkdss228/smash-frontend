@@ -26,9 +26,30 @@ export default function SelectTime({
         </option>
         {time === 'hour' ? (
           Array(12).fill(0).map((_, index) => {
-            const number = index + 1 < 10
-              ? `0${index + 1}`
-              : (index + 1).toString();
+            if (index === 0) {
+              return ((
+                <option
+                  key="12"
+                  value="12"
+                >
+                  12
+                </option>
+              ));
+            }
+
+            if (index < 10) {
+              const number = `0${index}`;
+              return ((
+                <option
+                  key={number}
+                  value={number}
+                >
+                  {number}
+                </option>
+              ));
+            }
+
+            const number = index.toString();
             return ((
               <option
                 key={number}
@@ -39,10 +60,10 @@ export default function SelectTime({
             ));
           })
         ) : (
-          Array(60).fill(0).map((_, index) => {
-            const number = index < 10
-              ? `0${index}`
-              : index.toString();
+          Array(6).fill(0).map((_, index) => {
+            const number = index === 0
+              ? '00'
+              : (index * 10).toString();
             return ((
               <option
                 key={number}

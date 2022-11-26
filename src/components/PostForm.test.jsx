@@ -6,8 +6,10 @@ describe('PostForm', () => {
   const navigateToBackward = jest.fn();
   const changeGameExercise = jest.fn();
   const changeGameDate = jest.fn();
+  const changeGameStartTimeAmPm = jest.fn();
   const changeGameStartHour = jest.fn();
   const changeGameStartMinute = jest.fn();
+  const changeGameEndTimeAmPm = jest.fn();
   const changeGameEndHour = jest.fn();
   const changeGameEndMinute = jest.fn();
   const changeGamePlace = jest.fn();
@@ -25,8 +27,10 @@ describe('PostForm', () => {
         navigateToBackward={navigateToBackward}
         changeGameExercise={changeGameExercise}
         changeGameDate={changeGameDate}
+        changeGameStartTimeAmPm={changeGameStartTimeAmPm}
         changeGameStartHour={changeGameStartHour}
         changeGameStartMinute={changeGameStartMinute}
+        changeGameEndTimeAmPm={changeGameEndTimeAmPm}
         changeGameEndHour={changeGameEndHour}
         changeGameEndMinute={changeGameEndMinute}
         changeGamePlace={changeGamePlace}
@@ -100,15 +104,21 @@ describe('PostForm', () => {
         expect(changeGameDate)
           .toBeCalledWith(new Date('2022-11-24T00:00:00.000Z'));
 
+        fireEvent.click(screen.getByLabelText(/시작 오전/));
+        expect(changeGameStartTimeAmPm).toBeCalledWith('am');
+
         fireEvent.change(screen.getByLabelText(/start hour/), {
           target: { value: '05' },
         });
         expect(changeGameStartHour).toBeCalledWith('05');
 
         fireEvent.change(screen.getByLabelText(/start minute/), {
-          target: { value: '05' },
+          target: { value: '20' },
         });
-        expect(changeGameStartMinute).toBeCalledWith('05');
+        expect(changeGameStartMinute).toBeCalledWith('20');
+
+        fireEvent.click(screen.getByLabelText(/종료 오후/));
+        expect(changeGameEndTimeAmPm).toBeCalledWith('pm');
 
         fireEvent.change(screen.getByLabelText(/end hour/), {
           target: { value: '12' },
@@ -116,9 +126,9 @@ describe('PostForm', () => {
         expect(changeGameEndHour).toBeCalledWith('12');
 
         fireEvent.change(screen.getByLabelText(/end minute/), {
-          target: { value: '59' },
+          target: { value: '30' },
         });
-        expect(changeGameEndMinute).toBeCalledWith('59');
+        expect(changeGameEndMinute).toBeCalledWith('30');
 
         fireEvent.change(screen.getByLabelText(/장소/), {
           target: { value: '고척스카이돔' },
@@ -159,8 +169,8 @@ describe('PostForm', () => {
       postDetail: '',
     };
     const errors = {
-      104: '운동 장소 이름을 입력해주세요.',
-      105: '사용자 수를 입력해주세요.',
+      108: '운동 장소 이름을 입력해주세요.',
+      109: '사용자 수를 입력해주세요.',
     };
 
     it('에러 메세지를 컴포넌트에 출력', () => {

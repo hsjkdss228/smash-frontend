@@ -12,13 +12,33 @@ describe('PostFormStore', () => {
     postFormStore = new PostFormStore();
   });
 
-  context('상태 변경 함수가 호출되면', () => {
+  context('날짜 상태 변경 함수가 호출되면', () => {
     const date = new Date('2022-11-26T00:00:00.000Z');
-    it('받아온 값을 상태에 반영 후 publish', () => {
+    it('받아온 값을 날짜 상태에 반영 후 publish', () => {
       postFormStore.changeGameDate(date);
 
       const { gameDate } = postFormStore;
       expect(gameDate).toStrictEqual(new Date('2022-11-26T00:00:00.000Z'));
+    });
+  });
+
+  context('시작 시간 오전/오후 상태 변경 함수가 호출되면', () => {
+    const startTimeAmPm = 'pm';
+    it('받아온 값을 시작 시간 오전/오후 상태에 반영 후 publish', () => {
+      postFormStore.changeGameStartTimeAmPm(startTimeAmPm);
+
+      const { gameStartTimeAmPm } = postFormStore;
+      expect(gameStartTimeAmPm).toBe('pm');
+    });
+  });
+
+  context('종료 시간 오전/오후 상태 변경 함수가 호출되면', () => {
+    const endTimeAmPm = 'am';
+    it('받아온 값을 종료 시간 오전/오후 상태에 반영 후 publish', () => {
+      postFormStore.changeGameEndTimeAmPm(endTimeAmPm);
+
+      const { gameEndTimeAmPm } = postFormStore;
+      expect(gameEndTimeAmPm).toBe('am');
     });
   });
 
@@ -27,9 +47,11 @@ describe('PostFormStore', () => {
       postApiService.setAccessToken('userId 1');
       postFormStore.gameExercise = '스케이트';
       postFormStore.gameDate = new Date('2022-12-31T00:00:00.000Z');
+      postFormStore.gameStartTimeAmPm = 'am';
       postFormStore.gameStartHour = '10';
       postFormStore.gameStartMinute = '00';
-      postFormStore.gameEndHour = '12';
+      postFormStore.gameEndTimeAmPm = 'pm';
+      postFormStore.gameEndHour = '04';
       postFormStore.gameEndMinute = '30';
       postFormStore.gamePlace = '롯데월드 아이스링크';
       postFormStore.gameTargetMemberCount = '12';

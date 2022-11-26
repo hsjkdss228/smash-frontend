@@ -339,7 +339,12 @@ const postTestServer = setupServer(
       const {
         gameExercise,
         gameDate,
-        gameTime,
+        gameStartTimeAmPm,
+        gameStartHour,
+        gameStartMinute,
+        gameEndTimeAmPm,
+        gameEndHour,
+        gameEndMinute,
         gamePlace,
         gameTargetMemberCount,
         postDetail,
@@ -349,7 +354,12 @@ const postTestServer = setupServer(
 
       if (gameExercise === '스케이트'
         && gameDate === new Date('2022-12-31T00:00:00.000Z').toISOString()
-        && gameTime === '10,00,12,30'
+        && gameStartTimeAmPm === 'am'
+        && gameStartHour === '10'
+        && gameStartMinute === '00'
+        && gameEndTimeAmPm === 'pm'
+        && gameEndHour === '04'
+        && gameEndMinute === '30'
         && gamePlace === '롯데월드 아이스링크'
         && gameTargetMemberCount === '12'
         && postDetail === '스케이트 입문자 모집!'

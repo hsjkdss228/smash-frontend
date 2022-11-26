@@ -10,8 +10,10 @@ export default class PostFormStore extends Store {
 
     this.gameExercise = '';
     this.gameDate = new Date();
+    this.gameStartTimeAmPm = '';
     this.gameStartHour = '';
     this.gameStartMinute = '';
+    this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
     this.gamePlace = '';
@@ -31,13 +33,23 @@ export default class PostFormStore extends Store {
     this.publish();
   }
 
+  changeGameStartTimeAmPm(startTimeAmPm) {
+    this.gameStartTimeAmPm = startTimeAmPm;
+    this.publish();
+  }
+
   changeGameStartHour(startHour) {
     this.gameStartHour = startHour;
     this.publish();
   }
 
-  changeGameStartMinute(endHour) {
-    this.gameStartMinute = endHour;
+  changeGameStartMinute(startMinute) {
+    this.gameStartMinute = startMinute;
+    this.publish();
+  }
+
+  changeGameEndTimeAmPm(endTimeAmPm) {
+    this.gameEndTimeAmPm = endTimeAmPm;
     this.publish();
   }
 
@@ -68,11 +80,15 @@ export default class PostFormStore extends Store {
 
   async createPost() {
     try {
-      const gameTime = `${this.gameStartHour},${this.gameStartMinute},${this.gameEndHour},${this.gameEndMinute}`;
       const data = await postApiService.createPost({
         gameExercise: this.gameExercise,
-        gameDate: this.gameDate,
-        gameTime,
+        gameDate: this.gameDate.toISOString(),
+        gameStartTimeAmPm: this.gameStartTimeAmPm,
+        gameStartHour: this.gameStartHour,
+        gameStartMinute: this.gameStartMinute,
+        gameEndTimeAmPm: this.gameEndTimeAmPm,
+        gameEndHour: this.gameEndHour,
+        gameEndMinute: this.gameEndMinute,
         gamePlace: this.gamePlace,
         gameTargetMemberCount: this.gameTargetMemberCount,
         postDetail: this.postDetail,
@@ -89,8 +105,10 @@ export default class PostFormStore extends Store {
   clearStates() {
     this.gameExercise = '';
     this.gameDate = new Date();
+    this.gameStartTimeAmPm = '';
     this.gameStartHour = '';
     this.gameStartMinute = '';
+    this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
     this.gamePlace = '';
