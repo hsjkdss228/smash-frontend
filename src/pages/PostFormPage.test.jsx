@@ -19,8 +19,10 @@ let postDetail;
 let errorCodeAndMessages;
 const changeGameExercise = jest.fn();
 const changeGameDate = jest.fn();
+const changeGameStartTimeAmPm = jest.fn();
 const changeGameStartHour = jest.fn();
 const changeGameStartMinute = jest.fn();
+const changeGameEndTimeAmPm = jest.fn();
 const changeGameEndHour = jest.fn();
 const changeGameEndMinute = jest.fn();
 const changeGamePlace = jest.fn();
@@ -37,8 +39,10 @@ jest.mock('../hooks/usePostFormStore', () => () => ({
   errorCodeAndMessages,
   changeGameExercise,
   changeGameDate,
+  changeGameStartTimeAmPm,
   changeGameStartHour,
   changeGameStartMinute,
+  changeGameEndTimeAmPm,
   changeGameEndHour,
   changeGameEndMinute,
   changeGamePlace,
@@ -83,15 +87,21 @@ describe('PostFormPage', () => {
       expect(changeGameDate)
         .toBeCalledWith(new Date('2022-11-24T00:00:00.000Z'));
 
+      fireEvent.click(screen.getByLabelText(/시작 오후/));
+      expect(changeGameStartTimeAmPm).toBeCalledWith('pm');
+
       fireEvent.change(screen.getByLabelText(/start hour/), {
         target: { value: '05' },
       });
       expect(changeGameStartHour).toBeCalledWith('05');
 
       fireEvent.change(screen.getByLabelText(/start minute/), {
-        target: { value: '05' },
+        target: { value: '20' },
       });
-      expect(changeGameStartMinute).toBeCalledWith('05');
+      expect(changeGameStartMinute).toBeCalledWith('20');
+
+      fireEvent.click(screen.getByLabelText(/종료 오전/));
+      expect(changeGameEndTimeAmPm).toBeCalledWith('am');
 
       fireEvent.change(screen.getByLabelText(/end hour/), {
         target: { value: '12' },
@@ -99,9 +109,9 @@ describe('PostFormPage', () => {
       expect(changeGameEndHour).toBeCalledWith('12');
 
       fireEvent.change(screen.getByLabelText(/end minute/), {
-        target: { value: '59' },
+        target: { value: '30' },
       });
-      expect(changeGameEndMinute).toBeCalledWith('59');
+      expect(changeGameEndMinute).toBeCalledWith('30');
 
       fireEvent.change(screen.getByLabelText(/장소/), {
         target: { value: '고척스카이돔' },

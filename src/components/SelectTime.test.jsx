@@ -47,7 +47,7 @@ describe('SelectTime', () => {
     const type = 'end';
     const time = 'minute';
 
-    it('0~59까지 있는 option 태그를 출력', () => {
+    it('00, 10, 20, 30, 40, 50까지 있는 option 태그를 출력', () => {
       renderSelectTime({
         id,
         type,
@@ -55,10 +55,10 @@ describe('SelectTime', () => {
       });
 
       screen.getByText(/end minute/);
-      Array(60).fill(0).forEach((_, index) => {
-        const value = index < 10
-          ? `0${index}`
-          : index.toString();
+      Array(6).fill(0).forEach((_, index) => {
+        const value = index === 0
+          ? '00'
+          : (index * 10).toString();
         screen.getByText(value);
       });
     });

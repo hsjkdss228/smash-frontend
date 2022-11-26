@@ -25,8 +25,10 @@ export default function PostForm({
   navigateToBackward,
   changeGameExercise,
   changeGameDate,
+  changeGameStartTimeAmPm,
   changeGameStartHour,
   changeGameStartMinute,
+  changeGameEndTimeAmPm,
   changeGameEndHour,
   changeGameEndMinute,
   changeGamePlace,
@@ -48,6 +50,11 @@ export default function PostForm({
     changeGameDate(date);
   };
 
+  const handleChangeGameStartTimeAmPm = (event) => {
+    const { value } = event.target;
+    changeGameStartTimeAmPm(value);
+  };
+
   const handleChangeGameStartHour = (event) => {
     const { value } = event.target;
     changeGameStartHour(value);
@@ -56,6 +63,11 @@ export default function PostForm({
   const handleChangeGameStartMinute = (event) => {
     const { value } = event.target;
     changeGameStartMinute(value);
+  };
+
+  const handleChangeGameEndTimeAmPm = (event) => {
+    const { value } = event.target;
+    changeGameEndTimeAmPm(value);
   };
 
   const handleChangeGameEndHour = (event) => {
@@ -129,42 +141,100 @@ export default function PostForm({
           <p>
             시간
           </p>
-          <SelectTime
-            id="input-game-start-hour"
-            onChange={handleChangeGameStartHour}
-            type="start"
-            time="hour"
-            value={data.gameStartHour}
-          />
-          <SelectTime
-            id="input-game-start-minute"
-            onChange={handleChangeGameStartMinute}
-            type="start"
-            time="minute"
-            value={data.gameStartMinute}
-          />
+          <div>
+            <input
+              id="input-game-start-time-am"
+              type="radio"
+              name="start-time-am-pm"
+              value="am"
+              onChange={handleChangeGameStartTimeAmPm}
+            />
+            <label htmlFor="input-game-start-time-am">
+              <span>시작</span>
+              {' '}
+              오전
+            </label>
+            <input
+              id="input-game-start-time-pm"
+              type="radio"
+              name="start-time-am-pm"
+              value="pm"
+              onChange={handleChangeGameStartTimeAmPm}
+            />
+            <label htmlFor="input-game-start-time-pm">
+              <span>시작</span>
+              {' '}
+              오후
+            </label>
+            <SelectTime
+              id="input-game-start-hour"
+              onChange={handleChangeGameStartHour}
+              type="start"
+              time="hour"
+              value={data.gameStartHour}
+            />
+            <SelectTime
+              id="input-game-start-minute"
+              onChange={handleChangeGameStartMinute}
+              type="start"
+              time="minute"
+              value={data.gameStartMinute}
+            />
+          </div>
           <p>부터</p>
-          <SelectTime
-            id="input-game-end-hour"
-            onChange={handleChangeGameEndHour}
-            type="end"
-            time="hour"
-            value={data.gameEndHour}
-          />
-          <SelectTime
-            id="input-game-end-minute"
-            onChange={handleChangeGameEndMinute}
-            type="end"
-            time="minute"
-            value={data.gameEndMinute}
-          />
+          <div>
+            <input
+              id="input-game-end-time-am"
+              type="radio"
+              name="end-time-am-pm"
+              value="am"
+              onChange={handleChangeGameEndTimeAmPm}
+            />
+            <label htmlFor="input-game-end-time-am">
+              <span>종료</span>
+              {' '}
+              오전
+            </label>
+            <input
+              id="input-game-end-time-pm"
+              type="radio"
+              name="end-time-am-pm"
+              value="pm"
+              onChange={handleChangeGameEndTimeAmPm}
+            />
+            <label htmlFor="input-game-end-time-pm">
+              <span>종료</span>
+              {' '}
+              오후
+            </label>
+            <SelectTime
+              id="input-game-end-hour"
+              onChange={handleChangeGameEndHour}
+              type="end"
+              time="hour"
+              value={data.gameEndHour}
+            />
+            <SelectTime
+              id="input-game-end-minute"
+              onChange={handleChangeGameEndMinute}
+              type="end"
+              time="minute"
+              value={data.gameEndMinute}
+            />
+          </div>
           <p>까지</p>
-          {errors['102'] ? (
-            <p>{errors['102']}</p>
-          ) : null}
-          {errors['103'] ? (
-            <p>{errors['103']}</p>
-          ) : null}
+          {errors['102'] || errors['103'] || errors['104']
+            || errors['105'] || errors['106'] || errors['107'] ? (
+              <p>
+                입력하지 않은 운동 시간이 있습니다.
+                {' '}
+                {(errors['102'] || errors['105']) && '(오전/오후)'}
+                {' '}
+                {(errors['103'] || errors['106']) && '(시)'}
+                {' '}
+                {(errors['104'] || errors['107']) && '(분)'}
+              </p>
+            ) : null}
         </div>
         <div>
           <label htmlFor="input-game-place">
@@ -176,8 +246,8 @@ export default function PostForm({
             value={data.gamePlace}
             onChange={handleChangeGamePlace}
           />
-          {errors['104'] ? (
-            <p>{errors['104']}</p>
+          {errors['108'] ? (
+            <p>{errors['108']}</p>
           ) : null}
         </div>
         <div>
@@ -191,8 +261,8 @@ export default function PostForm({
             onChange={handleChangeGameTargetMemberCount}
           />
         </div>
-        {errors['105'] ? (
-          <p>{errors['105']}</p>
+        {errors['109'] ? (
+          <p>{errors['109']}</p>
         ) : null}
         <div>
           <label htmlFor="input-post-detail">
@@ -203,8 +273,8 @@ export default function PostForm({
             value={data.postDetail}
             onChange={handleChangePostDetail}
           />
-          {errors['106'] ? (
-            <p>{errors['106']}</p>
+          {errors['110'] ? (
+            <p>{errors['110']}</p>
           ) : null}
         </div>
         <SubmitButton
@@ -213,11 +283,11 @@ export default function PostForm({
           작성하기
         </SubmitButton>
       </Form>
-      {errors['107'] ? (
-        <p>{errors['107']}</p>
+      {errors['111'] ? (
+        <p>{errors['111']}</p>
       ) : null}
-      {errors['108'] ? (
-        <p>{errors['108']}</p>
+      {errors['112'] ? (
+        <p>{errors['112']}</p>
       ) : null}
     </Container>
   );

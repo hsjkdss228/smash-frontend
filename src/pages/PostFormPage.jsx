@@ -50,12 +50,20 @@ export default function PostFormPage() {
     postFormStore.changeGameDate(date);
   };
 
+  const changeGameStartTimeAmPm = (startTimeAmPm) => {
+    postFormStore.changeGameStartTimeAmPm(startTimeAmPm);
+  };
+
   const changeGameStartHour = (startHour) => {
     postFormStore.changeGameStartHour(startHour);
   };
 
   const changeGameStartMinute = (startMinute) => {
     postFormStore.changeGameStartMinute(startMinute);
+  };
+
+  const changeGameEndTimeAmPm = (endTimeAmPm) => {
+    postFormStore.changeGameEndTimeAmPm(endTimeAmPm);
   };
 
   const changeGameEndHour = (endHour) => {
@@ -92,8 +100,10 @@ export default function PostFormPage() {
       navigateToBackward={navigateToBackward}
       changeGameExercise={changeGameExercise}
       changeGameDate={changeGameDate}
+      changeGameStartTimeAmPm={changeGameStartTimeAmPm}
       changeGameStartHour={changeGameStartHour}
       changeGameStartMinute={changeGameStartMinute}
+      changeGameEndTimeAmPm={changeGameEndTimeAmPm}
       changeGameEndHour={changeGameEndHour}
       changeGameEndMinute={changeGameEndMinute}
       changeGamePlace={changeGamePlace}
