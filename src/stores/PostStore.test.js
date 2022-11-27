@@ -57,4 +57,13 @@ describe('PostStore', () => {
       expect(postErrorMessage).toBeFalsy();
     });
   });
+
+  context('API 서버에 특정 게시글의 삭제를 요청할 경우', () => {
+    const postId = 1;
+
+    it('백엔드 서버의 204 응답을 확인', async () => {
+      postApiService.setAccessToken('userId 1');
+      await postStore.deletePost(postId);
+    });
+  });
 });

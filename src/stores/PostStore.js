@@ -36,6 +36,12 @@ export default class PostStore extends Store {
       this.postErrorMessage = errorMessage;
     }
   }
+
+  // TODO: 게시글을 생성하는 POST 요청이 PostFormStore에서 여기로 옮겨와져야 함
+
+  async deletePost(postId) {
+    await postApiService.deletePost(postId);
+  }
 }
 
 export const postStore = new PostStore();

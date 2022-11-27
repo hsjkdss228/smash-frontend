@@ -1,5 +1,5 @@
 import {
-  fireEvent, render, screen,
+  fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import PostPage from './PostPage';
@@ -19,9 +19,11 @@ jest.mock('react-router-dom', () => ({
 
 let post;
 const fetchPost = jest.fn();
+const deletePost = jest.fn();
 jest.mock('../hooks/usePostStore', () => () => ({
   post,
   fetchPost,
+  deletePost,
 }));
 
 let game;
@@ -101,10 +103,12 @@ describe('PostPage', () => {
 
         renderPostPage();
 
-        await expect(fetchPost).toBeCalledWith(expectedPostId);
-        await expect(fetchGame).toBeCalledWith(expectedPostId);
-        await expect(fetchMembers).toBeCalledWith(expectedGameId);
-        await expect(fetchApplicants).not.toBeCalled();
+        await waitFor(() => {
+          expect(fetchPost).toBeCalledWith(expectedPostId);
+          expect(fetchGame).toBeCalledWith(expectedPostId);
+          expect(fetchMembers).toBeCalledWith(expectedGameId);
+          expect(fetchApplicants).not.toBeCalled();
+        });
       });
     });
 
@@ -152,11 +156,13 @@ describe('PostPage', () => {
         renderPostPage();
 
         fireEvent.click(screen.getByText('신청'));
-        await expect(registerToGame).toBeCalledWith(expectedGameId);
-        await expect(fetchPost).nthCalledWith(2, expectedPostId);
-        await expect(fetchGame).nthCalledWith(2, expectedPostId);
-        await expect(fetchMembers).nthCalledWith(2, expectedGameId);
-        await expect(fetchApplicants).not.toBeCalled();
+        await waitFor(() => {
+          expect(registerToGame).toBeCalledWith(expectedGameId);
+          expect(fetchPost).nthCalledWith(2, expectedPostId);
+          expect(fetchGame).nthCalledWith(2, expectedPostId);
+          expect(fetchMembers).nthCalledWith(2, expectedGameId);
+          expect(fetchApplicants).not.toBeCalled();
+        });
       });
     });
 
@@ -209,11 +215,13 @@ describe('PostPage', () => {
         renderPostPage();
 
         fireEvent.click(screen.getByText('신청취소'));
-        await expect(cancelRegisterToGame).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPost).nthCalledWith(2, expectedPostId);
-        await expect(fetchGame).nthCalledWith(2, expectedPostId);
-        await expect(fetchMembers).nthCalledWith(2, expectedGameId);
-        await expect(fetchApplicants).not.toBeCalled();
+        await waitFor(() => {
+          expect(cancelRegisterToGame).toBeCalledWith(expectedRegisterId);
+          expect(fetchPost).nthCalledWith(2, expectedPostId);
+          expect(fetchGame).nthCalledWith(2, expectedPostId);
+          expect(fetchMembers).nthCalledWith(2, expectedGameId);
+          expect(fetchApplicants).not.toBeCalled();
+        });
       });
     });
 
@@ -266,11 +274,13 @@ describe('PostPage', () => {
         renderPostPage();
 
         fireEvent.click(screen.getByText('참가취소'));
-        await expect(cancelParticipateToGame).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPost).nthCalledWith(2, expectedPostId);
-        await expect(fetchGame).nthCalledWith(2, expectedPostId);
-        await expect(fetchMembers).nthCalledWith(2, expectedGameId);
-        await expect(fetchApplicants).not.toBeCalled();
+        await waitFor(() => {
+          expect(cancelParticipateToGame).toBeCalledWith(expectedRegisterId);
+          expect(fetchPost).nthCalledWith(2, expectedPostId);
+          expect(fetchGame).nthCalledWith(2, expectedPostId);
+          expect(fetchMembers).nthCalledWith(2, expectedGameId);
+          expect(fetchApplicants).not.toBeCalled();
+        });
       });
     });
   });
@@ -324,10 +334,12 @@ describe('PostPage', () => {
 
       renderPostPage();
 
-      await expect(fetchPost).toBeCalledWith(expectedPostId);
-      await expect(fetchGame).toBeCalledWith(expectedPostId);
-      await expect(fetchMembers).toBeCalledWith(expectedGameId);
-      await expect(fetchApplicants).toBeCalledWith(expectedGameId);
+      await waitFor(() => {
+        expect(fetchPost).toBeCalledWith(expectedPostId);
+        expect(fetchGame).toBeCalledWith(expectedPostId);
+        expect(fetchMembers).toBeCalledWith(expectedGameId);
+        expect(fetchApplicants).toBeCalledWith(expectedGameId);
+      });
     });
 
     context('신청자에 대해 수락 버튼을 눌렀을 경우', () => {
@@ -341,11 +353,13 @@ describe('PostPage', () => {
         renderPostPage();
 
         fireEvent.click(screen.getByText('수락'));
-        await expect(acceptRegister).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPost).nthCalledWith(2, expectedPostId);
-        await expect(fetchGame).nthCalledWith(2, expectedPostId);
-        await expect(fetchMembers).nthCalledWith(2, expectedGameId);
-        await expect(fetchApplicants).nthCalledWith(2, expectedGameId);
+        await waitFor(() => {
+          expect(acceptRegister).toBeCalledWith(expectedRegisterId);
+          expect(fetchPost).nthCalledWith(2, expectedPostId);
+          expect(fetchGame).nthCalledWith(2, expectedPostId);
+          expect(fetchMembers).nthCalledWith(2, expectedGameId);
+          expect(fetchApplicants).nthCalledWith(2, expectedGameId);
+        });
       });
     });
 
@@ -360,11 +374,29 @@ describe('PostPage', () => {
         renderPostPage();
 
         fireEvent.click(screen.getByText('거절'));
-        await expect(rejectRegister).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPost).nthCalledWith(2, expectedPostId);
-        await expect(fetchGame).nthCalledWith(2, expectedPostId);
-        await expect(fetchMembers).nthCalledWith(2, expectedGameId);
-        await expect(fetchApplicants).nthCalledWith(2, expectedGameId);
+        await waitFor(() => {
+          expect(rejectRegister).toBeCalledWith(expectedRegisterId);
+          expect(fetchPost).nthCalledWith(2, expectedPostId);
+          expect(fetchGame).nthCalledWith(2, expectedPostId);
+          expect(fetchMembers).nthCalledWith(2, expectedGameId);
+          expect(fetchApplicants).nthCalledWith(2, expectedGameId);
+        });
+      });
+    });
+
+    // TODO: 게시글 수정하기 동작과 관련된 테스트 코드는 여기에 추가되어야 함
+
+    context('게시글 삭제하기 버튼을 눌렀을 경우', () => {
+      it('게시글 삭제 함수 호출', async () => {
+        jest.clearAllMocks();
+        fetchGame = jest.fn();
+        renderPostPage();
+
+        fireEvent.click(screen.getByText('삭제하기'));
+        await waitFor(() => {
+          expect(deletePost).toBeCalled();
+          expect(navigate).toBeCalledWith('/posts/list');
+        });
       });
     });
   });

@@ -14,8 +14,20 @@ const Container = styled.article`
   align-items: center;
 `;
 
+const TopSection = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DeleteButton = styled.button`
+  padding-inline: 1em;
+  border: 1px solid #000;
+  margin-right: 1em;
+`;
+
 const PostInformation = styled.div`
-  
+
 `;
 
 export default function Post({
@@ -24,6 +36,7 @@ export default function Post({
   game,
   members,
   applicants,
+  handleClickDeletePost,
   handleClickRegister,
   handleClickRegisterCancel,
   handleClickParticipateCancel,
@@ -32,6 +45,10 @@ export default function Post({
 }) {
   const onClickBackward = () => {
     navigateToBackward();
+  };
+
+  const onClickDeletePost = () => {
+    handleClickDeletePost(post.id);
   };
 
   const onClickRegister = () => {
@@ -56,12 +73,24 @@ export default function Post({
 
   return (
     <Container>
-      <BackwardButton
-        type="button"
-        onClick={onClickBackward}
-      >
-        ⬅️
-      </BackwardButton>
+      <TopSection>
+        <BackwardButton
+          type="button"
+          onClick={onClickBackward}
+        >
+          ⬅️
+        </BackwardButton>
+        {post.isAuthor ? (
+          <DeleteButton
+            type="button"
+            onClick={onClickDeletePost}
+          >
+            삭제하기
+          </DeleteButton>
+        ) : (
+          null
+        )}
+      </TopSection>
       <PostInformation>
         <PostGameInformation
           type={game.type}

@@ -68,6 +68,15 @@ export default class PostApiService {
     });
     return data;
   }
+
+  async deletePost(postId) {
+    const url = `${apiBaseUrl}/posts/${postId}`;
+    await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+  }
 }
 
 export const postApiService = new PostApiService();
