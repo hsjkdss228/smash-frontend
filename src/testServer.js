@@ -23,6 +23,7 @@ const postTestServer = setupServer(
               hits: 334,
               isAuthor: false,
               game: {
+                id: 1,
                 type: '축구',
                 date: '2022년 10월 19일 13:00~16:00',
                 place: '대전월드컵경기장',
@@ -37,6 +38,7 @@ const postTestServer = setupServer(
               hits: 10,
               isAuthor: false,
               game: {
+                id: 1,
                 type: '농구',
                 date: '2022년 10월 20일 15:00~17:00',
                 place: '잠실실내체육관',
@@ -83,6 +85,7 @@ const postTestServer = setupServer(
           context.json({
             errorCode: 100,
             errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+            gameId: null,
           }),
         );
       }
@@ -92,7 +95,8 @@ const postTestServer = setupServer(
           context.status(400),
           context.json({
             errorCode: 101,
-            errorMessage: '이미 신청이 완료된 운동입니다.',
+            errorMessage: '이미 신청 중이거나 신청이 완료된 운동입니다.',
+            gameId: null,
           }),
         );
       }
@@ -103,6 +107,18 @@ const postTestServer = setupServer(
           context.json({
             errorCode: 102,
             errorMessage: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
+            gameId: null,
+          }),
+        );
+      }
+
+      if (gameId === '1' && accessToken === 'fully participated userId 3') {
+        return response(
+          context.status(400),
+          context.json({
+            errorCode: 103,
+            errorMessage: '참가 정원이 모두 차 참가를 신청할 수 없습니다.',
+            gameId: 1,
           }),
         );
       }

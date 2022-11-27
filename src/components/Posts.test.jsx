@@ -67,13 +67,14 @@ describe('Posts', () => {
         hits: 334,
         isAuthor: false,
         game: {
+          id: 2,
           type: '배드민턴',
           date: '2022년 10월 24일 13:00~16:00',
           place: '올림픽공원 핸드볼경기장',
           currentMemberCount: 4,
           targetMemberCount: 5,
-          registerId: 10,
-          registerStatus: 'accepted',
+          registerId: -1,
+          registerStatus: 'none',
         },
       },
     ];
@@ -105,8 +106,9 @@ describe('Posts', () => {
 
     it('사용자가 버튼을 클릭하고 나서 에러가 전달되었을 시 에러 메세지를 출력', () => {
       const codeAndMessage = {
-        code: 100,
-        message: '에러 메세지 내용입니다.',
+        errorCode: 100,
+        errorMessage: '에러 메세지 내용입니다.',
+        gameId: 2,
       };
 
       renderPosts({
@@ -126,6 +128,7 @@ describe('Posts', () => {
         hits: 334,
         isAuthor: true,
         game: {
+          id: 2,
           type: '주짓수',
           date: '2022년 10월 31일 08:00~11:00',
           place: '팀 레드 주짓수&MMA',

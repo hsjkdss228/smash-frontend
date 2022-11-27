@@ -47,9 +47,6 @@ export default function PostsRegisterButton({
   }
 
   if (registerStatus === 'none') {
-    console.log('gameId', gameId);
-    console.log('registeredGameId', registerErrors.gameId);
-
     return (
       <>
         <RegisterButtonSection>
@@ -62,11 +59,12 @@ export default function PostsRegisterButton({
             신청
           </Button>
         </RegisterButtonSection>
-        {registerErrors.errorCode && gameId === registerErrors.gameId ? (
-          <p>{registerErrors.errorMessage}</p>
-        ) : (
-          null
-        )}
+        {registerErrors.errorCode
+          && gameId === registerErrors.gameId ? (
+            <p>{registerErrors.errorMessage}</p>
+          ) : (
+            null
+          )}
       </>
     );
   }
