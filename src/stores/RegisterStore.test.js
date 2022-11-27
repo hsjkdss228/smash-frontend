@@ -66,8 +66,8 @@ describe('RegisterStore', () => {
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 100,
-        message: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+        errorCode: 100,
+        errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
       });
     });
   });
@@ -82,8 +82,8 @@ describe('RegisterStore', () => {
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 101,
-        message: '이미 신청이 완료된 운동입니다.',
+        errorCode: 101,
+        errorMessage: '이미 신청이 완료된 운동입니다.',
       });
     });
   });
@@ -98,8 +98,8 @@ describe('RegisterStore', () => {
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 102,
-        message: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
+        errorCode: 102,
+        errorMessage: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
       });
     });
   });

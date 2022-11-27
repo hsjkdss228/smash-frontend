@@ -17,21 +17,38 @@ const Button = styled.button`
 `;
 
 export default function PostRegisterButton({
+  currentMemberCount,
+  targetMemberCount,
   registerStatus,
   onClickRegister,
   onClickRegisterCancel,
   onClickParticipateCancel,
+  registerError,
 }) {
+  if (registerStatus === 'none'
+    && currentMemberCount >= targetMemberCount) {
+    return (
+      <p>참가 정원이 모두 찼습니다.</p>
+    );
+  }
+
   if (registerStatus === 'none') {
     return (
-      <RegisterButtonSection>
-        <Button
-          type="button"
-          onClick={onClickRegister}
-        >
-          신청
-        </Button>
-      </RegisterButtonSection>
+      <>
+        <RegisterButtonSection>
+          <Button
+            type="button"
+            onClick={onClickRegister}
+          >
+            신청
+          </Button>
+        </RegisterButtonSection>
+        {registerError.errorCode ? (
+          <p>{registerError.errorMessage}</p>
+        ) : (
+          null
+        )}
+      </>
     );
   }
 

@@ -30,7 +30,7 @@ export default function Posts({
   cancelRegisterToGame,
   cancelParticipateToGame,
   postsErrorMessage,
-  registerErrorCodeAndMessage,
+  registerErrors,
 }) {
   const onClickBackward = () => {
     navigateToBackward();
@@ -76,23 +76,19 @@ export default function Posts({
               post.isAuthor ? (
                 null
               ) : (
-                <>
+                <div>
                   <PostsRegisterButton
                     gameId={post.game.id}
                     registerId={post.game.registerId}
+                    currentMemberCount={post.game.currentMemberCount}
+                    targetMemberCount={post.game.targetMemberCount}
                     registerStatus={post.game.registerStatus}
                     registerToGame={registerToGame}
                     cancelRegisterToGame={cancelRegisterToGame}
                     cancelParticipateToGame={cancelParticipateToGame}
+                    registerErrors={registerErrors}
                   />
-                  {registerErrorCodeAndMessage.message ? (
-                    <p>
-                      {registerErrorCodeAndMessage.message}
-                    </p>
-                  ) : (
-                    null
-                  )}
-                </>
+                </div>
               )
             }
           </Thumbnail>

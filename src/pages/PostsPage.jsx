@@ -21,6 +21,7 @@ export default function PostsPage() {
   }, [accessToken]);
 
   const { posts, postsErrorMessage } = postStore;
+  const { registerErrorCodeAndMessage } = registerStore;
 
   const navigateToBackward = () => {
     navigate(-1);
@@ -51,8 +52,6 @@ export default function PostsPage() {
     await postStore.fetchPosts();
   };
 
-  const { registerErrorCodeAndMessage } = registerStore;
-
   return (
     <Posts
       posts={posts}
@@ -62,7 +61,7 @@ export default function PostsPage() {
       cancelRegisterToGame={cancelRegisterToGame}
       cancelParticipateToGame={cancelParticipateToGame}
       postsErrorMessage={postsErrorMessage}
-      registerErrorCodeAndMessage={registerErrorCodeAndMessage}
+      registerErrors={registerErrorCodeAndMessage}
     />
   );
 }
