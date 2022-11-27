@@ -4,6 +4,7 @@ import Post from './Post';
 
 describe('Post', () => {
   const navigateToBackward = jest.fn();
+  const handleClickDeletePost = jest.fn();
   const handleClickRegister = jest.fn();
   const handleClickRegisterCancel = jest.fn();
   const handleClickParticipateCancel = jest.fn();
@@ -12,6 +13,7 @@ describe('Post', () => {
     post,
     game,
     members,
+    applicants,
   }) => {
     render((
       <Post
@@ -19,6 +21,8 @@ describe('Post', () => {
         post={post}
         game={game}
         members={members}
+        applicants={applicants}
+        handleClickDeletePost={handleClickDeletePost}
         handleClickRegister={handleClickRegister}
         handleClickRegisterCancel={handleClickRegisterCancel}
         handleClickParticipateCancel={handleClickParticipateCancel}
@@ -30,17 +34,22 @@ describe('Post', () => {
     const post = {};
     const game = {};
     const members = [];
+    const applicants = [];
 
     it('게시글 정보를 불러오고 있다는 메세지 출력', () => {
       renderPost({
         post,
         game,
         members,
+        applicants,
       });
 
       screen.getByText('정보를 불러오고 있습니다...');
     });
   });
+
+  // TODO: 작성자인 경우, 참가자인 경우에 따라
+  //   출력되는 컴포넌트의 차이를 테스트해야 함
 
   context('게시글 정보가 출력될 때 뒤로가기 버튼을 누르면', () => {
     const post = {
@@ -69,12 +78,14 @@ describe('Post', () => {
         phoneNumber: '010-1111-2222',
       },
     ];
+    const applicants = [];
 
     it('뒤로가기 navigate 함수를 호출하는 핸들러 함수 호출', () => {
       renderPost({
         post,
         game,
         members,
+        applicants,
       });
 
       fireEvent.click(screen.getByText('⬅️'));
@@ -110,12 +121,14 @@ describe('Post', () => {
         phoneNumber: '010-1111-2222',
       },
     ];
+    const applicants = [];
 
     it('해당 게임에 참가를 신청하는 운동 참가 신청 핸들러 함수 호출', () => {
       renderPost({
         post,
         game,
         members,
+        applicants,
       });
 
       fireEvent.click(screen.getByText('신청'));
@@ -157,12 +170,14 @@ describe('Post', () => {
         phoneNumber: '010-6666-6666',
       },
     ];
+    const applicants = [];
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
         post,
         game,
         members,
+        applicants,
       });
 
       fireEvent.click(screen.getByText('신청취소'));
@@ -204,16 +219,115 @@ describe('Post', () => {
         phoneNumber: '010-1234-5678',
       },
     ];
+    const applicants = [];
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
         post,
         game,
         members,
+        applicants,
       });
 
       fireEvent.click(screen.getByText('참가취소'));
       expect(handleClickParticipateCancel).toBeCalledWith(10);
+    });
+  });
+
+  // TODO: 게시글 수정하기 기능 추가 시 아래의 테스트들에 추가되어야 함
+  context('작성자가 아닌 사용자는', () => {
+    const post = {
+      id: 1,
+      hits: 2,
+      authorName: '작성자',
+      authorPhoneNumber: '010-1111-2222',
+      detail: '게시글 내용',
+      isAuthor: false,
+    };
+    const game = {
+      id: 1,
+      type: '탁구',
+      date: '2022년 10월 19일 12:30~13:30',
+      place: '서울숲탁구클럽',
+      currentMemberCount: 1,
+      targetMemberCount: 4,
+      registerId: -1,
+      registerStatus: 'none',
+    };
+    const members = [
+      {
+        id: 1,
+        name: '작성자',
+        gender: '남성',
+        phoneNumber: '010-1111-2222',
+      },
+    ];
+    const applicants = [];
+
+    it('게시글 삭제하기 버튼을 확인할 수 없음', () => {
+      renderPost({
+        post,
+        game,
+        members,
+        applicants,
+      });
+
+      expect(screen.queryByText('삭제하기')).toBe(null);
+    });
+  });
+
+  context('작성자는', () => {
+    const post = {
+      id: 1,
+      hits: 2,
+      authorName: '작성자',
+      authorPhoneNumber: '010-1111-2222',
+      detail: '게시글 내용',
+      isAuthor: true,
+    };
+    const game = {
+      id: 1,
+      type: '사격',
+      date: '2022년 10월 19일 12:30~13:30',
+      place: '금곡과학화예비군훈련장',
+      currentMemberCount: 1,
+      targetMemberCount: 4,
+      registerId: 10,
+      registerStatus: 'accepted',
+    };
+    const members = [
+      {
+        id: 1,
+        name: '작성자',
+        gender: '남성',
+        phoneNumber: '010-1111-2222',
+      },
+    ];
+    const applicants = [];
+
+    it('게시글 삭제하기 버튼을 확인할 수 있음', () => {
+      renderPost({
+        post,
+        game,
+        members,
+        applicants,
+      });
+
+      screen.getByText('삭제하기');
+    });
+
+    context('삭제하기 버튼을 누를 경우', () => {
+      it('게시글 상태를 삭제 상태로 변경하는 핸들러 함수 호출', () => {
+        renderPost({
+          post,
+          game,
+          members,
+          applicants,
+        });
+
+        fireEvent.click(screen.getByText('삭제하기'));
+        expect(handleClickDeletePost).toBeCalledWith(post.id);
+      });
     });
   });
 });

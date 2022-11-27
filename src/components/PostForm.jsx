@@ -99,7 +99,7 @@ export default function PostForm({
     event.preventDefault();
     createPost();
   };
-
+  
   return (
     <Container>
       <BackwardButton

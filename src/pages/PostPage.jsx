@@ -45,6 +45,11 @@ export default function PostPage() {
     navigate(-1);
   };
 
+  const handleClickDeletePost = async (targetPostId) => {
+    await postStore.deletePost(targetPostId);
+    navigate('/posts/list');
+  };
+
   const handleClickRegister = async (gameId) => {
     const applicationId = await registerStore.registerToGame(gameId);
     if (applicationId) {
@@ -79,6 +84,7 @@ export default function PostPage() {
       game={game}
       members={members}
       applicants={applicants}
+      handleClickDeletePost={handleClickDeletePost}
       handleClickRegister={handleClickRegister}
       handleClickRegisterCancel={handleClickRegisterCancel}
       handleClickParticipateCancel={handleClickParticipateCancel}
