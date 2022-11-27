@@ -35,6 +35,7 @@ jest.mock('../hooks/useGameStore', () => () => ({
 
 let members;
 let applicants;
+let registerErrorCodeAndMessage;
 const fetchMembers = jest.fn();
 const fetchApplicants = jest.fn();
 let registerToGame;
@@ -45,6 +46,7 @@ const rejectRegister = jest.fn();
 jest.mock('../hooks/useRegisterStore', () => () => ({
   members,
   applicants,
+  registerErrorCodeAndMessage,
   fetchMembers,
   fetchApplicants,
   registerToGame,
@@ -92,6 +94,7 @@ describe('PostPage', () => {
             phoneNumber: '010-6877-2291',
           },
         ];
+        registerErrorCodeAndMessage = {};
       });
 
       it('운동 모집 게시글 상세 정보 상태들을 PostStore, '
@@ -142,6 +145,7 @@ describe('PostPage', () => {
             phoneNumber: '010-6877-2291',
           },
         ];
+        registerErrorCodeAndMessage = {};
       });
 
       it('해당 게임에 참가를 신청하는 운동 참가 신청 함수 호출 후, '
@@ -202,6 +206,7 @@ describe('PostPage', () => {
             phoneNumber: '010-5555-5555',
           },
         ];
+        registerErrorCodeAndMessage = {};
       });
 
       it('해당 신청의 상태를 변경하는 운동 참가 신청 취소 함수 호출 후, '
@@ -261,6 +266,7 @@ describe('PostPage', () => {
             phoneNumber: '010-8765-4321',
           },
         ];
+        registerErrorCodeAndMessage = {};
       });
 
       it('해당 신청의 상태를 변경하는 운동 참가 취소 함수 호출 후, '
@@ -323,6 +329,7 @@ describe('PostPage', () => {
           phoneNumber: '010-2424-2424',
         },
       ];
+      registerErrorCodeAndMessage = {};
     });
 
     it('운동 모집 게시글 상세 정보 및 신청자 정보 상태들을 PostStore, '

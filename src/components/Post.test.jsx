@@ -8,12 +8,15 @@ describe('Post', () => {
   const handleClickRegister = jest.fn();
   const handleClickRegisterCancel = jest.fn();
   const handleClickParticipateCancel = jest.fn();
+  const acceptRegister = jest.fn();
+  const rejectRegister = jest.fn();
 
   const renderPost = ({
     post,
     game,
     members,
     applicants,
+    registerError,
   }) => {
     render((
       <Post
@@ -26,6 +29,9 @@ describe('Post', () => {
         handleClickRegister={handleClickRegister}
         handleClickRegisterCancel={handleClickRegisterCancel}
         handleClickParticipateCancel={handleClickParticipateCancel}
+        acceptRegister={acceptRegister}
+        rejectRegister={rejectRegister}
+        registerError={registerError}
       />
     ));
   };
@@ -35,6 +41,7 @@ describe('Post', () => {
     const game = {};
     const members = [];
     const applicants = [];
+    const registerError = {};
 
     it('게시글 정보를 불러오고 있다는 메세지 출력', () => {
       renderPost({
@@ -42,6 +49,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       screen.getByText('정보를 불러오고 있습니다...');
@@ -79,6 +87,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('뒤로가기 navigate 함수를 호출하는 핸들러 함수 호출', () => {
       renderPost({
@@ -86,6 +95,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       fireEvent.click(screen.getByText('⬅️'));
@@ -122,6 +132,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('해당 게임에 참가를 신청하는 운동 참가 신청 핸들러 함수 호출', () => {
       renderPost({
@@ -129,6 +140,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       fireEvent.click(screen.getByText('신청'));
@@ -171,6 +183,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
@@ -178,6 +191,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       fireEvent.click(screen.getByText('신청취소'));
@@ -220,6 +234,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
@@ -227,6 +242,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       fireEvent.click(screen.getByText('참가취소'));
@@ -263,6 +279,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('게시글 삭제하기 버튼을 확인할 수 없음', () => {
       renderPost({
@@ -270,6 +287,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       expect(screen.queryByText('삭제하기')).toBe(null);
@@ -304,6 +322,7 @@ describe('Post', () => {
       },
     ];
     const applicants = [];
+    const registerError = {};
 
     it('게시글 삭제하기 버튼을 확인할 수 있음', () => {
       renderPost({
@@ -311,6 +330,7 @@ describe('Post', () => {
         game,
         members,
         applicants,
+        registerError,
       });
 
       screen.getByText('삭제하기');
@@ -323,6 +343,7 @@ describe('Post', () => {
           game,
           members,
           applicants,
+          registerError,
         });
 
         fireEvent.click(screen.getByText('삭제하기'));

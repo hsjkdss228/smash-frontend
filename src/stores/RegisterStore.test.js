@@ -66,8 +66,9 @@ describe('RegisterStore', () => {
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 100,
-        message: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+        errorCode: 100,
+        errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
+        gameId: null,
       });
     });
   });
@@ -82,8 +83,9 @@ describe('RegisterStore', () => {
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 101,
-        message: '이미 신청이 완료된 운동입니다.',
+        errorCode: 101,
+        errorMessage: '이미 신청 중이거나 신청이 완료된 운동입니다.',
+        gameId: null,
       });
     });
   });
@@ -91,15 +93,39 @@ describe('RegisterStore', () => {
   context('존재하지 않는 user Id로 운동 참가 신청 API를 요청할 경우', () => {
     it('사용자를 찾을 수 없다는 에러 상태 저장', async () => {
       registerApiService.setAccessToken('not existed userId 3');
-      const gameId = 1;
-      await registerStore.registerToGame(gameId);
+      const targetGameId = 1;
+      await registerStore.registerToGame(targetGameId);
 
-      const { registeredGameId, registerErrorCodeAndMessage } = registerStore;
+      const {
+        registeredGameId,
+        registerErrorCodeAndMessage,
+      } = registerStore;
 
       expect(registeredGameId).toBe(-1);
       expect(registerErrorCodeAndMessage).toStrictEqual({
-        code: 102,
-        message: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
+        errorCode: 102,
+        errorMessage: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
+        gameId: null,
+      });
+    });
+
+    context('user Id로 운동 참가 신청 API를 요청했지만 정원이 마감된 경우', () => {
+      it('참가 정원이 모두 차 참가를 신청할 수 없다는 에러 상태 저장', async () => {
+        registerApiService.setAccessToken('fully participated userId 3');
+        const targetGameId = 1;
+        await registerStore.registerToGame(targetGameId);
+
+        const {
+          registeredGameId,
+          registerErrorCodeAndMessage,
+        } = registerStore;
+
+        expect(registeredGameId).toBe(-1);
+        expect(registerErrorCodeAndMessage).toStrictEqual({
+          errorCode: 103,
+          errorMessage: '참가 정원이 모두 차 참가를 신청할 수 없습니다.',
+          gameId: 1,
+        });
       });
     });
   });

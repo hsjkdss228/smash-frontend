@@ -20,9 +20,12 @@ export default function PostsRegisterButton({
   gameId,
   registerId,
   registerStatus,
+  currentMemberCount,
+  targetMemberCount,
   registerToGame,
   cancelRegisterToGame,
   cancelParticipateToGame,
+  registerErrors,
 }) {
   const handleClickRegister = (targetGameId) => {
     registerToGame(targetGameId);
@@ -36,18 +39,33 @@ export default function PostsRegisterButton({
     cancelParticipateToGame(targetRegisterId);
   };
 
+  if (registerStatus === 'none'
+    && currentMemberCount >= targetMemberCount) {
+    return (
+      null
+    );
+  }
+
   if (registerStatus === 'none') {
     return (
-      <RegisterButtonSection>
-        <p>바로 신청하고 싶다면?</p>
-        <Button
-          id={`posts-register-button-${gameId}`}
-          type="button"
-          onClick={() => handleClickRegister(gameId)}
-        >
-          신청
-        </Button>
-      </RegisterButtonSection>
+      <>
+        <RegisterButtonSection>
+          <p>바로 신청하고 싶다면?</p>
+          <Button
+            id={`posts-register-button-${gameId}`}
+            type="button"
+            onClick={() => handleClickRegister(gameId)}
+          >
+            신청
+          </Button>
+        </RegisterButtonSection>
+        {registerErrors.errorCode
+          && gameId === registerErrors.gameId ? (
+            <p>{registerErrors.errorMessage}</p>
+          ) : (
+            null
+          )}
+      </>
     );
   }
 

@@ -11,15 +11,21 @@ describe('PostsRegisterButton', () => {
     gameId,
     registerId,
     registerStatus,
+    currentMemberCount,
+    targetMemberCount,
+    registerErrors,
   }) => {
     render((
       <PostsRegisterButton
         gameId={gameId}
         registerId={registerId}
         registerStatus={registerStatus}
+        currentMemberCount={currentMemberCount}
+        targetMemberCount={targetMemberCount}
         registerToGame={registerToGame}
         cancelRegisterToGame={cancelRegisterToGame}
         cancelParticipateToGame={cancelParticipateToGame}
+        registerErrors={registerErrors}
       />
     ));
   };
@@ -28,6 +34,9 @@ describe('PostsRegisterButton', () => {
     const gameId = 2;
     const registerId = -1;
     const registerStatus = 'none';
+    const currentMemberCount = 5;
+    const targetMemberCount = 10;
+    const registerErrors = {};
 
     it('운동 참가 신청 이벤트 핸들러 호출', () => {
       jest.clearAllMocks();
@@ -35,6 +44,9 @@ describe('PostsRegisterButton', () => {
         gameId,
         registerId,
         registerStatus,
+        currentMemberCount,
+        targetMemberCount,
+        registerErrors,
       });
 
       fireEvent.click(screen.getByText('신청'));
@@ -46,6 +58,9 @@ describe('PostsRegisterButton', () => {
     const gameId = 2;
     const registerId = 7;
     const registerStatus = 'processing';
+    const currentMemberCount = 5;
+    const targetMemberCount = 10;
+    const registerErrors = {};
 
     it('운동 참가 취소 이벤트 핸들러 호출', () => {
       jest.clearAllMocks();
@@ -53,6 +68,9 @@ describe('PostsRegisterButton', () => {
         gameId,
         registerId,
         registerStatus,
+        currentMemberCount,
+        targetMemberCount,
+        registerErrors,
       });
 
       fireEvent.click(screen.getByText('신청취소'));
@@ -64,16 +82,70 @@ describe('PostsRegisterButton', () => {
     const gameId = 2;
     const registerId = 7;
     const registerStatus = 'accepted';
+    const currentMemberCount = 5;
+    const targetMemberCount = 10;
+    const registerErrors = {};
 
     it('에러 메세지 출력', () => {
       renderPostsRegisterButton({
         gameId,
         registerId,
         registerStatus,
+        currentMemberCount,
+        targetMemberCount,
+        registerErrors,
       });
 
       fireEvent.click(screen.getByText('참가취소'));
       expect(cancelParticipateToGame).toBeCalledWith(registerId);
+    });
+  });
+
+  context('신청하지 않은 상태인데 잔여석이 없을 경우', () => {
+    const gameId = 2;
+    const registerId = 7;
+    const registerStatus = 'none';
+    const currentMemberCount = 10;
+    const targetMemberCount = 10;
+    const registerErrors = {};
+
+    it('신청 버튼을 출력하지 않음', () => {
+      renderPostsRegisterButton({
+        gameId,
+        registerId,
+        registerStatus,
+        currentMemberCount,
+        targetMemberCount,
+        registerErrors,
+      });
+
+      expect(screen.queryByText('바로 신청하고 싶다면?')).toBe(null);
+    });
+  });
+
+  context('에러 메세지가 전달될 경우', () => {
+    const gameId = 2;
+    const registerId = 7;
+    const registerStatus = 'none';
+    const currentMemberCount = 9;
+    const targetMemberCount = 10;
+    const registerErrors = {
+      errorCode: '100',
+      errorMessage: '에러 메세지 내용입니다.',
+      gameId: 2,
+    };
+
+    it('버튼 하단에 에러 메세지를 출력', () => {
+      renderPostsRegisterButton({
+        gameId,
+        registerId,
+        registerStatus,
+        currentMemberCount,
+        targetMemberCount,
+        registerErrors,
+      });
+
+      screen.getByText('에러 메세지 내용입니다.');
     });
   });
 });

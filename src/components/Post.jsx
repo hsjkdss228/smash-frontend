@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 import styled from 'styled-components';
 import PostGameInformation from './PostGameInformation';
 import PostGameMemberInformation from './PostGameMembersInformation';
@@ -42,6 +44,7 @@ export default function Post({
   handleClickParticipateCancel,
   acceptRegister,
   rejectRegister,
+  registerError,
 }) {
   const onClickBackward = () => {
     navigateToBackward();
@@ -118,10 +121,13 @@ export default function Post({
           />
         ) : (
           <PostRegisterButton
+            currentMemberCount={game.currentMemberCount}
+            targetMemberCount={game.targetMemberCount}
             registerStatus={game.registerStatus}
             onClickRegister={onClickRegister}
             onClickRegisterCancel={onClickRegisterCancel}
             onClickParticipateCancel={onClickParticipateCancel}
+            registerError={registerError}
           />
         )}
       </PostInformation>

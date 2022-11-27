@@ -39,7 +39,11 @@ export default function PostPage() {
 
   const { post } = postStore;
   const { game } = gameStore;
-  const { members, applicants } = registerStore;
+  const {
+    members,
+    applicants,
+    registerErrorCodeAndMessage,
+  } = registerStore;
 
   const navigateToBackward = () => {
     navigate(-1);
@@ -90,6 +94,7 @@ export default function PostPage() {
       handleClickParticipateCancel={handleClickParticipateCancel}
       acceptRegister={acceptRegister}
       rejectRegister={rejectRegister}
+      registerError={registerErrorCodeAndMessage}
     />
   );
 }

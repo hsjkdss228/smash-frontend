@@ -46,11 +46,13 @@ export default class RegisterStore extends Store {
       this.registeredGameId = await registerApiService.registerToGame(gameId);
       return this.registeredGameId;
     } catch (error) {
-      const { errorCode, errorMessage } = error.response.data;
+      const { errorCode, errorMessage, gameId } = error.response.data;
       this.registerErrorCodeAndMessage = {
-        code: errorCode,
-        message: errorMessage,
+        errorCode,
+        errorMessage,
+        gameId,
       };
+      this.publish();
       return '';
     }
   }
