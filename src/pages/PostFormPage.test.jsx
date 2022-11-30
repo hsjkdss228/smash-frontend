@@ -16,7 +16,8 @@ let gameDate;
 let gamePlace;
 let gameTargetMemberCount;
 let postDetail;
-let errorCodeAndMessages;
+let formErrors;
+let serverErrors;
 const changeGameExercise = jest.fn();
 const changeGameDate = jest.fn();
 const changeGameStartTimeAmPm = jest.fn();
@@ -36,7 +37,8 @@ jest.mock('../hooks/usePostFormStore', () => () => ({
   gamePlace,
   gameTargetMemberCount,
   postDetail,
-  errorCodeAndMessages,
+  formErrors,
+  serverErrors,
   changeGameExercise,
   changeGameDate,
   changeGameStartTimeAmPm,
@@ -70,7 +72,8 @@ describe('PostFormPage', () => {
       gamePlace = '';
       gameTargetMemberCount = 0;
       postDetail = '';
-      errorCodeAndMessages = {};
+      formErrors = {};
+      serverErrors = {};
     });
 
     it('입력되는 내용을 상태로 저장하는 Store의 메서드 호출', () => {

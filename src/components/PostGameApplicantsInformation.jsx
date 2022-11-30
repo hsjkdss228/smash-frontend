@@ -30,10 +30,15 @@ const Buttons = styled.div`
     border: 1px solid #000;
     margin-left: .3em;
   }
+
+  button:disabled {
+    cursor: default;
+  }
 `;
 
 export default function PostGameApplicantsInformation({
   applicants,
+  cannotAcceptRegister,
   acceptRegister,
   rejectRegister,
 }) {
@@ -74,6 +79,7 @@ export default function PostGameApplicantsInformation({
             <Buttons>
               <button
                 type="button"
+                disabled={cannotAcceptRegister}
                 onClick={() => handleClickAcceptRegister(applicant.id)}
               >
                 수락

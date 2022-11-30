@@ -8,9 +8,9 @@ export default class UserStore extends Store {
     this.loginErrorMessage = '';
   }
 
-  async login({ identifier, password }) {
+  async login({ username, password }) {
     try {
-      const data = await userApiService.postSession({ identifier, password });
+      const data = await userApiService.postSession({ username, password });
       this.accessToken = data.accessToken;
       return this.accessToken;
     } catch (error) {
@@ -18,6 +18,11 @@ export default class UserStore extends Store {
       this.loginErrorMessage = errorMessage;
       return '';
     }
+  }
+
+  clearLoginError() {
+    this.loginErrorMessage = '';
+    this.publish();
   }
 }
 

@@ -22,7 +22,8 @@ export default function PostFormPage() {
     gamePlace,
     gameTargetMemberCount,
     postDetail,
-    errorCodeAndMessages,
+    formErrors,
+    serverErrors,
   } = postFormStore;
 
   const data = {
@@ -110,7 +111,8 @@ export default function PostFormPage() {
       changeGameTargetMemberCount={changeGameTargetMemberCount}
       changePostDetail={changePostDetail}
       createPost={createPost}
-      errors={errorCodeAndMessages}
+      formErrors={formErrors}
+      serverErrors={serverErrors}
     />
   );
 }
