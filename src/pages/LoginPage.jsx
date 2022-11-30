@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from 'usehooks-ts';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import useUserStore from '../hooks/useUserStore';
 import LoginForm from '../components/LoginForm';
 import LoginErrors from '../components/LoginErrors';
@@ -12,11 +13,15 @@ export default function LoginPage() {
 
   const userStore = useUserStore();
 
+  useEffect(() => {
+    userStore.clearLoginError();
+  }, []);
+
   const { register, handleSubmit, formState: { errors } } = useForm({ reValidateMode: 'onSubmit' });
 
   const login = async (data) => {
-    const { identifier, password } = data;
-    const verifiedAccessToken = await userStore.login({ identifier, password });
+    const { username, password } = data;
+    const verifiedAccessToken = await userStore.login({ username, password });
     if (verifiedAccessToken) {
       setAccessToken(verifiedAccessToken);
       navigate('/');

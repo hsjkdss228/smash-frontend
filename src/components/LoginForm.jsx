@@ -40,15 +40,15 @@ export default function LoginForm({
     <Container>
       <Form onSubmit={handleSubmit(submit)}>
         <div>
-          <label htmlFor="input-identifier">
+          <label htmlFor="input-username">
             아이디
           </label>
           <Input
-            id="input-identifier"
+            id="input-username"
             type="text"
             placeholder="아이디"
             {...register(
-              'identifier',
+              'username',
               { required: { value: true, message: '아이디를 입력해주세요.' } },
             )}
           />

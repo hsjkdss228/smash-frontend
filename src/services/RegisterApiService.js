@@ -16,13 +16,13 @@ export default class RegisterApiService {
   }
 
   async fetchMembers(gameId) {
-    const url = `${apiBaseUrl}/registers/members/games/${gameId}`;
+    const url = `${apiBaseUrl}/games/${gameId}/members`;
     const { data } = await axios.get(url);
     return data;
   }
 
   async fetchApplicants(gameId) {
-    const url = `${apiBaseUrl}/registers/applicants/games/${gameId}`;
+    const url = `${apiBaseUrl}/games/${gameId}/applicants`;
     const { data } = await axios.get(url);
     return data;
   }

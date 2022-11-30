@@ -6,10 +6,14 @@ describe('PostGameApplicantsInformation', () => {
   const acceptRegister = jest.fn();
   const rejectRegister = jest.fn();
 
-  const renderPostGameApplicantsInformation = ({ applicants }) => {
+  const renderPostGameApplicantsInformation = ({
+    applicants,
+    cannotAcceptRegister,
+  }) => {
     render((
       <PostGameApplicantsInformation
         applicants={applicants}
+        cannotAcceptRegister={cannotAcceptRegister}
         acceptRegister={acceptRegister}
         rejectRegister={rejectRegister}
       />
@@ -18,9 +22,13 @@ describe('PostGameApplicantsInformation', () => {
 
   context('게시글에 신청자가 없는 경우', () => {
     const applicants = [];
+    const cannotAcceptRegister = false;
 
     it('신청 버튼 출력', () => {
-      renderPostGameApplicantsInformation({ applicants });
+      renderPostGameApplicantsInformation({
+        applicants,
+        cannotAcceptRegister,
+      });
 
       screen.getByText('신청자가 없습니다.');
     });
@@ -47,9 +55,13 @@ describe('PostGameApplicantsInformation', () => {
         phoneNumber: '010-9876-5432',
       },
     ];
+    const cannotAcceptRegister = false;
 
     it('각 신청자 정보 및 수락/거절 버튼 출력', () => {
-      renderPostGameApplicantsInformation({ applicants });
+      renderPostGameApplicantsInformation({
+        applicants,
+        cannotAcceptRegister,
+      });
 
       screen.getByText('신청자 정보');
       screen.getByText('전민지');
@@ -69,9 +81,14 @@ describe('PostGameApplicantsInformation', () => {
         phoneNumber: '010-0000-0000',
       },
     ];
+    const cannotAcceptRegister = false;
 
     it('참가 신청을 수락하는 핸들러 함수 호출', () => {
-      renderPostGameApplicantsInformation({ applicants });
+      jest.clearAllMocks();
+      renderPostGameApplicantsInformation({
+        applicants,
+        cannotAcceptRegister,
+      });
 
       fireEvent.click(screen.getByText('수락'));
       const expectedRegisterId = 1;
@@ -88,13 +105,41 @@ describe('PostGameApplicantsInformation', () => {
         phoneNumber: '010-2222-2222',
       },
     ];
+    const cannotAcceptRegister = false;
 
     it('참가 신청을 거절하는 핸들러 함수 호출', () => {
-      renderPostGameApplicantsInformation({ applicants });
+      jest.clearAllMocks();
+      renderPostGameApplicantsInformation({
+        applicants,
+        cannotAcceptRegister,
+      });
 
       fireEvent.click(screen.getByText('거절'));
       const expectedRegisterId = 2;
       expect(rejectRegister).toBeCalledWith(expectedRegisterId);
+    });
+  });
+
+  context('신청자에 대해 참가신청 수락 버튼을 누를 수 없는 경우', () => {
+    const applicants = [
+      {
+        id: 2,
+        name: '노승준',
+        gender: '남성',
+        phoneNumber: '010-2222-2222',
+      },
+    ];
+    const cannotAcceptRegister = true;
+
+    it('참가 신청 버튼을 눌러도 참가 신청 수락 핸들러 함수가 호출되지 않음', () => {
+      jest.clearAllMocks();
+      renderPostGameApplicantsInformation({
+        applicants,
+        cannotAcceptRegister,
+      });
+
+      fireEvent.click(screen.getByText('수락'));
+      expect(acceptRegister).not.toBeCalled();
     });
   });
 });

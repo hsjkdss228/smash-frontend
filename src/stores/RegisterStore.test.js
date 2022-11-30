@@ -152,6 +152,18 @@ describe('RegisterStore', () => {
       const registerId = 1;
       await registerStore.acceptRegister(registerId);
     });
+
+    context('운동 참가 수락 API에서 에러가 반환될 경우', () => {
+      it('에러 메세지를 상태로 저장', async () => {
+        registerApiService.setAccessToken('userId 1');
+        const registerId = 2;
+        await registerStore.acceptRegister(registerId);
+
+        const { registerErrorCodeAndMessage } = registerStore;
+        expect(registerErrorCodeAndMessage)
+          .toBe('정원이 가득 차 있어 운동 참가 신청을 수락할 수 없습니다.');
+      });
+    });
   });
 
   context('운동 참가 거절 API를 요청할 경우', () => {

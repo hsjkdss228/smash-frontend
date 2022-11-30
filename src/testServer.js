@@ -262,7 +262,7 @@ const postTestServer = setupServer(
 
   // fetchMembers
   rest.get(
-    `${apiBaseUrl}/registers/members/games/:gameId`,
+    `${apiBaseUrl}/games/:gameId/members`,
     async (request, response, context) => {
       const { gameId } = await request.params;
 
@@ -296,7 +296,7 @@ const postTestServer = setupServer(
 
   // fetchApplicants
   rest.get(
-    `${apiBaseUrl}/registers/applicants/games/:gameId`,
+    `${apiBaseUrl}/games/:gameId/applicants`,
     async (request, response, context) => {
       const { gameId } = await request.params;
 
@@ -332,7 +332,17 @@ const postTestServer = setupServer(
   rest.patch(
     `${apiBaseUrl}/registers/:registerId`,
     async (request, response, context) => {
+      const { registerId } = await request.params;
       const status = await request.url.searchParams.get('status');
+
+      if (registerId === '2') {
+        return response(
+          context.status(400),
+          context.json(
+            '정원이 가득 차 있어 운동 참가 신청을 수락할 수 없습니다.',
+          ),
+        );
+      }
 
       if (status === 'canceled'
         || status === 'accepted'

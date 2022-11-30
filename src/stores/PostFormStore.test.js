@@ -6,8 +6,6 @@ import { postApiService } from '../services/PostApiService';
 describe('PostFormStore', () => {
   let postFormStore;
 
-  // TODO: change 계열 메서드 호출 시 상태 변경 검증
-
   beforeEach(() => {
     postFormStore = new PostFormStore();
   });
@@ -59,6 +57,36 @@ describe('PostFormStore', () => {
 
       const postId = await postFormStore.createPost();
       expect(postId).toBe(1);
+    });
+  });
+
+  context('게시글 생성 API 호출 시 입력되지 않은 상태가 있을 경우', () => {
+    it('해당 에러 메세지의 상태와 에러 발생 여부 flag 상태를 활성화', async () => {
+      postFormStore.gameExercise = '스케이트';
+      postFormStore.gameDate = new Date('2022-12-31T00:00:00.000Z');
+      postFormStore.gameStartTimeAmPm = 'am';
+      postFormStore.gameStartHour = '';
+      postFormStore.gameStartMinute = '00';
+      postFormStore.gameEndTimeAmPm = 'pm';
+      postFormStore.gameEndHour = '04';
+      postFormStore.gameEndMinute = '30';
+      postFormStore.gamePlace = '';
+      postFormStore.gameTargetMemberCount = '12';
+      postFormStore.postDetail = '';
+
+      const postId = await postFormStore.createPost();
+
+      const { formErrors, hasFormErrors } = postFormStore;
+
+      expect(postId).toBeFalsy();
+      expect(formErrors.BLANK_GAME_DATE).toBeFalsy();
+      expect(formErrors.BLANK_GAME_START_HOUR)
+        .toBe('시작 시간을 입력해주세요.');
+      expect(formErrors.BLANK_GAME_PLACE)
+        .toBe('운동 장소 이름을 입력해주세요.');
+      expect(formErrors.BLANK_POST_DETAIL)
+        .toBe('게시글 상세 내용을 입력해주세요.');
+      expect(hasFormErrors).toBeTruthy();
     });
   });
 });

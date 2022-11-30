@@ -116,6 +116,9 @@ export default function Post({
         {post.isAuthor ? (
           <PostGameApplicantsInformation
             applicants={applicants}
+            cannotAcceptRegister={(
+              game.currentMemberCount >= game.targetMemberCount
+            )}
             acceptRegister={acceptRegister}
             rejectRegister={rejectRegister}
           />

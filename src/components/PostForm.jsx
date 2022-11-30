@@ -35,7 +35,8 @@ export default function PostForm({
   changeGameTargetMemberCount,
   changePostDetail,
   createPost,
-  errors,
+  formErrors,
+  serverErrors,
 }) {
   const handleClickBackward = () => {
     navigateToBackward();
@@ -99,7 +100,7 @@ export default function PostForm({
     event.preventDefault();
     createPost();
   };
-  
+
   return (
     <Container>
       <BackwardButton
@@ -120,8 +121,8 @@ export default function PostForm({
             onChange={(event) => handleChangeGameExercise(event)}
           />
         </div>
-        {errors['100'] ? (
-          <p>{errors['100']}</p>
+        {formErrors.BLANK_GAME_EXERCISE ? (
+          <p>{formErrors.BLANK_GAME_EXERCISE}</p>
         ) : null}
         <div>
           <label htmlFor="input-game-date">
@@ -133,8 +134,8 @@ export default function PostForm({
             onChange={(date) => handleChangeGameDate(date)}
             dateFormat="yyyy년 MM월 dd일"
           />
-          {errors['101'] ? (
-            <p>{errors['101']}</p>
+          {formErrors.BLANK_GAME_DATE ? (
+            <p>{formErrors.BLANK_GAME_DATE}</p>
           ) : null}
         </div>
         <div>
@@ -223,17 +224,26 @@ export default function PostForm({
             />
           </div>
           <p>까지</p>
-          {errors['102'] || errors['103'] || errors['104']
-            || errors['105'] || errors['106'] || errors['107'] ? (
-              <p>
-                입력하지 않은 운동 시간이 있습니다.
-                {' '}
-                {(errors['102'] || errors['105']) && '(오전/오후)'}
-                {' '}
-                {(errors['103'] || errors['106']) && '(시)'}
-                {' '}
-                {(errors['104'] || errors['107']) && '(분)'}
-              </p>
+          {formErrors.BLANK_GAME_START_AM_PM
+            || formErrors.BLANK_GAME_START_HOUR
+            || formErrors.BLANK_GAME_START_MINUTE
+            || formErrors.BLANK_GAME_END_AM_PM
+            || formErrors.BLANK_GAME_END_HOUR
+            || formErrors.BLANK_GAME_END_MINUTE ? (
+              <div>
+                <p>
+                  {(formErrors.BLANK_GAME_START_AM_PM
+                  || formErrors.BLANK_GAME_END_AM_PM)}
+                </p>
+                <p>
+                  {(formErrors.BLANK_GAME_START_HOUR
+                  || formErrors.BLANK_GAME_END_HOUR)}
+                </p>
+                <p>
+                  {(formErrors.BLANK_GAME_START_MINUTE
+                  || formErrors.BLANK_GAME_END_MINUTE)}
+                </p>
+              </div>
             ) : null}
         </div>
         <div>
@@ -246,8 +256,8 @@ export default function PostForm({
             value={data.gamePlace}
             onChange={handleChangeGamePlace}
           />
-          {errors['108'] ? (
-            <p>{errors['108']}</p>
+          {formErrors.BLANK_GAME_PLACE ? (
+            <p>{formErrors.BLANK_GAME_PLACE}</p>
           ) : null}
         </div>
         <div>
@@ -261,8 +271,8 @@ export default function PostForm({
             onChange={handleChangeGameTargetMemberCount}
           />
         </div>
-        {errors['109'] ? (
-          <p>{errors['109']}</p>
+        {formErrors.NULL_GAME_TARGET_MEMBER_COUNT ? (
+          <p>{formErrors.NULL_GAME_TARGET_MEMBER_COUNT}</p>
         ) : null}
         <div>
           <label htmlFor="input-post-detail">
@@ -273,8 +283,8 @@ export default function PostForm({
             value={data.postDetail}
             onChange={handleChangePostDetail}
           />
-          {errors['110'] ? (
-            <p>{errors['110']}</p>
+          {formErrors.BLANK_POST_DETAIL ? (
+            <p>{formErrors.BLANK_POST_DETAIL}</p>
           ) : null}
         </div>
         <SubmitButton
@@ -283,11 +293,8 @@ export default function PostForm({
           작성하기
         </SubmitButton>
       </Form>
-      {errors['111'] ? (
-        <p>{errors['111']}</p>
-      ) : null}
-      {errors['112'] ? (
-        <p>{errors['112']}</p>
+      {serverErrors.errorMessages ? (
+        <p>{serverErrors.errorMessages}</p>
       ) : null}
     </Container>
   );

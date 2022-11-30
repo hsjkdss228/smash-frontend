@@ -19,7 +19,8 @@ describe('PostForm', () => {
 
   const renderPostForm = ({
     data,
-    errors,
+    formErrors,
+    serverErrors,
   }) => {
     render((
       <PostForm
@@ -37,7 +38,8 @@ describe('PostForm', () => {
         changeGameTargetMemberCount={changeGameTargetMemberCount}
         changePostDetail={changePostDetail}
         createPost={createPost}
-        errors={errors}
+        formErrors={formErrors}
+        serverErrors={serverErrors}
       />
     ));
   };
@@ -50,12 +52,14 @@ describe('PostForm', () => {
       gameTargetMemberCount: 0,
       postDetail: '',
     };
-    const errors = {};
+    const formErrors = {};
+    const serverErrors = {};
 
     it('게시글 작성 폼을 화면에 출력', () => {
       renderPostForm({
         data,
-        errors,
+        formErrors,
+        serverErrors,
       });
 
       screen.getByText(/종목/);
@@ -70,7 +74,8 @@ describe('PostForm', () => {
       it('뒤로 가기 핸들러 함수 호출', () => {
         renderPostForm({
           data,
-          errors,
+          formErrors,
+          serverErrors,
         });
 
         fireEvent.click(screen.getByText('⬅️'));
@@ -90,7 +95,8 @@ describe('PostForm', () => {
       it('입력되는 내용을 상태로 저장하는 핸들러 함수 호출', () => {
         renderPostForm({
           data: dataWithSpecificDate,
-          errors,
+          formErrors,
+          serverErrors,
         });
 
         fireEvent.change(screen.getByLabelText(/종목/), {
@@ -150,7 +156,8 @@ describe('PostForm', () => {
         it('입력되는 내용을 상태로 저장하는 핸들러 함수 호출', () => {
           renderPostForm({
             data,
-            errors,
+            formErrors,
+            serverErrors,
           });
 
           fireEvent.click(screen.getByText(/작성하기/));
@@ -168,15 +175,17 @@ describe('PostForm', () => {
       gameTargetMemberCount: 0,
       postDetail: '',
     };
-    const errors = {
-      108: '운동 장소 이름을 입력해주세요.',
-      109: '사용자 수를 입력해주세요.',
+    const formErrors = {
+      BLANK_GAME_PLACE: '운동 장소 이름을 입력해주세요.',
+      NULL_GAME_TARGET_MEMBER_COUNT: '사용자 수를 입력해주세요.',
     };
+    const serverErrors = {};
 
     it('에러 메세지를 컴포넌트에 출력', () => {
       renderPostForm({
         data,
-        errors,
+        formErrors,
+        serverErrors,
       });
 
       screen.getByText('운동 장소 이름을 입력해주세요.');
