@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useLocalStorage } from 'usehooks-ts';
@@ -6,22 +6,37 @@ import { useLocalStorage } from 'usehooks-ts';
 import usePostStore from '../hooks/usePostStore';
 
 import Posts from '../components/Posts';
+import { postApiService } from '../services/PostApiService';
 
 export default function PostsPage() {
   const navigate = useNavigate();
 
   const [accessToken] = useLocalStorage('accessToken', '');
+  const loggedIn = accessToken !== '';
+
+  const [searchSetting, toggleSearchSetting] = useState(false);
+  const [filterSetting, toggleFilterSetting] = useState(false);
 
   const postStore = usePostStore();
 
   useEffect(() => {
+    postApiService.setAccessToken(accessToken);
     postStore.fetchPosts();
   }, [accessToken]);
 
-  const { posts, postsErrorMessage } = postStore;
+  const {
+    posts,
+    postsErrorMessage,
+  } = postStore;
 
-  const navigateToBackward = () => {
-    navigate(-1);
+  const handleClickToggleSearchSetting = () => {
+    toggleSearchSetting(!searchSetting);
+    toggleFilterSetting(false);
+  };
+
+  const handleClickToggleFilterSetting = () => {
+    toggleSearchSetting(false);
+    toggleFilterSetting(!filterSetting);
   };
 
   const navigateToPost = (postId) => {
@@ -34,8 +49,12 @@ export default function PostsPage() {
 
   return (
     <Posts
+      loggedIn={loggedIn}
+      searchSetting={searchSetting}
+      filterSetting={filterSetting}
+      toggleSearchSetting={handleClickToggleSearchSetting}
+      toggleFilterSetting={handleClickToggleFilterSetting}
       posts={posts}
-      navigateToBackward={navigateToBackward}
       navigateToPost={navigateToPost}
       postsErrorMessage={postsErrorMessage}
     />

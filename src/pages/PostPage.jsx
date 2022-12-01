@@ -8,6 +8,7 @@ import useRegisterStore from '../hooks/useRegisterStore';
 
 export default function PostPage() {
   const [accessToken] = useLocalStorage('accessToken', '');
+  const loggedIn = accessToken !== '';
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +50,16 @@ export default function PostPage() {
     navigate(-1);
   };
 
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
+
+  // TODO: 체험 계정 선택하기 페이지로 이동시키기
+
+  const navigateToSelectTrialAccount = () => {
+    navigate('/login');
+  };
+
   const handleClickDeletePost = async (targetPostId) => {
     await postStore.deletePost(targetPostId);
     navigate('/posts/list');
@@ -83,7 +94,10 @@ export default function PostPage() {
 
   return (
     <Post
+      loggedIn={loggedIn}
       navigateToBackward={navigateToBackward}
+      navigateToLogin={navigateToLogin}
+      navigateToSelectTrialAccount={navigateToSelectTrialAccount}
       post={post}
       game={game}
       members={members}

@@ -10,7 +10,6 @@ import { gameApiService } from './services/GameApiService';
 import { registerApiService } from './services/RegisterApiService';
 
 import Header from './components/Header';
-import HomePage from './pages/HomePage';
 import PostsPage from './pages/PostsPage';
 import PostListMapPage from './pages/PostListMapPage';
 import PostPage from './pages/PostPage';
@@ -49,7 +48,7 @@ export default function App() {
       <Container>
         <Wrapper>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<PostsPage />} />
             <Route path="/posts/list" element={<PostsPage />} />
             <Route path="/posts/:postId" element={<PostPage />} />
             <Route path="/login" element={<LoginPage />} />

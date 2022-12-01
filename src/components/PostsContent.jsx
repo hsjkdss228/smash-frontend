@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 import styled from 'styled-components';
 
 const Container = styled.button`
@@ -19,18 +21,38 @@ const DateAndPlace = styled.div`
   margin-bottom: 1em;
 `;
 
-const MemberCount = styled.div`
+const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
+const MemberCountAndSeeDetail = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MemberCount = styled.p`
+  margin-right: .5em;
+`;
+
+const SeeDetail = styled.p`
+  font-size: .8em;
+`;
+
+const RegisterStatus = styled.div`
+  text-align: right;
+`;
+
 export default function PostsContent({
+  loggedIn,
   hits,
+  isAuthor,
   type,
   date,
   place,
   currentMemberCount,
   targetMemberCount,
+  registerStatus,
   onClickPost,
 }) {
   const handleClickPostButton = () => {
@@ -54,15 +76,28 @@ export default function PostsContent({
         <p>{date}</p>
         <p>{place}</p>
       </DateAndPlace>
-      <MemberCount>
-        <p>
-          {currentMemberCount}
-          /
-          {targetMemberCount}
-          명 참가 중
-        </p>
-        <p>상세 내용 보기</p>
-      </MemberCount>
+      <Bottom>
+        <MemberCountAndSeeDetail>
+          <MemberCount>
+            {currentMemberCount}
+            /
+            {targetMemberCount}
+            명 참가 중
+          </MemberCount>
+          <SeeDetail>상세 내용 보기</SeeDetail>
+        </MemberCountAndSeeDetail>
+        <RegisterStatus>
+          {loggedIn ? (
+            isAuthor ? (
+              <p>내가 쓴 글</p>
+            ) : registerStatus === 'processing' ? (
+              <p>참가 신청 중</p>
+            ) : registerStatus === 'accepted' ? (
+              <p>참가 중</p>
+            ) : null
+          ) : null}
+        </RegisterStatus>
+      </Bottom>
     </Container>
   );
 }
