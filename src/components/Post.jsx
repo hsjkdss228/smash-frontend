@@ -32,8 +32,21 @@ const PostInformation = styled.div`
 
 `;
 
+const LoginGuidance = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  
+  button {
+    border: 1px solid #000;
+  }
+`;
+
 export default function Post({
+  loggedIn,
   navigateToBackward,
+  navigateToLogin,
+  navigateToSelectTrialAccount,
   post,
   game,
   members,
@@ -48,6 +61,14 @@ export default function Post({
 }) {
   const onClickBackward = () => {
     navigateToBackward();
+  };
+
+  const onClickLogin = () => {
+    navigateToLogin();
+  };
+
+  const onClickSelectTrialAccount = () => {
+    navigateToSelectTrialAccount();
   };
 
   const onClickDeletePost = () => {
@@ -113,25 +134,59 @@ export default function Post({
         <PostGameMemberInformation
           members={members}
         />
-        {post.isAuthor ? (
-          <PostGameApplicantsInformation
-            applicants={applicants}
-            cannotAcceptRegister={(
-              game.currentMemberCount >= game.targetMemberCount
-            )}
-            acceptRegister={acceptRegister}
-            rejectRegister={rejectRegister}
-          />
+        {loggedIn ? (
+          post.isAuthor ? (
+            <PostGameApplicantsInformation
+              applicants={applicants}
+              cannotAcceptRegister={(
+                game.currentMemberCount >= game.targetMemberCount
+              )}
+              acceptRegister={acceptRegister}
+              rejectRegister={rejectRegister}
+            />
+          ) : (
+            game.registerStatus === 'processing' || game.registerStatus === 'accepted' ? (
+              <PostRegisterButton
+                registerStatus={game.registerStatus}
+                onClickRegister={onClickRegister}
+                onClickRegisterCancel={onClickRegisterCancel}
+                onClickParticipateCancel={onClickParticipateCancel}
+                registerError={registerError}
+              />
+            ) : (
+              game.currentMemberCount >= game.targetMemberCount ? (
+                <p>참가 정원이 모두 찼습니다.</p>
+              ) : (
+                <PostRegisterButton
+                  registerStatus={game.registerStatus}
+                  onClickRegister={onClickRegister}
+                  onClickRegisterCancel={onClickRegisterCancel}
+                  onClickParticipateCancel={onClickParticipateCancel}
+                  registerError={registerError}
+                />
+              )
+            )
+          )
         ) : (
-          <PostRegisterButton
-            currentMemberCount={game.currentMemberCount}
-            targetMemberCount={game.targetMemberCount}
-            registerStatus={game.registerStatus}
-            onClickRegister={onClickRegister}
-            onClickRegisterCancel={onClickRegisterCancel}
-            onClickParticipateCancel={onClickParticipateCancel}
-            registerError={registerError}
-          />
+          game.currentMemberCount >= game.targetMemberCount ? (
+            <p>참가 정원이 모두 찼습니다.</p>
+          ) : (
+            <LoginGuidance>
+              <p>운동에 신청하려면 로그인해주세요.</p>
+              <button
+                type="button"
+                onClick={onClickLogin}
+              >
+                로그인하기
+              </button>
+              <button
+                type="button"
+                onClick={onClickSelectTrialAccount}
+              >
+                체험 계정 선택하기
+              </button>
+            </LoginGuidance>
+          )
         )}
       </PostInformation>
     </Container>

@@ -1,13 +1,18 @@
+/* eslint-disable no-nested-ternary */
+
 import styled from 'styled-components';
 
 import PostsContent from './PostsContent';
-import BackwardButton from './ui/BackwardButton';
 
 const Container = styled.article`
   padding-block: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Settings = styled.div`
+
 `;
 
 const Thumbnails = styled.ul`
@@ -22,54 +27,70 @@ const Thumbnail = styled.li`
 `;
 
 export default function Posts({
+  loggedIn,
+  searchSetting,
+  filterSetting,
+  toggleSearchSetting,
+  toggleFilterSetting,
   posts,
-  navigateToBackward,
   navigateToPost,
   postsErrorMessage,
 }) {
-  const onClickBackward = () => {
-    navigateToBackward();
-  };
-
   const onClickPost = (postId) => {
     navigateToPost(postId);
   };
 
-  if (postsErrorMessage) {
-    return (
-      <p>{postsErrorMessage}</p>
-    );
-  }
-
-  if (posts.length === 0) {
-    return (
-      <p>등록된 게시물이 존재하지 않습니다.</p>
-    );
-  }
-
   return (
     <Container>
-      <BackwardButton
-        type="button"
-        onClick={onClickBackward}
-      >
-        ⬅️
-      </BackwardButton>
-      <Thumbnails>
-        {posts.map((post) => (
-          <Thumbnail key={post.id}>
-            <PostsContent
-              hits={post.hits}
-              type={post.game.type}
-              date={post.game.date}
-              place={post.game.place}
-              currentMemberCount={post.game.currentMemberCount}
-              targetMemberCount={post.game.targetMemberCount}
-              onClickPost={() => onClickPost(post.id)}
-            />
-          </Thumbnail>
-        ))}
-      </Thumbnails>
+      <Settings>
+        <button
+          type="button"
+          onClick={toggleSearchSetting}
+        >
+          검색조건 설정
+        </button>
+        <button
+          type="button"
+          onClick={toggleFilterSetting}
+        >
+          조회방식 설정
+        </button>
+        {searchSetting && (
+          <div>
+            <p>검색조건 설정 section</p>
+          </div>
+        )}
+        {filterSetting && (
+          <div>
+            <p>조회방식 설정 section</p>
+          </div>
+        )}
+      </Settings>
+      {posts.length === 0 ? (
+        <p>등록된 게시물이 존재하지 않습니다.</p>
+      ) : postsErrorMessage ? (
+        <p>{postsErrorMessage}</p>
+      ) : (
+        <Thumbnails>
+          {posts.map((post) => (
+            <Thumbnail key={post.id}>
+              <PostsContent
+                loggedIn={loggedIn}
+                hits={post.hits}
+                isAuthor={post.isAuthor}
+                type={post.game.type}
+                date={post.game.date}
+                place={post.game.place}
+                currentMemberCount={post.game.currentMemberCount}
+                targetMemberCount={post.game.targetMemberCount}
+                registerStatus={post.game.registerStatus}
+                onClickPost={() => onClickPost(post.id)}
+              />
+            </Thumbnail>
+          ))}
+        </Thumbnails>
+
+      )}
     </Container>
   );
 }

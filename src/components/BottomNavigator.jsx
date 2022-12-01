@@ -8,7 +8,7 @@ const Container = styled.nav`
   width: 100%;
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   border-top: 1px solid #000;
   background-color: #FFF;
 `;
@@ -30,15 +30,9 @@ export default function BottomNavigator() {
       </button>
       <button
         type="button"
-        onClick={() => handleClickButton('/posts/list')}
+        onClick={() => handleClickButton('/write')}
       >
-        운동
-      </button>
-      <button
-        type="button"
-        onClick={() => handleClickButton('/clubs')}
-      >
-        클럽
+        글쓰기
       </button>
       <button
         type="button"

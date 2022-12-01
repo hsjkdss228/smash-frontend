@@ -4,6 +4,8 @@ import Post from './Post';
 
 describe('Post', () => {
   const navigateToBackward = jest.fn();
+  const navigateToLogin = jest.fn();
+  const navigateToSelectTrialAccount = jest.fn();
   const handleClickDeletePost = jest.fn();
   const handleClickRegister = jest.fn();
   const handleClickRegisterCancel = jest.fn();
@@ -12,6 +14,7 @@ describe('Post', () => {
   const rejectRegister = jest.fn();
 
   const renderPost = ({
+    loggedIn,
     post,
     game,
     members,
@@ -20,7 +23,10 @@ describe('Post', () => {
   }) => {
     render((
       <Post
+        loggedIn={loggedIn}
         navigateToBackward={navigateToBackward}
+        navigateToLogin={navigateToLogin}
+        navigateToSelectTrialAccount={navigateToSelectTrialAccount}
         post={post}
         game={game}
         members={members}
@@ -37,6 +43,7 @@ describe('Post', () => {
   };
 
   context('게시글 정보가 아직 전달되지 않은 경우', () => {
+    const loggedIn = true;
     const post = {};
     const game = {};
     const members = [];
@@ -45,6 +52,7 @@ describe('Post', () => {
 
     it('게시글 정보를 불러오고 있다는 메세지 출력', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -56,10 +64,55 @@ describe('Post', () => {
     });
   });
 
-  // TODO: 작성자인 경우, 참가자인 경우에 따라
-  //   출력되는 컴포넌트의 차이를 테스트해야 함
+  context('로그인하지 않았을 경우', () => {
+    const loggedIn = false;
+    const post = {
+      id: 1,
+      hits: 223,
+      authorName: '작성자',
+      authorPhoneNumber: '010-1111-2222',
+      detail: '점심먹고 가볍게 탁구하실분?',
+      isAuthor: false,
+    };
+    const game = {
+      id: 1,
+      type: '탁구',
+      date: '2022년 10월 19일 12:30~13:30',
+      place: '서울숲탁구클럽',
+      currentMemberCount: 1,
+      targetMemberCount: 4,
+      registerId: -1,
+      registerStatus: 'none',
+    };
+    const members = [
+      {
+        id: 1,
+        name: '작성자',
+        gender: '남성',
+        phoneNumber: '010-1111-2222',
+      },
+    ];
+    const applicants = [];
+    const registerError = {};
+
+    it('신청/참가/참가취소 버튼 대신 로그인 안내 버튼 출력', () => {
+      renderPost({
+        loggedIn,
+        post,
+        game,
+        members,
+        applicants,
+        registerError,
+      });
+
+      expect(screen.queryByText('신청')).toBe(null);
+      screen.getByText('로그인하기');
+      screen.getByText('체험 계정 선택하기');
+    });
+  });
 
   context('게시글 정보가 출력될 때 뒤로가기 버튼을 누르면', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 223,
@@ -91,6 +144,7 @@ describe('Post', () => {
 
     it('뒤로가기 navigate 함수를 호출하는 핸들러 함수 호출', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -103,8 +157,9 @@ describe('Post', () => {
     });
   });
 
-  context('게시글에 참가 신청 버튼이 출력되는 상태에서'
+  context('게시글에 참가 신청 버튼이 출력되는 상태에서 '
     + '사용자가 게시글의 게임에 참가 신청 버튼을 누르면', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 223,
@@ -136,6 +191,7 @@ describe('Post', () => {
 
     it('해당 게임에 참가를 신청하는 운동 참가 신청 핸들러 함수 호출', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -148,8 +204,9 @@ describe('Post', () => {
     });
   });
 
-  context('게시글에 참가 신청 취소 버튼이 출력되는 상태에서'
+  context('게시글에 참가 신청 취소 버튼이 출력되는 상태에서 '
     + '사용자가 게시글의 게임에 참가 신청 취소 버튼을 누르면', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 223,
@@ -187,6 +244,7 @@ describe('Post', () => {
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -199,8 +257,9 @@ describe('Post', () => {
     });
   });
 
-  context('게시글에 참가 취소 버튼이 출력되는 상태에서'
+  context('게시글에 참가 취소 버튼이 출력되는 상태에서 '
     + '사용자가 게시글의 게임에 참가 취소 버튼을 누르면', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 223,
@@ -238,6 +297,7 @@ describe('Post', () => {
 
     it('해당 게임 참가 신청을 취소하는 운동 참가 신청 취소 핸들러 함수 호출', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -252,6 +312,7 @@ describe('Post', () => {
 
   // TODO: 게시글 수정하기 기능 추가 시 아래의 테스트들에 추가되어야 함
   context('작성자가 아닌 사용자는', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 2,
@@ -283,6 +344,7 @@ describe('Post', () => {
 
     it('게시글 삭제하기 버튼을 확인할 수 없음', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -295,6 +357,7 @@ describe('Post', () => {
   });
 
   context('작성자는', () => {
+    const loggedIn = true;
     const post = {
       id: 1,
       hits: 2,
@@ -326,6 +389,7 @@ describe('Post', () => {
 
     it('게시글 삭제하기 버튼을 확인할 수 있음', () => {
       renderPost({
+        loggedIn,
         post,
         game,
         members,
@@ -339,6 +403,7 @@ describe('Post', () => {
     context('삭제하기 버튼을 누를 경우', () => {
       it('게시글 상태를 삭제 상태로 변경하는 핸들러 함수 호출', () => {
         renderPost({
+          loggedIn,
           post,
           game,
           members,

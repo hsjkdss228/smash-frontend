@@ -63,9 +63,76 @@ describe('PostPage', () => {
     ));
   }
 
+  context('로그인하지 않았을 경우', () => {
+    context('운동 모집 게시글 상세 정보 페이지에 접속하면', () => {
+      beforeEach(() => {
+        localStorage.setItem('accessToken', JSON.stringify(''));
+
+        postId = 1;
+
+        post = {
+          id: 1,
+          hits: 15,
+          authorName: '작성자',
+          authorPhoneNumber: '010-6877-2291',
+          detail: '게시글 상세 정보 내용입니다.',
+          isAuthor: false,
+        };
+        game = {
+          id: 1,
+          type: '농구',
+          date: '2022년 12월 23일 20:00~22:00',
+          place: '인천삼산체육관',
+          currentMemberCount: 2,
+          targetMemberCount: 12,
+          registerId: -1,
+          registerStatus: 'none',
+        };
+        members = [
+          {
+            id: 1,
+            name: '작성자',
+            gender: '남성',
+            phoneNumber: '010-6877-2291',
+          },
+        ];
+        registerErrorCodeAndMessage = {};
+      });
+
+      it('로그인 안내 메세지, 버튼 출력', async () => {
+        jest.clearAllMocks();
+        fetchGame = jest.fn();
+
+        renderPostPage();
+
+        await waitFor(() => {
+          screen.getByText('운동에 신청하려면 로그인해주세요.');
+          screen.getByText('로그인하기');
+          screen.getByText('체험 계정 선택하기');
+        });
+      });
+
+      it('로그인 버튼 클릭 시 로그인 페이지로 이동하는 navigate 함수 호출', async () => {
+        jest.clearAllMocks();
+        fetchGame = jest.fn();
+
+        renderPostPage();
+
+        await waitFor(() => {
+          fireEvent.click(screen.getByText('로그인하기'));
+          expect(navigate).toBeCalledWith('/login');
+        });
+      });
+
+      // TODO: 체험 계정 선택 시 체험 계정 선택 링크로 이동하는 함수 호출 검증
+    });
+  });
+
   context('게시글 작성자가 아닌 경우', () => {
     context('운동 모집 게시글 상세 정보 페이지에 접속하면', () => {
       beforeEach(() => {
+        localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
         postId = 1;
 
         post = {
@@ -117,6 +184,8 @@ describe('PostPage', () => {
 
     context('게시글에 참가 신청 버튼이 출력되는 상태에서 사용자가 참가 신청 버튼을 누르면', () => {
       beforeEach(() => {
+        localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
         postId = 1;
 
         post = {
@@ -172,6 +241,8 @@ describe('PostPage', () => {
 
     context('게시글에 참가 신청 취소 버튼이 출력되는 상태에서 사용자가 참가 신청 취소 버튼을 누르면', () => {
       beforeEach(() => {
+        localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
         postId = 1;
 
         post = {
@@ -232,6 +303,8 @@ describe('PostPage', () => {
 
     context('게시글에 참가 취소 버튼이 출력되는 상태에서 사용자가 참가 취소 버튼을 누르면', () => {
       beforeEach(() => {
+        localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
         postId = 1;
 
         post = {
@@ -293,6 +366,8 @@ describe('PostPage', () => {
 
   context('게시글 작성자인 경우', () => {
     beforeEach(() => {
+      localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
       postId = 1;
 
       post = {
