@@ -20,19 +20,6 @@ jest.mock('../hooks/usePostStore', () => () => ({
   fetchPosts,
 }));
 
-let registeredGameId;
-let registerErrorCodeAndMessage;
-let registerToGame;
-const cancelRegisterToGame = jest.fn();
-const cancelParticipateToGame = jest.fn();
-jest.mock('../hooks/useRegisterStore', () => () => ({
-  registeredGameId,
-  registerErrorCodeAndMessage,
-  registerToGame,
-  cancelRegisterToGame,
-  cancelParticipateToGame,
-}));
-
 describe('PostsPage', () => {
   function renderPostsPage() {
     render((
@@ -89,7 +76,6 @@ describe('PostsPage', () => {
           },
         },
       ];
-      registerErrorCodeAndMessage = {};
       postsErrorMessage = '';
     });
 
@@ -111,53 +97,6 @@ describe('PostsPage', () => {
             postId: 2,
           },
         });
-      });
-    });
-
-    context('운동 신청 버튼을 누르면', () => {
-      const expectedGameId = 22;
-      registeredGameId = expectedGameId;
-
-      it('운동 신청을 위한 registerToGame 호출 후'
-        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {
-        jest.clearAllMocks();
-        registerToGame = jest.fn(() => registeredGameId);
-
-        renderPostsPage();
-
-        fireEvent.click(screen.getByText('신청'));
-        await expect(registerToGame).toBeCalledWith(expectedGameId);
-        await expect(fetchPosts).toBeCalledTimes(2);
-      });
-    });
-
-    context('운동 신청 취소 버튼을 누르면', () => {
-      const expectedRegisterId = 25;
-
-      it('운동 신청 취소를 위한 cancelRegisterToGame 호출 후'
-        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {
-        jest.clearAllMocks();
-
-        renderPostsPage();
-
-        fireEvent.click(screen.getByText('신청취소'));
-        await expect(cancelRegisterToGame).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPosts).toBeCalledTimes(2);
-      });
-    });
-
-    context('운동 참가 취소 버튼을 누르면', () => {
-      const expectedRegisterId = 40;
-
-      it('운동 참가 취소를 위한 cancelParticipateToGame 호출 후'
-        + '운동 모집 게시글 상태 최신화를 위해 fetchPosts 다시 호출', async () => {
-        jest.clearAllMocks();
-
-        renderPostsPage();
-
-        fireEvent.click(screen.getByText('참가취소'));
-        await expect(cancelParticipateToGame).toBeCalledWith(expectedRegisterId);
-        await expect(fetchPosts).toBeCalledTimes(2);
       });
     });
   });
