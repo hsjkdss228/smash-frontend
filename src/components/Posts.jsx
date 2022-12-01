@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import PostsContent from './PostsContent';
-import PostsRegisterButton from './PostsRegisterButton';
 import BackwardButton from './ui/BackwardButton';
 
 const Container = styled.article`
@@ -26,11 +25,7 @@ export default function Posts({
   posts,
   navigateToBackward,
   navigateToPost,
-  registerToGame,
-  cancelRegisterToGame,
-  cancelParticipateToGame,
   postsErrorMessage,
-  registerErrors,
 }) {
   const onClickBackward = () => {
     navigateToBackward();
@@ -72,25 +67,6 @@ export default function Posts({
               targetMemberCount={post.game.targetMemberCount}
               onClickPost={() => onClickPost(post.id)}
             />
-            {
-              post.isAuthor ? (
-                null
-              ) : (
-                <div>
-                  <PostsRegisterButton
-                    gameId={post.game.id}
-                    registerId={post.game.registerId}
-                    currentMemberCount={post.game.currentMemberCount}
-                    targetMemberCount={post.game.targetMemberCount}
-                    registerStatus={post.game.registerStatus}
-                    registerToGame={registerToGame}
-                    cancelRegisterToGame={cancelRegisterToGame}
-                    cancelParticipateToGame={cancelParticipateToGame}
-                    registerErrors={registerErrors}
-                  />
-                </div>
-              )
-            }
           </Thumbnail>
         ))}
       </Thumbnails>
