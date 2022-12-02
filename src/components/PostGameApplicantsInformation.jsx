@@ -39,15 +39,15 @@ const Buttons = styled.div`
 export default function PostGameApplicantsInformation({
   applicants,
   cannotAcceptRegister,
-  acceptRegister,
-  rejectRegister,
+  onClickAcceptRegister,
+  onClickRejectRegister,
 }) {
   const handleClickAcceptRegister = (applicantId) => {
-    acceptRegister(applicantId);
+    onClickAcceptRegister(applicantId);
   };
 
   const handleClickRejectRegister = (applicantId) => {
-    rejectRegister(applicantId);
+    onClickRejectRegister(applicantId);
   };
 
   if (!applicants) {

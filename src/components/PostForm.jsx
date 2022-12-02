@@ -22,7 +22,7 @@ const SubmitButton = styled.button`
 
 export default function PostForm({
   data,
-  navigateToBackward,
+  reconfirmNavigateBackward,
   changeGameExercise,
   changeGameDate,
   changeGameStartTimeAmPm,
@@ -39,7 +39,7 @@ export default function PostForm({
   serverErrors,
 }) {
   const handleClickBackward = () => {
-    navigateToBackward();
+    reconfirmNavigateBackward();
   };
 
   const handleChangeGameExercise = (event) => {
