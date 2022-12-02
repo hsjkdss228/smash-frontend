@@ -51,12 +51,12 @@ export default function Post({
   game,
   members,
   applicants,
-  handleClickDeletePost,
+  reconfirmDeletePost,
   handleClickRegister,
-  handleClickRegisterCancel,
-  handleClickParticipateCancel,
-  acceptRegister,
-  rejectRegister,
+  reconfirmRegisterCancel,
+  reconfirmParticipateCancel,
+  handleClickAcceptRegister,
+  reconfirmRegisterReject,
   registerError,
 }) {
   const onClickBackward = () => {
@@ -72,7 +72,7 @@ export default function Post({
   };
 
   const onClickDeletePost = () => {
-    handleClickDeletePost(post.id);
+    reconfirmDeletePost(post.id);
   };
 
   const onClickRegister = () => {
@@ -80,11 +80,19 @@ export default function Post({
   };
 
   const onClickRegisterCancel = () => {
-    handleClickRegisterCancel(game.registerId);
+    reconfirmRegisterCancel(game.registerId);
   };
 
   const onClickParticipateCancel = () => {
-    handleClickParticipateCancel(game.registerId);
+    reconfirmParticipateCancel(game.registerId);
+  };
+
+  const onClickAcceptRegister = (registerId) => {
+    handleClickAcceptRegister(registerId);
+  };
+
+  const onClickRejectRegister = (registerId) => {
+    reconfirmRegisterReject(registerId);
   };
 
   if (!post || !game || !members
@@ -141,8 +149,8 @@ export default function Post({
               cannotAcceptRegister={(
                 game.currentMemberCount >= game.targetMemberCount
               )}
-              acceptRegister={acceptRegister}
-              rejectRegister={rejectRegister}
+              onClickAcceptRegister={onClickAcceptRegister}
+              onClickRejectRegister={onClickRejectRegister}
             />
           ) : (
             game.registerStatus === 'processing' || game.registerStatus === 'accepted' ? (
@@ -172,7 +180,7 @@ export default function Post({
             <p>참가 정원이 모두 찼습니다.</p>
           ) : (
             <LoginGuidance>
-              <p>운동에 신청하려면 로그인해주세요.</p>
+              <p>운동에 참가를 신청하려면 로그인해주세요.</p>
               <button
                 type="button"
                 onClick={onClickLogin}

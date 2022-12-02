@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ModalReconfirm from '../components/ModalReconfirm';
 import PostForm from '../components/PostForm';
 import usePostFormStore from '../hooks/usePostFormStore';
 
 export default function PostFormPage() {
+  const [actionMessage, setActionMessage] = useState('');
+  const [reconfirmModalState, setReconfirmModalState] = useState(false);
+
   const navigate = useNavigate();
 
   const postFormStore = usePostFormStore();
@@ -38,9 +42,22 @@ export default function PostFormPage() {
     postDetail,
   };
 
-  const navigateToBackward = () => {
+  const seeReconfirmModal = ({ message }) => {
+    setActionMessage(message);
+    setReconfirmModalState(true);
+  };
+
+  const reconfirmNavigateBackward = () => {
+    seeReconfirmModal({ message: '게시글 작성을 중단' });
+  };
+
+  const navigateBackward = () => {
     postFormStore.clearStates();
-    navigate(-1);
+    navigate(-1, {
+      state: {
+        postStatus: '',
+      },
+    });
   };
 
   const changeGameExercise = (exercise) => {
@@ -91,28 +108,42 @@ export default function PostFormPage() {
     const postId = await postFormStore.createPost();
     if (postId) {
       postFormStore.clearStates();
-      navigate('/posts/list');
+      navigate('/posts/list', {
+        state: {
+          postStatus: 'created',
+        },
+      });
     }
   };
 
   return (
-    <PostForm
-      data={data}
-      navigateToBackward={navigateToBackward}
-      changeGameExercise={changeGameExercise}
-      changeGameDate={changeGameDate}
-      changeGameStartTimeAmPm={changeGameStartTimeAmPm}
-      changeGameStartHour={changeGameStartHour}
-      changeGameStartMinute={changeGameStartMinute}
-      changeGameEndTimeAmPm={changeGameEndTimeAmPm}
-      changeGameEndHour={changeGameEndHour}
-      changeGameEndMinute={changeGameEndMinute}
-      changeGamePlace={changeGamePlace}
-      changeGameTargetMemberCount={changeGameTargetMemberCount}
-      changePostDetail={changePostDetail}
-      createPost={createPost}
-      formErrors={formErrors}
-      serverErrors={serverErrors}
-    />
+    <>
+      <PostForm
+        data={data}
+        reconfirmNavigateBackward={reconfirmNavigateBackward}
+        changeGameExercise={changeGameExercise}
+        changeGameDate={changeGameDate}
+        changeGameStartTimeAmPm={changeGameStartTimeAmPm}
+        changeGameStartHour={changeGameStartHour}
+        changeGameStartMinute={changeGameStartMinute}
+        changeGameEndTimeAmPm={changeGameEndTimeAmPm}
+        changeGameEndHour={changeGameEndHour}
+        changeGameEndMinute={changeGameEndMinute}
+        changeGamePlace={changeGamePlace}
+        changeGameTargetMemberCount={changeGameTargetMemberCount}
+        changePostDetail={changePostDetail}
+        createPost={createPost}
+        formErrors={formErrors}
+        serverErrors={serverErrors}
+      />
+      {reconfirmModalState && (
+        <ModalReconfirm
+          action={navigateBackward}
+          actionMessage={actionMessage}
+          reconfirmModalState={reconfirmModalState}
+          setReconfirmModalState={setReconfirmModalState}
+        />
+      )}
+    </>
   );
 }
