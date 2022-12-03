@@ -423,6 +423,42 @@ const postTestServer = setupServer(
       );
     },
   ),
+
+  // fetchNotices
+  rest.get(
+    `${apiBaseUrl}/notices`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+
+      if (accessToken === 'userId 1') {
+        return response(
+          context.status(200),
+          context.json({
+            notices: [
+              {
+                id: 1,
+                createdAt: '6시간 전',
+                title: '내가 신청한 운동 모집 게시글의 작성자가 신청을 수락했습니다.',
+              },
+              {
+                id: 2,
+                createdAt: '12시간 전',
+                title: '내가 작성한 운동 모집 게시글에 새로운 참가 신청이 있습니다.',
+              },
+            ],
+            serverError: '',
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // TODO: fetchUserName 테스트 코드 추가 필요 (Store, Component)
 );
 
 export default postTestServer;

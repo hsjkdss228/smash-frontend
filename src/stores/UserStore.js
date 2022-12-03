@@ -5,7 +5,10 @@ export default class UserStore extends Store {
   constructor() {
     super();
 
-    this.loginErrorMessage = '';
+    this.name = '';
+
+    this.fetchUserNameServerError = '';
+    this.loginServerError = '';
   }
 
   async login({ username, password }) {
@@ -15,13 +18,25 @@ export default class UserStore extends Store {
       return this.accessToken;
     } catch (error) {
       const { errorMessage } = error.response.data;
-      this.loginErrorMessage = errorMessage;
+      this.loginServerError = errorMessage;
       return '';
     }
   }
 
+  async fetchUserName() {
+    try {
+      const data = await userApiService.fetchUserName();
+      this.name = data.name;
+      this.publish();
+    } catch (error) {
+      const { errorMessage } = error.response.data;
+      this.fetchUserNameServerError = errorMessage;
+      this.publish();
+    }
+  }
+
   clearLoginError() {
-    this.loginErrorMessage = '';
+    this.loginServerError = '';
     this.publish();
   }
 }
