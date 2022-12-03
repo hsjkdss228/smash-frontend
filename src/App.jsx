@@ -5,9 +5,12 @@ import { Reset } from 'styled-reset';
 
 import { useLocalStorage } from 'usehooks-ts';
 import { useEffect } from 'react';
+
 import { postApiService } from './services/PostApiService';
 import { gameApiService } from './services/GameApiService';
 import { registerApiService } from './services/RegisterApiService';
+import { noticeApiService } from './services/NoticeApiService';
+import { userApiService } from './services/UserApiService';
 
 import Header from './components/Header';
 import PostsPage from './pages/PostsPage';
@@ -17,6 +20,7 @@ import PostFormPage from './pages/PostFormPage';
 import BottomNavigator from './components/BottomNavigator';
 import GlobalStyle from './styles/GlobalStyle';
 import LoginPage from './pages/LoginPage';
+import NoticesPage from './pages/NoticesPage';
 
 const Container = styled.div`
   height: 100vh;
@@ -38,6 +42,8 @@ export default function App() {
     postApiService.setAccessToken(accessToken);
     gameApiService.setAccessToken(accessToken);
     registerApiService.setAccessToken(accessToken);
+    noticeApiService.setAccessToken(accessToken);
+    userApiService.setAccessToken(accessToken);
   }, [accessToken]);
 
   return (
@@ -53,6 +59,8 @@ export default function App() {
             <Route path="/posts/:postId" element={<PostPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/write" element={<PostFormPage />} />
+            <Route path="/notices" element={<NoticesPage />} />
+
             <Route path="/posts/map" element={<PostListMapPage />} />
           </Routes>
         </Wrapper>

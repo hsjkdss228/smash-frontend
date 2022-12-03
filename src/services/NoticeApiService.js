@@ -6,7 +6,7 @@ import config from '../config';
 
 const { apiBaseUrl } = config;
 
-export default class UserApiService {
+export default class NoticeApiService {
   constructor() {
     this.accessToken = '';
   }
@@ -15,14 +15,8 @@ export default class UserApiService {
     this.accessToken = accessToken;
   }
 
-  async postSession({ username, password }) {
-    const url = `${apiBaseUrl}/session`;
-    const { data } = await axios.post(url, { username, password });
-    return data;
-  }
-
-  async fetchUserName() {
-    const url = `${apiBaseUrl}/users/me`;
+  async fetchNotices() {
+    const url = `${apiBaseUrl}/notices`;
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
@@ -32,4 +26,4 @@ export default class UserApiService {
   }
 }
 
-export const userApiService = new UserApiService();
+export const noticeApiService = new NoticeApiService();

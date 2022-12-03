@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
+import useUserStore from '../hooks/useUserStore';
+import { userApiService } from '../services/UserApiService';
 
 const Container = styled.header`
   position: fixed;
@@ -23,8 +26,10 @@ const Title = styled.h1`
 `;
 
 const Side = styled.nav`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 `;
 
 export default function Header() {
@@ -32,12 +37,27 @@ export default function Header() {
 
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    if (accessToken) {
+      userApiService.setAccessToken(accessToken);
+      userStore.fetchUserName();
+    }
+  }, [accessToken]);
+
+  const { name } = userStore;
+
+  const navigateNoticesPage = () => {
+    navigate('/notices');
+  };
+
   const handleClickLogout = () => {
     setAccessToken('');
     navigate('/');
   };
 
-  const navigateToLoginPage = () => {
+  const navigateLoginPage = () => {
     navigate('/login');
   };
 
@@ -46,16 +66,29 @@ export default function Header() {
       <Title>SMASH</Title>
       <Side>
         {accessToken ? (
-          <button
-            type="button"
-            onClick={handleClickLogout}
-          >
-            로그아웃
-          </button>
+          <>
+            <p>
+              {name}
+              {' '}
+              님
+            </p>
+            <button
+              type="button"
+              onClick={navigateNoticesPage}
+            >
+              알림
+            </button>
+            <button
+              type="button"
+              onClick={handleClickLogout}
+            >
+              로그아웃
+            </button>
+          </>
         ) : (
           <button
             type="button"
-            onClick={navigateToLoginPage}
+            onClick={navigateLoginPage}
           >
             LOGIN
           </button>
