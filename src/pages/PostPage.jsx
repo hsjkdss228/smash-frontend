@@ -61,14 +61,22 @@ export default function PostPage() {
     navigate('/posts/list');
   };
 
-  const navigateToLogin = () => {
-    navigate('/login');
+  const navigateLogin = () => {
+    navigate('/login', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
   };
 
   // TODO: 체험 계정 선택하기 페이지로 이동시키기
 
-  const navigateToSelectTrialAccount = () => {
-    navigate('/login');
+  const navigateSelectTrialAccount = () => {
+    navigate('/login', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
   };
 
   const seeConfirmModal = ({ message }) => {
@@ -156,8 +164,8 @@ export default function PostPage() {
       <Post
         loggedIn={loggedIn}
         navigateBackward={navigateBackward}
-        navigateToLogin={navigateToLogin}
-        navigateToSelectTrialAccount={navigateToSelectTrialAccount}
+        navigateLogin={navigateLogin}
+        navigateSelectTrialAccount={navigateSelectTrialAccount}
         post={post}
         game={game}
         members={members}

@@ -33,11 +33,11 @@ export default function Posts({
   toggleSearchSetting,
   toggleFilterSetting,
   posts,
-  navigateToPost,
+  navigatePost,
   postsErrorMessage,
 }) {
   const onClickPost = (postId) => {
-    navigateToPost(postId);
+    navigatePost(postId);
   };
 
   return (
@@ -89,7 +89,6 @@ export default function Posts({
             </Thumbnail>
           ))}
         </Thumbnails>
-
       )}
     </Container>
   );
