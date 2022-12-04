@@ -1,3 +1,13 @@
+import styled from 'styled-components';
+
+const Label = styled.label`
+  display: none; 
+`;
+
+const Input = styled.input`
+  width: 2em;
+`;
+
 export default function SelectTime({
   id,
   onChange,
@@ -7,12 +17,12 @@ export default function SelectTime({
 }) {
   return (
     <div>
-      <label htmlFor={id}>
+      <Label htmlFor={id}>
         {type}
         {' '}
         {time}
-      </label>
-      <input
+      </Label>
+      <Input
         type="text"
         min={(
           time === 'hour'
@@ -24,6 +34,7 @@ export default function SelectTime({
             ? 12
             : 59
         )}
+        placeholder="00"
         value={value}
         onChange={onChange}
       />
