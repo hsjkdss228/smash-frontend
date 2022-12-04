@@ -165,58 +165,58 @@ export default class PostFormStore extends Store {
 
       if (this.gameExercise === '') {
         this.formErrors
-          .BLANK_GAME_EXERCISE = '운동을 입력해주세요';
+          .BLANK_GAME_EXERCISE = '종목을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameDate === '') {
         this.formErrors
-          .BLANK_GAME_DATE = '운동 날짜를 입력해주세요.';
+          .BLANK_GAME_DATE = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameStartTimeAmPm === '') {
         this.formErrors
-          .BLANK_GAME_START_AM_PM = '시작시간 오전/오후 구분을 입력해주세요.';
+          .BLANK_GAME_START_AM_PM = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameStartHour === '') {
         this.formErrors
-          .BLANK_GAME_START_HOUR = '시작 시간을 입력해주세요.';
+          .BLANK_GAME_START_HOUR = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameStartMinute === '') {
         this.formErrors
-          .BLANK_GAME_START_MINUTE = '시작 분을 입력해주세요.';
+          .BLANK_GAME_START_MINUTE = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameEndTimeAmPm === '') {
         this.formErrors
-          .BLANK_GAME_END_AM_PM = '종료시간 오전/오후 구분을 입력해주세요.';
+          .BLANK_GAME_END_AM_PM = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameEndHour === '') {
         this.formErrors
-          .BLANK_GAME_END_HOUR = '종료 시간을 입력해주세요.';
+          .BLANK_GAME_END_HOUR = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameEndMinute === '') {
         this.formErrors
-          .BLANK_GAME_END_MINUTE = '종료 분을 입력해주세요.';
+          .BLANK_GAME_END_MINUTE = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gamePlace === '') {
         this.formErrors
-          .BLANK_GAME_PLACE = '운동 장소 이름을 입력해주세요.';
+          .BLANK_GAME_PLACE = '장소를 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameTargetMemberCount === ''
         || this.gameTargetMemberCount <= 0) {
         this.formErrors
-          .NULL_GAME_TARGET_MEMBER_COUNT = '사용자 수를 입력해주세요.';
+          .NULL_GAME_TARGET_MEMBER_COUNT = '모집 인원 수를 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.postDetail === '') {
         this.formErrors
-          .BLANK_POST_DETAIL = '게시글 상세 내용을 입력해주세요.';
+          .BLANK_POST_DETAIL = '상세 내용을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
 
