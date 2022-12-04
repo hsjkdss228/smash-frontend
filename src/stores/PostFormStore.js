@@ -4,6 +4,8 @@ import Store from './Store';
 
 import { postApiService } from '../services/PostApiService';
 
+const timeInputCheck = /^[\d]*$/;
+
 export default class PostFormStore extends Store {
   constructor() {
     super();
@@ -54,11 +56,43 @@ export default class PostFormStore extends Store {
   }
 
   changeGameStartHour(startHour) {
+    if (startHour.toString().length === 0
+      || !timeInputCheck.test(startHour.toString())) {
+      this.gameStartHour = '';
+      this.publish();
+      return;
+    }
+    if (startHour < 1) {
+      this.gameStartHour = 1;
+      this.publish();
+      return;
+    }
+    if (startHour > 12 || startHour.toString().length >= 3) {
+      this.gameStartHour = 12;
+      this.publish();
+      return;
+    }
     this.gameStartHour = startHour;
     this.publish();
   }
 
   changeGameStartMinute(startMinute) {
+    if (startMinute.toString().length === 0
+      || !timeInputCheck.test(startMinute)) {
+      this.gameStartMinute = '';
+      this.publish();
+      return;
+    }
+    if (startMinute < 0) {
+      this.gameStartMinute = 0;
+      this.publish();
+      return;
+    }
+    if (startMinute > 59 || startMinute.toString().length >= 3) {
+      this.gameStartMinute = 59;
+      this.publish();
+      return;
+    }
     this.gameStartMinute = startMinute;
     this.publish();
   }
@@ -69,11 +103,43 @@ export default class PostFormStore extends Store {
   }
 
   changeGameEndHour(endHour) {
+    if (endHour.toString().length === 0
+      || !timeInputCheck.test(endHour.toString())) {
+      this.gameEndHour = '';
+      this.publish();
+      return;
+    }
+    if (endHour < 1) {
+      this.gameEndHour = 1;
+      this.publish();
+      return;
+    }
+    if (endHour > 12 || endHour.toString().length >= 3) {
+      this.gameEndHour = 12;
+      this.publish();
+      return;
+    }
     this.gameEndHour = endHour;
     this.publish();
   }
 
   changeGameEndMinute(endMinute) {
+    if (endMinute.toString().length === 0
+      || !timeInputCheck.test(endMinute.toString())) {
+      this.gameEndMinute = '';
+      this.publish();
+      return;
+    }
+    if (endMinute < 0) {
+      this.gameEndMinute = 0;
+      this.publish();
+      return;
+    }
+    if (endMinute > 59 || endMinute.toString().length >= 3) {
+      this.gameEndMinute = 59;
+      this.publish();
+      return;
+    }
     this.gameEndMinute = endMinute;
     this.publish();
   }
