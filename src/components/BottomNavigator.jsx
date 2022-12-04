@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import ModalLoginGuide from './ModalLoginGuide';
 
 const Container = styled.nav`
   position: fixed;
@@ -14,11 +17,40 @@ const Container = styled.nav`
 `;
 
 export default function BottomNavigator() {
+  const [accessToken] = useLocalStorage('accessToken', '');
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleClickButton = (link) => {
-    navigate(link, {
+  const [loginGuideModalState, setLoginGuideModalState] = useState(false);
+
+  const navigateHome = () => {
+    navigate('/');
+  };
+
+  const navigatePage = (link) => {
+    if (accessToken) {
+      navigate(link, {
+        state: {
+          previousPath: location.pathname,
+        },
+      });
+      return;
+    }
+
+    setLoginGuideModalState(true);
+  };
+
+  const navigateLogin = () => {
+    navigate('/login', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
+  };
+
+  const navigateSelectTrialAccount = () => {
+    navigate('/trial-account', {
       state: {
         previousPath: location.pathname,
       },
@@ -26,25 +58,33 @@ export default function BottomNavigator() {
   };
 
   return (
-    <Container>
-      <button
-        type="button"
-        onClick={() => handleClickButton('/')}
-      >
-        홈
-      </button>
-      <button
-        type="button"
-        onClick={() => handleClickButton('/write')}
-      >
-        글쓰기
-      </button>
-      <button
-        type="button"
-        onClick={() => handleClickButton('/chat')}
-      >
-        채팅
-      </button>
-    </Container>
+    <>
+      <Container>
+        <button
+          type="button"
+          onClick={navigateHome}
+        >
+          홈
+        </button>
+        <button
+          type="button"
+          onClick={() => navigatePage('/write')}
+        >
+          글쓰기
+        </button>
+        <button
+          type="button"
+          onClick={() => navigatePage('/chat')}
+        >
+          채팅
+        </button>
+      </Container>
+      <ModalLoginGuide
+        loginGuideModalState={loginGuideModalState}
+        setLoginGuideModalState={setLoginGuideModalState}
+        onClickLogin={navigateLogin}
+        onClickSelectTrialAccount={navigateSelectTrialAccount}
+      />
+    </>
   );
 }

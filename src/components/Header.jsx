@@ -33,10 +33,10 @@ const Side = styled.nav`
 `;
 
 export default function Header() {
+  const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
+
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
   const userStore = useUserStore();
 
@@ -62,8 +62,16 @@ export default function Header() {
     navigate('/');
   };
 
-  const navigateLoginPage = () => {
+  const navigateLogin = () => {
     navigate('/login', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
+  };
+
+  const navigateSelectTrialAccount = () => {
+    navigate('/trial-account', {
       state: {
         previousPath: location.pathname,
       },
@@ -95,12 +103,20 @@ export default function Header() {
             </button>
           </>
         ) : (
-          <button
-            type="button"
-            onClick={navigateLoginPage}
-          >
-            LOGIN
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={navigateLogin}
+            >
+              LOGIN
+            </button>
+            <button
+              type="button"
+              onClick={navigateSelectTrialAccount}
+            >
+              체험용 계정 선택
+            </button>
+          </>
         )}
       </Side>
     </Container>

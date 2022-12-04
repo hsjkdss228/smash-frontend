@@ -44,9 +44,9 @@ const LoginGuidance = styled.div`
 
 export default function Post({
   loggedIn,
-  navigateToBackward,
-  navigateToLogin,
-  navigateToSelectTrialAccount,
+  navigateBackward,
+  navigateLogin,
+  navigateSelectTrialAccount,
   post,
   game,
   members,
@@ -60,15 +60,15 @@ export default function Post({
   registerError,
 }) {
   const onClickBackward = () => {
-    navigateToBackward();
+    navigateBackward();
   };
 
   const onClickLogin = () => {
-    navigateToLogin();
+    navigateLogin();
   };
 
   const onClickSelectTrialAccount = () => {
-    navigateToSelectTrialAccount();
+    navigateSelectTrialAccount();
   };
 
   const onClickDeletePost = () => {
