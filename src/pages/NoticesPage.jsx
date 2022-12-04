@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
+
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 
 import useNoticeStore from '../hooks/useNoticeStore';
@@ -11,10 +12,15 @@ export default function NoticesPage() {
   const [accessToken] = useLocalStorage('accessToken', '');
   const loggedIn = accessToken !== '';
 
+  const location = useLocation();
   const navigate = useNavigate();
 
+  const previousPath = location.state !== null
+    ? location.state.previousPath
+    : null;
+
   const navigateBackward = () => {
-    navigate(-1);
+    navigate(previousPath || '/');
   };
 
   const navigateLogin = () => {

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import styled from 'styled-components';
+import BackwardButton from './ui/BackwardButton';
 
 const Container = styled.article`
   padding-block: 30px;
@@ -28,6 +29,7 @@ const Button = styled.button`
 `;
 
 export default function LoginForm({
+  onClickBackward,
   register,
   handleSubmit,
   login,
@@ -38,6 +40,12 @@ export default function LoginForm({
 
   return (
     <Container>
+      <BackwardButton
+        type="button"
+        onClick={onClickBackward}
+      >
+        ⬅️
+      </BackwardButton>
       <Form onSubmit={handleSubmit(submit)}>
         <div>
           <label htmlFor="input-username">

@@ -35,7 +35,7 @@ export default class PostFormStore extends Store {
     };
     this.hasFormErrors = false;
 
-    this.serverErrors = {};
+    this.serverError = '';
   }
 
   changeGameExercise(exercise) {
@@ -174,8 +174,8 @@ export default class PostFormStore extends Store {
       });
       return data.postId;
     } catch (error) {
-      const { errorMessages } = error.response.data;
-      this.serverErrors = errorMessages;
+      const { message } = error.response.data;
+      this.serverError = message;
       this.publish();
       return '';
     }
@@ -212,7 +212,7 @@ export default class PostFormStore extends Store {
     this.postDetail = '';
     this.clearFormErrors();
 
-    this.serverErrors = {};
+    this.serverError = '';
 
     this.publish();
   }

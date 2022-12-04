@@ -36,7 +36,7 @@ export default function PostForm({
   changePostDetail,
   createPost,
   formErrors,
-  serverErrors,
+  serverError,
 }) {
   const handleClickBackward = () => {
     reconfirmNavigateBackward();
@@ -293,8 +293,8 @@ export default function PostForm({
           작성하기
         </SubmitButton>
       </Form>
-      {serverErrors.errorMessages ? (
-        <p>{serverErrors.errorMessages}</p>
+      {serverError ? (
+        <p>{serverError}</p>
       ) : null}
     </Container>
   );

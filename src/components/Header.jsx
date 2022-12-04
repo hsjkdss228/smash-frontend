@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import useUserStore from '../hooks/useUserStore';
@@ -33,6 +33,7 @@ const Side = styled.nav`
 `;
 
 export default function Header() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
@@ -49,7 +50,11 @@ export default function Header() {
   const { name } = userStore;
 
   const navigateNoticesPage = () => {
-    navigate('/notices');
+    navigate('/notices', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
   };
 
   const handleClickLogout = () => {
@@ -58,7 +63,11 @@ export default function Header() {
   };
 
   const navigateLoginPage = () => {
-    navigate('/login');
+    navigate('/login', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
   };
 
   return (
