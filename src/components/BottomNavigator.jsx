@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.nav`
@@ -14,10 +14,15 @@ const Container = styled.nav`
 `;
 
 export default function BottomNavigator() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleClickButton = (link) => {
-    navigate(link);
+    navigate(link, {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
   };
 
   return (

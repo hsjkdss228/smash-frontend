@@ -60,7 +60,7 @@ export default function PostsPage() {
     toggleFilterSetting(!filterSetting);
   };
 
-  const navigateToPost = (postId) => {
+  const navigatePost = (postId) => {
     navigate(`/posts/${postId}`, {
       state: {
         postId,
@@ -77,7 +77,7 @@ export default function PostsPage() {
         toggleSearchSetting={handleClickToggleSearchSetting}
         toggleFilterSetting={handleClickToggleFilterSetting}
         posts={posts}
-        navigateToPost={navigateToPost}
+        navigatePost={navigatePost}
         postsErrorMessage={postsErrorMessage}
       />
       {confirmModalState && (

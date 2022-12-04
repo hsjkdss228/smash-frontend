@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
@@ -56,8 +57,8 @@ export default function PostPage() {
     registerErrorCodeAndMessage,
   } = registerStore;
 
-  const navigateToBackward = () => {
-    navigate(-1);
+  const navigateBackward = () => {
+    navigate('/posts/list');
   };
 
   const navigateToLogin = () => {
@@ -154,7 +155,7 @@ export default function PostPage() {
     <>
       <Post
         loggedIn={loggedIn}
-        navigateToBackward={navigateToBackward}
+        navigateBackward={navigateBackward}
         navigateToLogin={navigateToLogin}
         navigateToSelectTrialAccount={navigateToSelectTrialAccount}
         post={post}

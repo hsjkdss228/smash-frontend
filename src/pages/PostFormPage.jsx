@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ModalReconfirm from '../components/ModalReconfirm';
 import PostForm from '../components/PostForm';
 import usePostFormStore from '../hooks/usePostFormStore';
@@ -8,7 +8,12 @@ export default function PostFormPage() {
   const [actionMessage, setActionMessage] = useState('');
   const [reconfirmModalState, setReconfirmModalState] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const previousPath = location.state !== null
+    ? location.state.previousPath
+    : null;
 
   const postFormStore = usePostFormStore();
 
@@ -27,7 +32,7 @@ export default function PostFormPage() {
     gameTargetMemberCount,
     postDetail,
     formErrors,
-    serverErrors,
+    serverError,
   } = postFormStore;
 
   const data = {
@@ -53,11 +58,7 @@ export default function PostFormPage() {
 
   const navigateBackward = () => {
     postFormStore.clearStates();
-    navigate(-1, {
-      state: {
-        postStatus: '',
-      },
-    });
+    navigate(previousPath || '/');
   };
 
   const changeGameExercise = (exercise) => {
@@ -134,7 +135,7 @@ export default function PostFormPage() {
         changePostDetail={changePostDetail}
         createPost={createPost}
         formErrors={formErrors}
-        serverErrors={serverErrors}
+        serverError={serverError}
       />
       {reconfirmModalState && (
         <ModalReconfirm
