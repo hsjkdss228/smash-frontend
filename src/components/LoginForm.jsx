@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 import styled from 'styled-components';
 import BackwardButton from './ui/BackwardButton';
 
@@ -30,19 +28,28 @@ const Button = styled.button`
 
 export default function LoginForm({
   onClickBackward,
+  onClickSignUp,
   register,
   handleSubmit,
   login,
 }) {
+  const handleClickBackward = () => {
+    onClickBackward();
+  };
+
   const submit = async (data) => {
     await login(data);
+  };
+
+  const handleClickSignUp = () => {
+    onClickSignUp();
   };
 
   return (
     <Container>
       <BackwardButton
         type="button"
-        onClick={onClickBackward}
+        onClick={handleClickBackward}
       >
         ⬅️
       </BackwardButton>
@@ -81,6 +88,12 @@ export default function LoginForm({
           로그인
         </Button>
       </Form>
+      <button
+        type="button"
+        onClick={handleClickSignUp}
+      >
+        회원가입
+      </button>
     </Container>
   );
 }

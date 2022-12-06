@@ -146,9 +146,9 @@ const postTestServer = setupServer(
   rest.post(
     `${apiBaseUrl}/session`,
     async (request, response, context) => {
-      const { identifier, password } = await request.json();
+      const { username, password } = await request.json();
 
-      if (identifier === 'hsjkdss228' && password === 'Password!1') {
+      if (username === 'hsjkdss228' && password === 'Password!1') {
         return response(
           context.status(201),
           context.json({
@@ -157,7 +157,7 @@ const postTestServer = setupServer(
         );
       }
 
-      if (identifier === '' && password === 'Password!1') {
+      if (username === '' && password === 'Password!1') {
         return response(
           context.status(400),
           context.json({
@@ -166,7 +166,7 @@ const postTestServer = setupServer(
         );
       }
 
-      if (identifier === 'notexistingid12' && password === 'Password!1') {
+      if (username === 'notexistingid12' && password === 'Password!1') {
         return response(
           context.status(400),
           context.json({
@@ -175,7 +175,7 @@ const postTestServer = setupServer(
         );
       }
 
-      if (identifier === 'hsjkdss228' && password === '') {
+      if (username === 'hsjkdss228' && password === '') {
         return response(
           context.status(400),
           context.json({
@@ -184,7 +184,7 @@ const postTestServer = setupServer(
         );
       }
 
-      if (identifier === 'hsjkdss228' && password === 'wrongPassword!1') {
+      if (username === 'hsjkdss228' && password === 'wrongPassword!1') {
         return response(
           context.status(400),
           context.json({
@@ -459,6 +459,41 @@ const postTestServer = setupServer(
   ),
 
   // TODO: fetchUserName 테스트 코드 추가 필요 (Store, Component)
+
+  // TODO: 안 짠 테스트가 많다... 많나...?
+
+  // signUp
+  rest.post(
+    `${apiBaseUrl}/users`,
+    async (request, response, context) => {
+      const {
+        name,
+        username,
+        password,
+        confirmPassword,
+        gender,
+        phoneNumber,
+      } = await request.json();
+
+      if (name === '황인우'
+        && username === 'hsjkdss228'
+        && password === 'Password!1'
+        && confirmPassword === 'Password!1'
+        && gender === '남성'
+        && phoneNumber === '01012345678') {
+        return response(
+          context.status(201),
+          context.json({
+            enrolledName: '황인우',
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
 );
 
 export default postTestServer;

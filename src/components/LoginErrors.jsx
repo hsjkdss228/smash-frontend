@@ -7,9 +7,9 @@ const Error = styled.p`
 
 export default function LoginErrors({
   loginFormError,
-  loginProcessError,
+  loginServerError,
 }) {
-  if (!Object.keys(loginFormError).length && !loginProcessError) {
+  if (!Object.keys(loginFormError).length && !loginServerError) {
     return (
       null
     );
@@ -18,8 +18,8 @@ export default function LoginErrors({
   if (Object.keys(loginFormError).length >= 1) {
     return (
       <div>
-        {loginFormError.identifier ? (
-          <Error>{loginFormError.identifier.message}</Error>
+        {loginFormError.username ? (
+          <Error>{loginFormError.username.message}</Error>
         ) : (
           <Error>{loginFormError.password.message}</Error>
         )}
@@ -28,6 +28,6 @@ export default function LoginErrors({
   }
 
   return (
-    <Error>{loginProcessError}</Error>
+    <Error>{loginServerError}</Error>
   );
 }
