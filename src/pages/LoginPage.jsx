@@ -26,6 +26,14 @@ export default function LoginPage() {
     navigate(previousPath || '/');
   };
 
+  const navigateSignUp = () => {
+    navigate('/signup', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
+  };
+
   const { register, handleSubmit, formState: { errors } } = useForm({ reValidateMode: 'onSubmit' });
 
   const login = async (data) => {
@@ -37,19 +45,20 @@ export default function LoginPage() {
     }
   };
 
-  const { loginErrorMessage } = userStore;
+  const { loginServerError } = userStore;
 
   return (
     <>
       <LoginForm
         onClickBackward={navigateBackward}
+        onClickSignUp={navigateSignUp}
         register={register}
         handleSubmit={handleSubmit}
         login={login}
       />
       <LoginErrors
         loginFormError={errors}
-        loginProcessError={loginErrorMessage}
+        loginServerError={loginServerError}
       />
     </>
   );

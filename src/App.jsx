@@ -21,6 +21,8 @@ import BottomNavigator from './components/BottomNavigator';
 import GlobalStyle from './styles/GlobalStyle';
 import LoginPage from './pages/LoginPage';
 import NoticesPage from './pages/NoticesPage';
+import SignUpPage from './pages/SignUpPage';
+import WelcomePage from './pages/WelcomePage';
 
 const Container = styled.div`
   height: 100vh;
@@ -58,6 +60,8 @@ export default function App() {
             <Route path="/posts/list" element={<PostsPage />} />
             <Route path="/posts/:postId" element={<PostPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/write" element={<PostFormPage />} />
             <Route path="/notices" element={<NoticesPage />} />
 

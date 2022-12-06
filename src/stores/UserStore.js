@@ -9,6 +9,7 @@ export default class UserStore extends Store {
 
     this.fetchUserNameServerError = '';
     this.loginServerError = '';
+    this.signUpServerError = '';
   }
 
   async login({ username, password }) {
@@ -35,8 +36,40 @@ export default class UserStore extends Store {
     }
   }
 
+  async signUp({
+    name,
+    username,
+    password,
+    confirmPassword,
+    gender,
+    phoneNumber,
+  }) {
+    try {
+      const signUpForm = {
+        name,
+        username,
+        password,
+        confirmPassword,
+        gender,
+        phoneNumber,
+      };
+      const data = await userApiService.signUp(signUpForm);
+      const { enrolledName } = data;
+      return enrolledName;
+    } catch (error) {
+      this.signUpServerError = error.response.data;
+      this.publish();
+      return '';
+    }
+  }
+
   clearLoginError() {
     this.loginServerError = '';
+    this.publish();
+  }
+
+  clearSignUpError() {
+    this.signUpServerError = '';
     this.publish();
   }
 }

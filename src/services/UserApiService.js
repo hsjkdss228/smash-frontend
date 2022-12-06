@@ -30,6 +30,14 @@ export default class UserApiService {
     });
     return data;
   }
+
+  async signUp(signUpForm) {
+    const url = `${apiBaseUrl}/users`;
+    const { data } = await axios.post(url, {
+      ...signUpForm,
+    });
+    return data;
+  }
 }
 
 export const userApiService = new UserApiService();
