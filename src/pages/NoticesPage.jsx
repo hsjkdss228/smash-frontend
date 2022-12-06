@@ -36,11 +36,21 @@ export default function NoticesPage() {
     noticeStore.fetchNotices();
   }, [accessToken]);
 
-  const { notices } = noticeStore;
+  const {
+    notices,
+    noticesDetailState,
+  } = noticeStore;
+
+  const showNoticeDetail = async (targetIndex) => {
+    await noticeStore.readNotice(targetIndex);
+    await noticeStore.showNoticeDetail(targetIndex);
+  };
 
   return (
     <Notices
       notices={notices}
+      noticesDetailState={noticesDetailState}
+      showNoticeDetail={showNoticeDetail}
       navigateBackward={navigateBackward}
     />
   );
