@@ -18,25 +18,29 @@ const NoticeList = styled.ul`
   
 `;
 
-const Notice = styled.li`
+const NoticeTitle = styled.li`
   font-size: .75em;
   display: flex;
   gap: .5em;
 `;
 
+const NoticeDetail = styled.div`
+  
+`;
+
 export default function Notices({
   notices,
+  noticesDetailState,
+  showNoticeDetail,
   navigateBackward,
 }) {
   const onClickBackward = () => {
     navigateBackward();
   };
 
-  if (!notices || notices.length === 0) {
-    return (
-      <p>조회 가능한 알림이 없습니다.</p>
-    );
-  }
+  const handleClickShowNoticeDetail = (targetIndex) => {
+    showNoticeDetail(targetIndex);
+  };
 
   return (
     <Container>
@@ -48,14 +52,30 @@ export default function Notices({
           ⬅️
         </BackwardButton>
       </TopSection>
-      <NoticeList>
-        {notices.map((notice) => (
-          <Notice key={notice.id}>
-            <p>{notice.createdAt}</p>
-            <p>{notice.title}</p>
-          </Notice>
-        ))}
-      </NoticeList>
+      {(!notices || notices.length === 0) ? (
+        <p>조회 가능한 알림이 없습니다.</p>
+      ) : (
+        <NoticeList>
+          {notices.map((notice, index) => (
+            <>
+              <NoticeTitle key={notice.id}>
+                <button
+                  type="button"
+                  onClick={() => handleClickShowNoticeDetail(index)}
+                >
+                  <p>{notice.createdAt}</p>
+                  <p>{notice.title}</p>
+                </button>
+              </NoticeTitle>
+              {noticesDetailState[index] && (
+                <NoticeDetail>
+                  <p>{notice.detail}</p>
+                </NoticeDetail>
+              )}
+            </>
+          ))}
+        </NoticeList>
+      )}
     </Container>
   );
 }

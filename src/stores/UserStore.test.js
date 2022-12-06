@@ -4,7 +4,6 @@ import UserStore from './UserStore';
 describe('UserStore', () => {
   let userStore;
   let spyLogin;
-  // let spyLogin;
 
   beforeEach(() => {
     userStore = new UserStore();

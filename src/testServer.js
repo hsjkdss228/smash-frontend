@@ -438,13 +438,17 @@ const postTestServer = setupServer(
             notices: [
               {
                 id: 1,
+                status: 'unread',
                 createdAt: '6시간 전',
                 title: '내가 신청한 운동 모집 게시글의 작성자가 신청을 수락했습니다.',
+                detail: '신청한 게임 시간',
               },
               {
                 id: 2,
+                status: 'read',
                 createdAt: '12시간 전',
                 title: '내가 작성한 운동 모집 게시글에 새로운 참가 신청이 있습니다.',
+                detail: '등록한 신청자: 황인우',
               },
             ],
             serverError: '',
@@ -458,34 +462,15 @@ const postTestServer = setupServer(
     },
   ),
 
-  // TODO: fetchUserName 테스트 코드 추가 필요 (Store, Component)
-
-  // TODO: 안 짠 테스트가 많다... 많나...?
-
-  // signUp
-  rest.post(
-    `${apiBaseUrl}/users`,
+  // readNotice
+  rest.patch(
+    `${apiBaseUrl}/notices/:noticeId`,
     async (request, response, context) => {
-      const {
-        name,
-        username,
-        password,
-        confirmPassword,
-        gender,
-        phoneNumber,
-      } = await request.json();
+      const { noticeId } = await request.params;
 
-      if (name === '황인우'
-        && username === 'hsjkdss228'
-        && password === 'Password!1'
-        && confirmPassword === 'Password!1'
-        && gender === '남성'
-        && phoneNumber === '01012345678') {
+      if (noticeId === '1') {
         return response(
-          context.status(201),
-          context.json({
-            enrolledName: '황인우',
-          }),
+          context.status(204),
         );
       }
 
@@ -493,6 +478,43 @@ const postTestServer = setupServer(
         context.status(400),
       );
     },
+
+    // TODO: fetchUserName 테스트 코드 추가 필요 (Store, Component)
+
+    // TODO: 안 짠 테스트가 많다... 많나...?
+
+    // signUp
+    rest.post(
+      `${apiBaseUrl}/users`,
+      async (request, response, context) => {
+        const {
+          name,
+          username,
+          password,
+          confirmPassword,
+          gender,
+          phoneNumber,
+        } = await request.json();
+
+        if (name === '황인우'
+        && username === 'hsjkdss228'
+        && password === 'Password!1'
+        && confirmPassword === 'Password!1'
+        && gender === '남성'
+        && phoneNumber === '01012345678') {
+          return response(
+            context.status(201),
+            context.json({
+              enrolledName: '황인우',
+            }),
+          );
+        }
+
+        return response(
+          context.status(400),
+        );
+      },
+    ),
   ),
 );
 

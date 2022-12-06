@@ -24,6 +24,11 @@ export default class NoticeApiService {
     });
     return data;
   }
+
+  async readNotice(noticeId) {
+    const url = `${apiBaseUrl}/notices/${noticeId}`;
+    await axios.patch(url);
+  }
 }
 
 export const noticeApiService = new NoticeApiService();
