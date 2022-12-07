@@ -37,11 +37,17 @@ export default function NoticesPage() {
   }, [accessToken]);
 
   const {
-    notices,
+    noticesAll,
+    noticesUnread,
     noticeStateToShow,
     noticesDetailState,
     selectNoticeState,
+    noticesSelectedState,
   } = noticeStore;
+
+  const notices = noticeStateToShow === 'all'
+    ? noticesAll
+    : noticesUnread;
 
   const showAll = async () => {
     await noticeStore.showAll();
@@ -68,6 +74,14 @@ export default function NoticesPage() {
     noticeStore.selectNotice({ targetIndex, targetId });
   };
 
+  const selectAllNotices = () => {
+    noticeStore.selectAllNotices();
+  };
+
+  const deselectAllNotices = () => {
+    noticeStore.deselectAllNotices();
+  };
+
   return (
     <Notices
       navigateBackward={navigateBackward}
@@ -80,7 +94,10 @@ export default function NoticesPage() {
       closeNoticeDetail={closeNoticeDetail}
       selectNoticeState={selectNoticeState}
       toggleSelectNoticeState={toggleSelectNoticeState}
+      noticesSelectedState={noticesSelectedState}
       selectNotice={selectNotice}
+      selectAllNotices={selectAllNotices}
+      deselectAllNotices={deselectAllNotices}
     />
   );
 }

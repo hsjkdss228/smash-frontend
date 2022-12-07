@@ -8,7 +8,8 @@ export default class NoticeStore extends Store {
     this.noticeStateToShow = 'all';
     this.noticesDetailState = [];
 
-    this.notices = [];
+    this.noticesAll = [];
+    this.noticesUnread = [];
 
     this.selectNoticeState = false;
     this.noticesSelectedState = [];
@@ -21,9 +22,13 @@ export default class NoticeStore extends Store {
   async fetchNotices() {
     try {
       const data = await noticeApiService.fetchNotices();
-      this.notices = data.notices;
-      this.noticesDetailState = Array(this.notices.length).fill(false);
-      this.clearNoticesSelectedState();
+      this.noticesAll = data.notices;
+      this.noticesUnread = this.noticesAll
+        .filter((notice) => notice.status === 'unread');
+
+      this.initNoticesDetailState();
+      this.initNoticesSelectedState();
+
       this.publish();
     } catch (error) {
       this.serverError = error.response.data;
@@ -31,20 +36,34 @@ export default class NoticeStore extends Store {
     }
   }
 
-  async readNotice(targetId) {
-    const found = this.notices
-      .find((notice) => notice.id === targetId);
-    if (found && found.status === 'unread') {
-      await noticeApiService.readNotice(found.id);
-      await this.fetchUnreadNoticeCount();
-    }
+  initNoticesDetailState() {
+    this.noticesDetailState = Array((
+      this.noticeStateToShow === 'all'
+        ? this.noticesAll.length
+        : this.noticesUnread.length
+    )).fill(false);
+  }
+
+  initNoticesSelectedState() {
+    this.noticesSelectedState = Array((
+      this.noticeStateToShow === 'all'
+        ? this.noticesAll.length
+        : this.noticesUnread.length
+    )).fill('');
+  }
+
+  chooseArrayByStateToShow() {
+    return this.noticeStateToShow === 'all'
+      ? this.noticesAll
+      : this.noticesUnread;
   }
 
   async showAll() {
     await this.fetchNotices();
     this.noticeStateToShow = 'all';
     this.selectNoticeState = false;
-    this.clearNoticesSelectedState();
+    this.initNoticesDetailState();
+    this.initNoticesSelectedState();
     this.publish();
   }
 
@@ -52,7 +71,8 @@ export default class NoticeStore extends Store {
     await this.fetchNotices();
     this.noticeStateToShow = 'unread';
     this.selectNoticeState = false;
-    this.clearNoticesSelectedState();
+    this.initNoticesDetailState();
+    this.initNoticesSelectedState();
     this.publish();
   }
 
@@ -60,6 +80,17 @@ export default class NoticeStore extends Store {
     this.noticesDetailState = this.noticesDetailState
       .map((_, index) => index === targetIndex);
     this.publish();
+  }
+
+  async readNotice(targetId) {
+    const notices = this.chooseArrayByStateToShow();
+
+    const found = notices
+      .find((notice) => notice.id === targetId);
+    if (found && found.status === 'unread') {
+      await noticeApiService.readNotice(found.id);
+      await this.fetchUnreadNoticeCount();
+    }
   }
 
   closeNoticeDetail(targetIndex) {
@@ -70,7 +101,7 @@ export default class NoticeStore extends Store {
   toggleSelectNoticeState() {
     this.selectNoticeState = !this.selectNoticeState;
     if (!this.selectedNoticeState) {
-      this.clearNoticesSelectedState();
+      this.initNoticesSelectedState();
     }
     this.publish();
   }
@@ -79,10 +110,19 @@ export default class NoticeStore extends Store {
     this.noticesSelectedState[targetIndex] = this.noticesSelectedState[targetIndex]
       ? ''
       : targetId;
+    this.publish();
   }
 
-  clearNoticesSelectedState() {
-    this.noticesSelectedState = Array(this.notices.length).fill('');
+  selectAllNotices() {
+    const notices = this.chooseArrayByStateToShow();
+    this.noticesSelectedState = notices.map((notice) => notice.id);
+    this.publish();
+  }
+
+  deselectAllNotices() {
+    const notices = this.chooseArrayByStateToShow();
+    this.noticesSelectedState = notices.map(() => '');
+    this.publish();
   }
 
   async fetchUnreadNoticeCount() {
