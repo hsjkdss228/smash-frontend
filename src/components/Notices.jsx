@@ -34,6 +34,8 @@ export default function Notices({
   selectNotice,
   selectAllNotices,
   deselectAllNotices,
+  readSelectedNotices,
+  deleteSelectedNotices,
 }) {
   const onClickBackward = () => {
     navigateBackward();
@@ -69,6 +71,14 @@ export default function Notices({
 
   const handleClickDeselectAllNotices = () => {
     deselectAllNotices();
+  };
+
+  const handleClickReadSelectedNotices = () => {
+    readSelectedNotices();
+  };
+
+  const handleClickDeleteSelectedNotices = () => {
+    deleteSelectedNotices();
   };
 
   return (
@@ -115,6 +125,8 @@ export default function Notices({
           onClickSelectNotice={handleClickSelectNotice}
           onClickSelectAllNotices={handleClickSelectAllNotices}
           onClickDeselectAllNotices={handleClickDeselectAllNotices}
+          onClickReadSelectedNotices={handleClickReadSelectedNotices}
+          onClickDeleteSelectedNotices={handleClickDeleteSelectedNotices}
         />
       )}
     </Container>

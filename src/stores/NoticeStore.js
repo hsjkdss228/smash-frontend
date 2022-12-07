@@ -98,6 +98,10 @@ export default class NoticeStore extends Store {
     this.publish();
   }
 
+  closeSelectNoticeState() {
+    this.selectNoticeState = false;
+  }
+
   toggleSelectNoticeState() {
     this.selectNoticeState = !this.selectNoticeState;
     if (!this.selectedNoticeState) {
@@ -129,6 +133,20 @@ export default class NoticeStore extends Store {
     const data = await noticeApiService.fetchUnreadNoticeCount();
     this.unreadNoticeCount = data.count;
     this.publish();
+  }
+
+  async readSelectedNotices() {
+    const selectedNoticeIds = this.noticesSelectedState
+      .filter((id) => id !== '');
+    await noticeApiService
+      .readSelectedNotices({ selectedNoticeIds });
+  }
+
+  async deleteSelectedNotices() {
+    const selectedNoticeIds = this.noticesSelectedState
+      .filter((id) => id !== '');
+    await noticeApiService
+      .deleteSelectedNotices({ selectedNoticeIds });
   }
 }
 

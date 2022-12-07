@@ -30,6 +30,10 @@ export default function NoticesPage() {
   const noticeStore = useNoticeStore();
 
   useEffect(() => {
+    noticeStore.closeSelectNoticeState();
+  }, []);
+
+  useEffect(() => {
     if (!loggedIn) {
       navigateLogin();
     }
@@ -82,6 +86,16 @@ export default function NoticesPage() {
     noticeStore.deselectAllNotices();
   };
 
+  const readSelectedNotices = async () => {
+    await noticeStore.readSelectedNotices();
+    await noticeStore.fetchNotices();
+  };
+
+  const deleteSelectedNotices = async () => {
+    await noticeStore.deleteSelectedNotices();
+    await noticeStore.fetchNotices();
+  };
+
   return (
     <Notices
       navigateBackward={navigateBackward}
@@ -98,6 +112,8 @@ export default function NoticesPage() {
       selectNotice={selectNotice}
       selectAllNotices={selectAllNotices}
       deselectAllNotices={deselectAllNotices}
+      readSelectedNotices={readSelectedNotices}
+      deleteSelectedNotices={deleteSelectedNotices}
     />
   );
 }
