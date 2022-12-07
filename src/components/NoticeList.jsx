@@ -29,6 +29,8 @@ export default function NoticeList({
   onClickSelectNotice,
   onClickSelectAllNotices,
   onClickDeselectAllNotices,
+  onClickReadSelectedNotices,
+  onClickDeleteSelectedNotices,
 }) {
   if (noticeStateToShow === 'unread' && notices.length === 0) {
     return (
@@ -39,7 +41,7 @@ export default function NoticeList({
   return (
     <Container>
       {selectNoticeState && (
-        <>
+        <div>
           <button
             type="button"
             onClick={onClickSelectAllNotices}
@@ -52,7 +54,7 @@ export default function NoticeList({
           >
             초기화
           </button>
-        </>
+        </div>
       )}
       {notices.map((notice, index) => (
         <Notice key={notice.id}>
@@ -98,6 +100,25 @@ export default function NoticeList({
           )}
         </Notice>
       ))}
+      {selectNoticeState && (
+        <div>
+          <p>선택한 알림을</p>
+          <div>
+            <button
+              type="button"
+              onClick={onClickReadSelectedNotices}
+            >
+              읽은 알림으로 처리
+            </button>
+            <button
+              type="button"
+              onClick={onClickDeleteSelectedNotices}
+            >
+              삭제
+            </button>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

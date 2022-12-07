@@ -40,6 +40,20 @@ export default class NoticeApiService {
     });
     return data;
   }
+
+  async readSelectedNotices({ selectedNoticeIds }) {
+    const url = `${apiBaseUrl}/notices`;
+    await axios.patch(url, { ids: selectedNoticeIds }, {
+      params: { status: 'read' },
+    });
+  }
+
+  async deleteSelectedNotices({ selectedNoticeIds }) {
+    const url = `${apiBaseUrl}/notices`;
+    await axios.patch(url, { ids: selectedNoticeIds }, {
+      params: { status: 'deleted' },
+    });
+  }
 }
 
 export const noticeApiService = new NoticeApiService();
