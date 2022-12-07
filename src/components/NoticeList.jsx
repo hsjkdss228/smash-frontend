@@ -25,7 +25,10 @@ export default function NoticeList({
   onClickShowNoticeDetail,
   onClickCloseNoticeDetail,
   selectNoticeState,
+  noticesSelectedState,
   onClickSelectNotice,
+  onClickSelectAllNotices,
+  onClickDeselectAllNotices,
 }) {
   if (noticeStateToShow === 'unread' && notices.length === 0) {
     return (
@@ -35,6 +38,22 @@ export default function NoticeList({
 
   return (
     <Container>
+      {selectNoticeState && (
+        <>
+          <button
+            type="button"
+            onClick={onClickSelectAllNotices}
+          >
+            전체선택
+          </button>
+          <button
+            type="button"
+            onClick={onClickDeselectAllNotices}
+          >
+            초기화
+          </button>
+        </>
+      )}
       {notices.map((notice, index) => (
         <Notice key={notice.id}>
           <NoticeTitle>
@@ -42,8 +61,8 @@ export default function NoticeList({
               <input
                 type="checkbox"
                 id={notice.id}
-                value={notice.id}
-                onClick={() => onClickSelectNotice({
+                checked={noticesSelectedState[index]}
+                onChange={() => onClickSelectNotice({
                   targetIndex: index,
                   targetId: notice.id,
                 })}

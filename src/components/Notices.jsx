@@ -30,7 +30,10 @@ export default function Notices({
   closeNoticeDetail,
   selectNoticeState,
   toggleSelectNoticeState,
+  noticesSelectedState,
   selectNotice,
+  selectAllNotices,
+  deselectAllNotices,
 }) {
   const onClickBackward = () => {
     navigateBackward();
@@ -60,11 +63,13 @@ export default function Notices({
     selectNotice({ targetIndex, targetId });
   };
 
-  const filteredNotices = notices.filter((notice) => (
-    noticeStateToShow === 'unread'
-      ? notice.status === 'unread'
-      : notice
-  ));
+  const handleClickSelectAllNotices = () => {
+    selectAllNotices();
+  };
+
+  const handleClickDeselectAllNotices = () => {
+    deselectAllNotices();
+  };
 
   return (
     <Container>
@@ -100,13 +105,16 @@ export default function Notices({
         <p>조회 가능한 알림이 없습니다.</p>
       ) : (
         <NoticeList
-          notices={filteredNotices}
+          notices={notices}
           noticeStateToShow={noticeStateToShow}
           noticesDetailState={noticesDetailState}
           onClickShowNoticeDetail={handleClickShowNoticeDetail}
           onClickCloseNoticeDetail={handleClickCloseNoticeDetail}
           selectNoticeState={selectNoticeState}
+          noticesSelectedState={noticesSelectedState}
           onClickSelectNotice={handleClickSelectNotice}
+          onClickSelectAllNotices={handleClickSelectAllNotices}
+          onClickDeselectAllNotices={handleClickDeselectAllNotices}
         />
       )}
     </Container>
