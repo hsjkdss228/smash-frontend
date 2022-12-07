@@ -10,6 +10,9 @@ export default class NoticeStore extends Store {
 
     this.notices = [];
 
+    this.selectNoticeState = false;
+    this.noticesSelectedState = [];
+
     this.unreadNoticeCount = 0;
 
     this.serverError = '';
@@ -20,6 +23,7 @@ export default class NoticeStore extends Store {
       const data = await noticeApiService.fetchNotices();
       this.notices = data.notices;
       this.noticesDetailState = Array(this.notices.length).fill(false);
+      this.clearNoticesSelectedState();
       this.publish();
     } catch (error) {
       this.serverError = error.response.data;
@@ -39,11 +43,17 @@ export default class NoticeStore extends Store {
   async showAll() {
     await this.fetchNotices();
     this.noticeStateToShow = 'all';
+    this.selectNoticeState = false;
+    this.clearNoticesSelectedState();
+    this.publish();
   }
 
   async showUnreadOnly() {
     await this.fetchNotices();
     this.noticeStateToShow = 'unread';
+    this.selectNoticeState = false;
+    this.clearNoticesSelectedState();
+    this.publish();
   }
 
   showNoticeDetail(targetIndex) {
@@ -55,6 +65,24 @@ export default class NoticeStore extends Store {
   closeNoticeDetail(targetIndex) {
     this.noticesDetailState[targetIndex] = false;
     this.publish();
+  }
+
+  toggleSelectNoticeState() {
+    this.selectNoticeState = !this.selectNoticeState;
+    if (!this.selectedNoticeState) {
+      this.clearNoticesSelectedState();
+    }
+    this.publish();
+  }
+
+  selectNotice({ targetIndex, targetId }) {
+    this.noticesSelectedState[targetIndex] = this.noticesSelectedState[targetIndex]
+      ? ''
+      : targetId;
+  }
+
+  clearNoticesSelectedState() {
+    this.noticesSelectedState = Array(this.notices.length).fill('');
   }
 
   async fetchUnreadNoticeCount() {

@@ -24,6 +24,8 @@ export default function NoticeList({
   noticesDetailState,
   onClickShowNoticeDetail,
   onClickCloseNoticeDetail,
+  selectNoticeState,
+  onClickSelectNotice,
 }) {
   if (noticeStateToShow === 'unread' && notices.length === 0) {
     return (
@@ -36,6 +38,17 @@ export default function NoticeList({
       {notices.map((notice, index) => (
         <Notice key={notice.id}>
           <NoticeTitle>
+            {selectNoticeState && (
+              <input
+                type="checkbox"
+                id={notice.id}
+                value={notice.id}
+                onClick={() => onClickSelectNotice({
+                  targetIndex: index,
+                  targetId: notice.id,
+                })}
+              />
+            )}
             <button
               type="button"
               onClick={() => onClickShowNoticeDetail({

@@ -40,6 +40,7 @@ export default function NoticesPage() {
     notices,
     noticeStateToShow,
     noticesDetailState,
+    selectNoticeState,
   } = noticeStore;
 
   const showAll = async () => {
@@ -59,6 +60,14 @@ export default function NoticesPage() {
     noticeStore.closeNoticeDetail(targetIndex);
   };
 
+  const toggleSelectNoticeState = () => {
+    noticeStore.toggleSelectNoticeState();
+  };
+
+  const selectNotice = ({ targetIndex, targetId }) => {
+    noticeStore.selectNotice({ targetIndex, targetId });
+  };
+
   return (
     <Notices
       navigateBackward={navigateBackward}
@@ -69,6 +78,9 @@ export default function NoticesPage() {
       noticesDetailState={noticesDetailState}
       showNoticeDetail={showNoticeDetail}
       closeNoticeDetail={closeNoticeDetail}
+      selectNoticeState={selectNoticeState}
+      toggleSelectNoticeState={toggleSelectNoticeState}
+      selectNotice={selectNotice}
     />
   );
 }
