@@ -38,20 +38,37 @@ export default function NoticesPage() {
 
   const {
     notices,
+    noticeStateToShow,
     noticesDetailState,
   } = noticeStore;
 
-  const showNoticeDetail = async (targetIndex) => {
-    await noticeStore.readNotice(targetIndex);
+  const showAll = async () => {
+    await noticeStore.showAll();
+  };
+
+  const showUnreadOnly = async () => {
+    await noticeStore.showUnreadOnly();
+  };
+
+  const showNoticeDetail = async ({ targetIndex, targetId }) => {
     await noticeStore.showNoticeDetail(targetIndex);
+    await noticeStore.readNotice(targetId);
+  };
+
+  const closeNoticeDetail = (targetIndex) => {
+    noticeStore.closeNoticeDetail(targetIndex);
   };
 
   return (
     <Notices
+      navigateBackward={navigateBackward}
       notices={notices}
+      noticeStateToShow={noticeStateToShow}
+      showAll={showAll}
+      showUnreadOnly={showUnreadOnly}
       noticesDetailState={noticesDetailState}
       showNoticeDetail={showNoticeDetail}
-      navigateBackward={navigateBackward}
+      closeNoticeDetail={closeNoticeDetail}
     />
   );
 }

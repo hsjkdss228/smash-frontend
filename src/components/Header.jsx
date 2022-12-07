@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+
 import { useLocalStorage } from 'usehooks-ts';
+import styled from 'styled-components';
+
 import useUserStore from '../hooks/useUserStore';
+import useNoticeStore from '../hooks/useNoticeStore';
+
 import { userApiService } from '../services/UserApiService';
+import { noticeApiService } from '../services/NoticeApiService';
 
 const Container = styled.header`
   position: fixed;
@@ -32,6 +37,11 @@ const Side = styled.nav`
   gap: 1em;
 `;
 
+const UnreadNoticeCount = styled.span`
+  font-size: .5em;
+  color: #f00;
+`;
+
 export default function Header() {
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
@@ -39,15 +49,19 @@ export default function Header() {
   const navigate = useNavigate();
 
   const userStore = useUserStore();
+  const noticeStore = useNoticeStore();
+
+  const { unreadNoticeCount } = noticeStore;
+  const { name } = userStore;
 
   useEffect(() => {
     if (accessToken) {
       userApiService.setAccessToken(accessToken);
+      noticeApiService.setAccessToken(accessToken);
       userStore.fetchUserName();
+      noticeStore.fetchUnreadNoticeCount();
     }
   }, [accessToken]);
-
-  const { name } = userStore;
 
   const navigateNoticesPage = () => {
     navigate('/notices', {
@@ -94,6 +108,13 @@ export default function Header() {
               onClick={navigateNoticesPage}
             >
               알림
+              {(unreadNoticeCount >= 1) && (
+                <UnreadNoticeCount>
+                  (
+                  {unreadNoticeCount}
+                  )
+                </UnreadNoticeCount>
+              )}
             </button>
             <button
               type="button"

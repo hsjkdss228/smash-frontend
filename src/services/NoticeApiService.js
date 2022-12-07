@@ -29,6 +29,17 @@ export default class NoticeApiService {
     const url = `${apiBaseUrl}/notices/${noticeId}`;
     await axios.patch(url);
   }
+
+  async fetchUnreadNoticeCount() {
+    const url = `${apiBaseUrl}/notice-count`;
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      params: { status: 'unread' },
+    });
+    return data;
+  }
 }
 
 export const noticeApiService = new NoticeApiService();

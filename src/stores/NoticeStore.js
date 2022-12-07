@@ -5,9 +5,13 @@ export default class NoticeStore extends Store {
   constructor() {
     super();
 
+    this.noticeStateToShow = 'all';
     this.noticesDetailState = [];
 
     this.notices = [];
+
+    this.unreadNoticeCount = 0;
+
     this.serverError = '';
   }
 
@@ -23,17 +27,39 @@ export default class NoticeStore extends Store {
     }
   }
 
-  async readNotice(targetIndex) {
-    const notice = this.notices
-      .find((_, index) => index === targetIndex);
-    if (notice && notice.status === 'unread') {
-      await noticeApiService.readNotice(notice.id);
+  async readNotice(targetId) {
+    const found = this.notices
+      .find((notice) => notice.id === targetId);
+    if (found && found.status === 'unread') {
+      await noticeApiService.readNotice(found.id);
+      await this.fetchUnreadNoticeCount();
     }
+  }
+
+  async showAll() {
+    await this.fetchNotices();
+    this.noticeStateToShow = 'all';
+  }
+
+  async showUnreadOnly() {
+    await this.fetchNotices();
+    this.noticeStateToShow = 'unread';
   }
 
   showNoticeDetail(targetIndex) {
     this.noticesDetailState = this.noticesDetailState
       .map((_, index) => index === targetIndex);
+    this.publish();
+  }
+
+  closeNoticeDetail(targetIndex) {
+    this.noticesDetailState[targetIndex] = false;
+    this.publish();
+  }
+
+  async fetchUnreadNoticeCount() {
+    const data = await noticeApiService.fetchUnreadNoticeCount();
+    this.unreadNoticeCount = data.count;
     this.publish();
   }
 }

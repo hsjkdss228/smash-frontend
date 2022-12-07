@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import NoticeList from './NoticeList';
 import BackwardButton from './ui/BackwardButton';
 
 const Container = styled.article`
@@ -14,33 +15,45 @@ const TopSection = styled.div`
   justify-content: space-between;
 `;
 
-const NoticeList = styled.ul`
-  
-`;
-
-const NoticeTitle = styled.li`
-  font-size: .75em;
-  display: flex;
-  gap: .5em;
-`;
-
-const NoticeDetail = styled.div`
+const Functions = styled.div`
   
 `;
 
 export default function Notices({
+  navigateBackward,
   notices,
+  noticeStateToShow,
+  showAll,
+  showUnreadOnly,
   noticesDetailState,
   showNoticeDetail,
-  navigateBackward,
+  closeNoticeDetail,
 }) {
   const onClickBackward = () => {
     navigateBackward();
   };
 
-  const handleClickShowNoticeDetail = (targetIndex) => {
-    showNoticeDetail(targetIndex);
+  const handleClickShowNoticeDetail = ({ targetIndex, targetId }) => {
+    showNoticeDetail({ targetIndex, targetId });
   };
+
+  const handleClickCloseNoticeDetail = (targetIndex) => {
+    closeNoticeDetail(targetIndex);
+  };
+
+  const handleClickShowAll = () => {
+    showAll();
+  };
+
+  const handleClickShowUnreadOnly = () => {
+    showUnreadOnly();
+  };
+
+  const filteredNotices = notices.filter((notice) => (
+    noticeStateToShow === 'unread'
+      ? notice.status === 'unread'
+      : notice
+  ));
 
   return (
     <Container>
@@ -51,30 +64,31 @@ export default function Notices({
         >
           ⬅️
         </BackwardButton>
+        <Functions>
+          <button
+            type="button"
+            onClick={handleClickShowAll}
+          >
+            모든 알림 확인
+          </button>
+          <button
+            type="button"
+            onClick={handleClickShowUnreadOnly}
+          >
+            읽지 않은 알림만 확인
+          </button>
+        </Functions>
       </TopSection>
       {(!notices || notices.length === 0) ? (
         <p>조회 가능한 알림이 없습니다.</p>
       ) : (
-        <NoticeList>
-          {notices.map((notice, index) => (
-            <>
-              <NoticeTitle key={notice.id}>
-                <button
-                  type="button"
-                  onClick={() => handleClickShowNoticeDetail(index)}
-                >
-                  <p>{notice.createdAt}</p>
-                  <p>{notice.title}</p>
-                </button>
-              </NoticeTitle>
-              {noticesDetailState[index] && (
-                <NoticeDetail>
-                  <p>{notice.detail}</p>
-                </NoticeDetail>
-              )}
-            </>
-          ))}
-        </NoticeList>
+        <NoticeList
+          notices={filteredNotices}
+          noticeStateToShow={noticeStateToShow}
+          noticesDetailState={noticesDetailState}
+          onClickShowNoticeDetail={handleClickShowNoticeDetail}
+          onClickCloseNoticeDetail={handleClickCloseNoticeDetail}
+        />
       )}
     </Container>
   );
