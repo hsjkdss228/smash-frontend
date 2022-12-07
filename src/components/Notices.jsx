@@ -28,9 +28,20 @@ export default function Notices({
   noticesDetailState,
   showNoticeDetail,
   closeNoticeDetail,
+  selectNoticeState,
+  toggleSelectNoticeState,
+  selectNotice,
 }) {
   const onClickBackward = () => {
     navigateBackward();
+  };
+
+  const handleClickShowAll = () => {
+    showAll();
+  };
+
+  const handleClickShowUnreadOnly = () => {
+    showUnreadOnly();
   };
 
   const handleClickShowNoticeDetail = ({ targetIndex, targetId }) => {
@@ -41,12 +52,12 @@ export default function Notices({
     closeNoticeDetail(targetIndex);
   };
 
-  const handleClickShowAll = () => {
-    showAll();
+  const handleClickToggleSelectNoticeState = () => {
+    toggleSelectNoticeState();
   };
 
-  const handleClickShowUnreadOnly = () => {
-    showUnreadOnly();
+  const handleClickSelectNotice = ({ targetIndex, targetId }) => {
+    selectNotice({ targetIndex, targetId });
   };
 
   const filteredNotices = notices.filter((notice) => (
@@ -65,6 +76,12 @@ export default function Notices({
           ⬅️
         </BackwardButton>
         <Functions>
+          <button
+            type="button"
+            onClick={handleClickToggleSelectNoticeState}
+          >
+            알림 선택
+          </button>
           <button
             type="button"
             onClick={handleClickShowAll}
@@ -88,6 +105,8 @@ export default function Notices({
           noticesDetailState={noticesDetailState}
           onClickShowNoticeDetail={handleClickShowNoticeDetail}
           onClickCloseNoticeDetail={handleClickCloseNoticeDetail}
+          selectNoticeState={selectNoticeState}
+          onClickSelectNotice={handleClickSelectNotice}
         />
       )}
     </Container>
