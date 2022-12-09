@@ -1,13 +1,13 @@
 /* eslint-disable no-nested-ternary */
+
 import 'react-datepicker/dist/react-datepicker.css';
+
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import SelectTime from './SelectTime';
-import BackwardButton from './ui/BackwardButton';
 
-const Container = styled.article`
-  padding-block: 30px;
-`;
+import Container from './ui/Container';
+import BackwardButton from './ui/BackwardButton';
+import SelectTime from './SelectTime';
 
 const Form = styled.form`
   display: flex;
@@ -121,8 +121,6 @@ export default function PostForm({
   formErrors,
   serverError,
 }) {
-  console.log(serverError);
-
   const handleClickBackward = () => {
     reconfirmNavigateBackward();
   };

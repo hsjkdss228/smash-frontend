@@ -8,13 +8,7 @@ import PostGameApplicantsInformation from './PostGameApplicantsInformation';
 import BackwardButton from './ui/BackwardButton';
 import PostAuthorInformation from './PostAuthorInformation';
 import PostDetail from './PostDetail';
-
-const Container = styled.article`
-  padding: 30px 0 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import Container from './ui/Container';
 
 const TopSection = styled.div`
   width: 100%;
