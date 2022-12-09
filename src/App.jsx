@@ -26,15 +26,15 @@ import WelcomePage from './pages/WelcomePage';
 
 const Container = styled.div`
   height: 100vh;
-  padding: 60px calc((100% - 600px) / 2);
-  background-color: #fff;
+  padding: 60px calc((100% - 650px) / 2);
+  background-color: #D3D2D9;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: scroll;
-  background-color: #F0F2F5;
+  background-color: #E1E1E1;
 `;
 
 export default function App() {

@@ -15,12 +15,12 @@ const Container = styled.nav`
   position: fixed;
   bottom: 0;
   height: 60px;
-  width: calc(100% - (100% - 600px));
+  width: calc(100% - (100% - 650px));
   display: grid;
   align-items: center;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  margin-inline: calc((100% - 600px) / 2);
+  margin-inline: calc((100% - 650px) / 2);
   background-color: #000;
 `;
 
