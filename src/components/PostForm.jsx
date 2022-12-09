@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
@@ -113,13 +114,15 @@ export default function PostForm({
   changeGameEndTimeAmPm,
   changeGameEndHour,
   changeGameEndMinute,
-  changeGamePlace,
+  changePlaceName,
   changeGameTargetMemberCount,
   changePostDetail,
   createPost,
   formErrors,
   serverError,
 }) {
+  console.log(serverError);
+
   const handleClickBackward = () => {
     reconfirmNavigateBackward();
   };
@@ -163,9 +166,9 @@ export default function PostForm({
     changeGameEndMinute(value);
   };
 
-  const handleChangeGamePlace = (event) => {
+  const handleChangePlaceName = (event) => {
     const { value } = event.target;
-    changeGamePlace(value);
+    changePlaceName(value);
   };
 
   const handleChangeGameTargetMemberCount = (event) => {
@@ -337,19 +340,21 @@ export default function PostForm({
         </DateAndTimeSection>
         <PlaceSection>
           <TitleAndError>
-            <Label htmlFor="input-game-place">
+            <Label htmlFor="input-place-name">
               장소
             </Label>
-            {formErrors.BLANK_GAME_PLACE ? (
-              <Error>{formErrors.BLANK_GAME_PLACE}</Error>
+            {formErrors.BLANK_PLACE_NAME ? (
+              <Error>{formErrors.BLANK_PLACE_NAME}</Error>
+            ) : serverError.includes('주어진 장소 이름에 해당하는 장소를 찾을 수 없습니다') ? (
+              <Error>등록되지 않은 장소입니다.</Error>
             ) : null}
           </TitleAndError>
           <TextInput
-            id="input-game-place"
+            id="input-place-name"
             type="text"
             placeholder="운동 장소 이름"
-            value={data.gamePlace}
-            onChange={handleChangeGamePlace}
+            value={data.placeName}
+            onChange={handleChangePlaceName}
           />
         </PlaceSection>
         <TargetMemberCountSection>
@@ -391,9 +396,6 @@ export default function PostForm({
           작성하기
         </SubmitButton>
       </Form>
-      {serverError ? (
-        <p>{serverError}</p>
-      ) : null}
     </Container>
   );
 }

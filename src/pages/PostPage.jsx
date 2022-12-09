@@ -6,7 +6,9 @@ import { useLocalStorage } from 'usehooks-ts';
 import Post from '../components/Post';
 import usePostStore from '../hooks/usePostStore';
 import useGameStore from '../hooks/useGameStore';
+import usePlaceStore from '../hooks/usePlaceStore';
 import useRegisterStore from '../hooks/useRegisterStore';
+
 import ModalConfirm from '../components/ModalConfirm';
 import ModalReconfirm from '../components/ModalReconfirm';
 
@@ -30,17 +32,17 @@ export default function PostPage() {
 
   const postStore = usePostStore();
   const gameStore = useGameStore();
+  const placeStore = usePlaceStore();
   const registerStore = useRegisterStore();
 
   const fetchData = async () => {
     await postStore.fetchPost(postId);
     const gameId = await gameStore.fetchGame(postId);
     const { isAuthor } = postStore.post;
-    if (gameId && !isAuthor) {
-      await registerStore.fetchMembers(gameId);
-    }
-    if (gameId && isAuthor) {
-      await registerStore.fetchMembers(gameId);
+    const { placeId } = gameStore.game;
+    await placeStore.fetchPlace(placeId);
+    await registerStore.fetchMembers(gameId);
+    if (isAuthor) {
       await registerStore.fetchApplicants(gameId);
     }
   };
@@ -51,10 +53,11 @@ export default function PostPage() {
 
   const { post } = postStore;
   const { game } = gameStore;
+  const { place } = placeStore;
   const {
     members,
     applicants,
-    registerErrorCodeAndMessage,
+    registerServerError,
   } = registerStore;
 
   const navigateBackward = () => {
@@ -168,6 +171,7 @@ export default function PostPage() {
         navigateSelectTrialAccount={navigateSelectTrialAccount}
         post={post}
         game={game}
+        place={place}
         members={members}
         applicants={applicants}
         reconfirmDeletePost={reconfirmDeletePost}
@@ -176,7 +180,7 @@ export default function PostPage() {
         reconfirmParticipateCancel={reconfirmParticipateCancel}
         handleClickAcceptRegister={handleClickAcceptRegister}
         reconfirmRegisterReject={reconfirmRegisterReject}
-        registerError={registerErrorCodeAndMessage}
+        registerError={registerServerError}
       />
       {confirmModalState && (
         <ModalConfirm

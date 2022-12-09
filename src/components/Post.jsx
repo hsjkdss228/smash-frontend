@@ -49,6 +49,7 @@ export default function Post({
   navigateSelectTrialAccount,
   post,
   game,
+  place,
   members,
   applicants,
   reconfirmDeletePost,
@@ -127,7 +128,7 @@ export default function Post({
         <PostGameInformation
           type={game.type}
           date={game.date}
-          place={game.place}
+          place={place.name}
           currentMemberCount={game.currentMemberCount}
           targetMemberCount={game.targetMemberCount}
           hits={post.hits}
