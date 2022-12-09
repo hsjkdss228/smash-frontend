@@ -8,15 +8,15 @@ export default class RegisterStore extends Store {
     super();
 
     this.registeredGameId = -1;
-    this.registerErrorCodeAndMessage = {};
+    this.registerServerError = '';
 
     this.members = [];
-    this.membersErrorMessage = '';
+    this.membersServerError = '';
 
     this.applicants = [];
-    this.applicantsErrorMessage = '';
+    this.applicantsServerError = '';
 
-    this.registerAcceptErrorMessage = '';
+    this.registerAcceptServerError = '';
   }
 
   async fetchMembers(gameId) {
@@ -25,8 +25,7 @@ export default class RegisterStore extends Store {
       this.members = data.members;
       this.publish();
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.membersErrorMessage = errorMessage;
+      this.membersServerError = error.response.data;
       this.publish();
     }
   }
@@ -37,8 +36,7 @@ export default class RegisterStore extends Store {
       this.applicants = data.applicants;
       this.publish();
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.applicantsErrorMessage = errorMessage;
+      this.applicantsServerError = error.response.data;
       this.publish();
     }
   }
@@ -48,12 +46,7 @@ export default class RegisterStore extends Store {
       this.registeredGameId = await registerApiService.registerToGame(gameId);
       return this.registeredGameId;
     } catch (error) {
-      const { errorCode, errorMessage, errorGameId } = error.response.data;
-      this.registerErrorCodeAndMessage = {
-        errorCode,
-        errorMessage,
-        gameId: errorGameId,
-      };
+      this.registerServerError = error.response.data;
       this.publish();
       return '';
     }
@@ -71,8 +64,7 @@ export default class RegisterStore extends Store {
     try {
       await registerApiService.acceptRegister(registerId);
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.registerAcceptErrorMessage = errorMessage;
+      this.registerAcceptServerError = error.response.data;
     }
   }
 

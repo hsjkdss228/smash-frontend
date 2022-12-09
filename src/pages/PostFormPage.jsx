@@ -93,8 +93,8 @@ export default function PostFormPage() {
     postFormStore.changeGameEndMinute(endMinute);
   };
 
-  const changeGamePlace = (place) => {
-    postFormStore.changeGamePlace(place);
+  const changePlaceName = (place) => {
+    postFormStore.changePlaceName(place);
   };
 
   const changeGameTargetMemberCount = (targetMemberCount) => {
@@ -130,7 +130,7 @@ export default function PostFormPage() {
         changeGameEndTimeAmPm={changeGameEndTimeAmPm}
         changeGameEndHour={changeGameEndHour}
         changeGameEndMinute={changeGameEndMinute}
-        changeGamePlace={changeGamePlace}
+        changePlaceName={changePlaceName}
         changeGameTargetMemberCount={changeGameTargetMemberCount}
         changePostDetail={changePostDetail}
         createPost={createPost}

@@ -44,7 +44,7 @@ export default class PostApiService {
     gameEndTimeAmPm,
     gameEndHour,
     gameEndMinute,
-    gamePlace,
+    placeName,
     gameTargetMemberCount,
     postDetail,
   }) {
@@ -58,7 +58,7 @@ export default class PostApiService {
       gameEndTimeAmPm,
       gameEndHour,
       gameEndMinute,
-      gamePlace,
+      placeName,
       gameTargetMemberCount,
       postDetail,
     }, {

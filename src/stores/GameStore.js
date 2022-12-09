@@ -6,7 +6,7 @@ export default class GameStore extends Store {
     super();
 
     this.game = {};
-    this.gameErrorMessage = '';
+    this.gameServerError = '';
   }
 
   async fetchGame(postId) {
@@ -16,7 +16,7 @@ export default class GameStore extends Store {
       return this.game.id;
     } catch (error) {
       const { errorMessage } = error.response.data;
-      this.gameErrorMessage = errorMessage;
+      this.gameServerError = errorMessage;
       return '';
     }
   }

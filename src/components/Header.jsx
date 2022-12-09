@@ -20,7 +20,8 @@ const Container = styled.header`
   grid-template-columns: 2fr 4fr;
   gap: 50%;
   border-bottom: 1px solid black;
-  background-color: #FFF;
+  background-color: #000;
+  color: #FF7A63;
 `;
 
 const Title = styled.h1`

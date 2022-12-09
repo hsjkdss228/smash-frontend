@@ -33,6 +33,13 @@ jest.mock('../hooks/useGameStore', () => () => ({
   fetchGame,
 }));
 
+let place;
+let fetchPlace;
+jest.mock('../hooks/usePlaceStore', () => () => ({
+  place,
+  fetchPlace,
+}));
+
 let members;
 let applicants;
 let registerErrorCodeAndMessage;

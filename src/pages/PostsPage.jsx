@@ -47,7 +47,7 @@ export default function PostsPage() {
 
   const {
     posts,
-    postsErrorMessage,
+    postsServerError,
   } = postStore;
 
   const handleClickToggleSearchSetting = () => {
@@ -78,7 +78,7 @@ export default function PostsPage() {
         toggleFilterSetting={handleClickToggleFilterSetting}
         posts={posts}
         navigatePost={navigatePost}
-        postsErrorMessage={postsErrorMessage}
+        postsServerError={postsServerError}
       />
       {confirmModalState && (
         <ModalConfirm

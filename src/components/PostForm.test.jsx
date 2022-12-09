@@ -3,7 +3,7 @@ import context from 'jest-plugin-context';
 import PostForm from './PostForm';
 
 describe('PostForm', () => {
-  const navigateToBackward = jest.fn();
+  const reconfirmNavigateBackward = jest.fn();
   const changeGameExercise = jest.fn();
   const changeGameDate = jest.fn();
   const changeGameStartTimeAmPm = jest.fn();
@@ -12,7 +12,7 @@ describe('PostForm', () => {
   const changeGameEndTimeAmPm = jest.fn();
   const changeGameEndHour = jest.fn();
   const changeGameEndMinute = jest.fn();
-  const changeGamePlace = jest.fn();
+  const changePlaceName = jest.fn();
   const changeGameTargetMemberCount = jest.fn();
   const changePostDetail = jest.fn();
   const createPost = jest.fn();
@@ -25,7 +25,7 @@ describe('PostForm', () => {
     render((
       <PostForm
         data={data}
-        navigateToBackward={navigateToBackward}
+        reconfirmNavigateBackward={reconfirmNavigateBackward}
         changeGameExercise={changeGameExercise}
         changeGameDate={changeGameDate}
         changeGameStartTimeAmPm={changeGameStartTimeAmPm}
@@ -34,7 +34,7 @@ describe('PostForm', () => {
         changeGameEndTimeAmPm={changeGameEndTimeAmPm}
         changeGameEndHour={changeGameEndHour}
         changeGameEndMinute={changeGameEndMinute}
-        changeGamePlace={changeGamePlace}
+        changePlaceName={changePlaceName}
         changeGameTargetMemberCount={changeGameTargetMemberCount}
         changePostDetail={changePostDetail}
         createPost={createPost}
@@ -48,12 +48,12 @@ describe('PostForm', () => {
     const data = {
       gameExercise: '',
       gameDate: new Date(),
-      gamePlace: '',
+      PlaceName: '',
       gameTargetMemberCount: 0,
       postDetail: '',
     };
     const formErrors = {};
-    const serverErrors = {};
+    const serverErrors = '';
 
     it('게시글 작성 폼을 화면에 출력', () => {
       renderPostForm({
@@ -71,7 +71,7 @@ describe('PostForm', () => {
     });
 
     context('뒤로가기 버튼을 누르면', () => {
-      it('뒤로 가기 핸들러 함수 호출', () => {
+      it('뒤로 가기 재확인 Modal 활성화 함수 호출', () => {
         renderPostForm({
           data,
           formErrors,
@@ -79,7 +79,7 @@ describe('PostForm', () => {
         });
 
         fireEvent.click(screen.getByText('⬅️'));
-        expect(navigateToBackward).toBeCalled();
+        expect(reconfirmNavigateBackward).toBeCalled();
       });
     });
 
@@ -87,7 +87,7 @@ describe('PostForm', () => {
       const dataWithSpecificDate = {
         gameExercise: '',
         gameDate: new Date('2022-11-23T00:00:00.000Z'),
-        gamePlace: '',
+        PlaceName: '',
         gameTargetMemberCount: 0,
         postDetail: '',
       };
@@ -139,7 +139,7 @@ describe('PostForm', () => {
         fireEvent.change(screen.getByLabelText(/장소/), {
           target: { value: '고척스카이돔' },
         });
-        expect(changeGamePlace).toBeCalledWith('고척스카이돔');
+        expect(changePlaceName).toBeCalledWith('고척스카이돔');
 
         fireEvent.change(screen.getByLabelText(/모집 인원/), {
           target: { value: 20 },
@@ -171,15 +171,15 @@ describe('PostForm', () => {
     const data = {
       gameExercise: '',
       gameDate: new Date(),
-      gamePlace: '',
+      PlaceName: '',
       gameTargetMemberCount: 0,
       postDetail: '',
     };
     const formErrors = {
-      BLANK_GAME_PLACE: '운동 장소 이름을 입력해주세요.',
+      BLANK_PLACE_NAME: '운동 장소 이름을 입력해주세요.',
       NULL_GAME_TARGET_MEMBER_COUNT: '사용자 수를 입력해주세요.',
     };
-    const serverErrors = {};
+    const serverErrors = '';
 
     it('에러 메세지를 컴포넌트에 출력', () => {
       renderPostForm({

@@ -31,7 +31,7 @@ module.exports = function () {
       this.amOnPage(`${backdoorBaseUrl}/setup-members-without-applicants`);
     },
 
-    // Operations
+    // Actions
     login({ userId }) {
       this.amOnPage('/');
       this.fillField('User Id:', userId);

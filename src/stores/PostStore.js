@@ -9,10 +9,10 @@ export default class PostStore extends Store {
     super();
 
     this.posts = [];
-    this.postsErrorMessage = '';
+    this.postsServerError = '';
 
     this.post = {};
-    this.postErrorMessage = '';
+    this.postServerError = '';
   }
 
   async fetchPosts() {
@@ -21,8 +21,7 @@ export default class PostStore extends Store {
       this.posts = data.posts;
       this.publish();
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.postsErrorMessage = errorMessage;
+      this.postsServerError = error.response.data;
       this.publish();
     }
   }
@@ -32,8 +31,7 @@ export default class PostStore extends Store {
       const data = await postApiService.fetchPost(postId);
       this.post = data;
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.postErrorMessage = errorMessage;
+      this.postServerError = error.response.data;
     }
   }
 

@@ -7,7 +7,7 @@ import config from './config';
 
 const { apiBaseUrl } = config;
 
-const postTestServer = setupServer(
+const testServer = setupServer(
   // fetchPosts
   rest.get(
     `${apiBaseUrl}/posts`,
@@ -26,11 +26,13 @@ const postTestServer = setupServer(
                 id: 1,
                 type: '축구',
                 date: '2022년 10월 19일 13:00~16:00',
-                place: '대전월드컵경기장',
                 currentMemberCount: 16,
                 targetMemberCount: 22,
                 registerId: -1,
                 registerStatus: 'none',
+              },
+              place: {
+                name: '대전월드컵경기장',
               },
             },
             {
@@ -41,11 +43,13 @@ const postTestServer = setupServer(
                 id: 1,
                 type: '농구',
                 date: '2022년 10월 20일 15:00~17:00',
-                place: '잠실실내체육관',
                 currentMemberCount: 2,
                 targetMemberCount: 12,
                 registerId: 10,
                 registerStatus: 'accepted',
+              },
+              place: {
+                name: '대전월드컵경기장',
               },
             },
           ],
@@ -243,13 +247,40 @@ const postTestServer = setupServer(
           context.status(200),
           context.json({
             id: 1,
+            placeId: 1,
             type: '탁구',
             date: '2022년 10월 19일 12:30~13:30',
-            place: '서울숲탁구클럽',
             currentMemberCount: 2,
             targetMemberCount: 4,
             registerId: -1,
             registerStatus: 'none',
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // fetchPlace
+  rest.get(
+    `${apiBaseUrl}/places/:placeId`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+      const { placeId } = await request.params;
+
+      if (placeId === '1' && accessToken === 'userId 1') {
+        return response(
+          context.status(200),
+          context.json({
+            id: 1,
+            name: '목동야구장',
+            exercise: '야구',
+            address: '주소지',
+            contactNumber: '02-0000-0000',
           }),
         );
       }
@@ -518,4 +549,4 @@ const postTestServer = setupServer(
   ),
 );
 
-export default postTestServer;
+export default testServer;

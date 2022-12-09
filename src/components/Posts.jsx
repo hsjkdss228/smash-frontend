@@ -34,7 +34,7 @@ export default function Posts({
   toggleFilterSetting,
   posts,
   navigatePost,
-  postsErrorMessage,
+  postsServerError,
 }) {
   const onClickPost = (postId) => {
     navigatePost(postId);
@@ -68,8 +68,8 @@ export default function Posts({
       </Settings>
       {posts.length === 0 ? (
         <p>등록된 게시물이 존재하지 않습니다.</p>
-      ) : postsErrorMessage ? (
-        <p>{postsErrorMessage}</p>
+      ) : postsServerError ? (
+        <p>{postsServerError}</p>
       ) : (
         <Thumbnails>
           {posts.map((post) => (
@@ -80,7 +80,7 @@ export default function Posts({
                 isAuthor={post.isAuthor}
                 type={post.game.type}
                 date={post.game.date}
-                place={post.game.place}
+                place={post.place.name}
                 currentMemberCount={post.game.currentMemberCount}
                 targetMemberCount={post.game.targetMemberCount}
                 registerStatus={post.game.registerStatus}

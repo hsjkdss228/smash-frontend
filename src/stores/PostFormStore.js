@@ -18,7 +18,7 @@ export default class PostFormStore extends Store {
     this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
-    this.gamePlace = '';
+    this.placeName = '';
     this.gameTargetMemberCount = 0;
     this.postDetail = '';
 
@@ -31,7 +31,7 @@ export default class PostFormStore extends Store {
       BLANK_GAME_END_AM_PM: '',
       BLANK_GAME_END_HOUR: '',
       BLANK_GAME_END_MINUTE: '',
-      BLANK_GAME_PLACE: '',
+      BLANK_PLACE_NAME: '',
       NULL_GAME_TARGET_MEMBER_COUNT: '',
       BLANK_POST_DETAIL: '',
     };
@@ -144,8 +144,8 @@ export default class PostFormStore extends Store {
     this.publish();
   }
 
-  changeGamePlace(place) {
-    this.gamePlace = place;
+  changePlaceName(place) {
+    this.placeName = place;
     this.publish();
   }
 
@@ -203,9 +203,9 @@ export default class PostFormStore extends Store {
           .BLANK_GAME_END_MINUTE = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
-      if (this.gamePlace === '') {
+      if (this.placeName === '') {
         this.formErrors
-          .BLANK_GAME_PLACE = '장소를 입력하지 않았습니다.';
+          .BLANK_PLACE_NAME = '장소를 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameTargetMemberCount === ''
@@ -234,14 +234,13 @@ export default class PostFormStore extends Store {
         gameEndTimeAmPm: this.gameEndTimeAmPm,
         gameEndHour: this.gameEndHour,
         gameEndMinute: this.gameEndMinute,
-        gamePlace: this.gamePlace,
+        placeName: this.placeName,
         gameTargetMemberCount: this.gameTargetMemberCount,
         postDetail: this.postDetail,
       });
       return data.postId;
     } catch (error) {
-      const { message } = error.response.data;
-      this.serverError = message;
+      this.serverError = error.response.data;
       this.publish();
       return '';
     }
@@ -257,7 +256,7 @@ export default class PostFormStore extends Store {
       BLANK_GAME_END_AM_PM: '',
       BLANK_GAME_END_HOUR: '',
       BLANK_GAME_END_MINUTE: '',
-      BLANK_GAME_PLACE: '',
+      BLANK_PLACE_NAME: '',
       NULL_GAME_TARGET_MEMBER_COUNT: '',
       BLANK_POST_DETAIL: '',
     };
@@ -273,7 +272,7 @@ export default class PostFormStore extends Store {
     this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
-    this.gamePlace = '';
+    this.placeName = '';
     this.gameTargetMemberCount = '';
     this.postDetail = '';
     this.clearFormErrors();
