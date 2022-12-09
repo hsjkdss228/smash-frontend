@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { Reset } from 'styled-reset';
@@ -26,8 +26,8 @@ import WelcomePage from './pages/WelcomePage';
 
 const Container = styled.div`
   height: 100vh;
-  padding: 60px calc((100% - 500px) / 2);
-  background-color: #eeb65d;
+  padding: 60px calc((100% - 600px) / 2);
+  background-color: #fff;
 `;
 
 const Wrapper = styled.div`
@@ -56,7 +56,7 @@ export default function App() {
       <Container>
         <Wrapper>
           <Routes>
-            <Route path="/" element={<PostsPage />} />
+            <Route path="/" element={<Navigate to="/posts/list" />} />
             <Route path="/posts/list" element={<PostsPage />} />
             <Route path="/posts/:postId" element={<PostPage />} />
             <Route path="/login" element={<LoginPage />} />

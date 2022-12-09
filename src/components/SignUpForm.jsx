@@ -2,13 +2,7 @@
 
 import styled from 'styled-components';
 import BackwardButton from './ui/BackwardButton';
-
-const Container = styled.article`
-  padding-block: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import Container from './ui/Container';
 
 const Form = styled.form`
   display: grid;

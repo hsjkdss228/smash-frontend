@@ -10,25 +10,21 @@ import useNoticeStore from '../hooks/useNoticeStore';
 import { userApiService } from '../services/UserApiService';
 import { noticeApiService } from '../services/NoticeApiService';
 
+import Logo from './ui/Logo';
+
 const Container = styled.header`
   position: fixed;
   top: 0;
   height: 60px;
   width: 100%;
   display: grid;
+  align-items: center;
   grid-template-rows: 1fr;
-  grid-template-columns: 2fr 4fr;
+  grid-template-columns: 4fr 6fr;
   gap: 50%;
   border-bottom: 1px solid black;
   background-color: #000;
   color: #FF7A63;
-`;
-
-const Title = styled.h1`
-  font-size: 1.5em;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
 `;
 
 const Side = styled.nav`
@@ -36,6 +32,25 @@ const Side = styled.nav`
   justify-content: center;
   align-items: center;
   gap: 1em;
+`;
+
+const SelectTrialButton = styled.button`
+  color: #fff;
+`;
+
+const NoticeButton = styled.button`
+  color: #fff;
+`;
+
+const MyPageButton = styled.button`
+  color: #fff;
+`;
+
+const LoginLogoutButton = styled.button`
+  padding: .7em 1.2em;
+  border-radius: 2em;
+  background-color: #FF7A63;
+  color: #000;
 `;
 
 const UnreadNoticeCount = styled.span`
@@ -95,7 +110,7 @@ export default function Header() {
 
   return (
     <Container>
-      <Title>SMASH</Title>
+      <Logo>SMASH</Logo>
       <Side>
         {accessToken ? (
           <>
@@ -104,7 +119,7 @@ export default function Header() {
               {' '}
               님
             </p>
-            <button
+            <NoticeButton
               type="button"
               onClick={navigateNoticesPage}
             >
@@ -116,28 +131,33 @@ export default function Header() {
                   )
                 </UnreadNoticeCount>
               )}
-            </button>
-            <button
+            </NoticeButton>
+            <MyPageButton
+              type="button"
+            >
+              마이페이지
+            </MyPageButton>
+            <LoginLogoutButton
               type="button"
               onClick={handleClickLogout}
             >
               로그아웃
-            </button>
+            </LoginLogoutButton>
           </>
         ) : (
           <>
-            <button
-              type="button"
-              onClick={navigateLogin}
-            >
-              LOGIN
-            </button>
-            <button
+            <SelectTrialButton
               type="button"
               onClick={navigateSelectTrialAccount}
             >
               체험용 계정 선택
-            </button>
+            </SelectTrialButton>
+            <LoginLogoutButton
+              type="button"
+              onClick={navigateLogin}
+            >
+              로그인
+            </LoginLogoutButton>
           </>
         )}
       </Side>

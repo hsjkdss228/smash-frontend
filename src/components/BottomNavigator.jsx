@@ -4,16 +4,33 @@ import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import ModalLoginGuide from './ModalLoginGuide';
 
+import homeButton from './assets/images/Home.png';
+import writeButton from './assets/images/Write.png';
+import chatButton from './assets/images/Chat.png';
+import homeButtonSelected from './assets/images/HomeSelected.png';
+import writeButtonSelected from './assets/images/WriteSelected.png';
+import chatButtonSelected from './assets/images/ChatSelected.png';
+
 const Container = styled.nav`
   position: fixed;
   bottom: 0;
   height: 60px;
-  width: 100%;
+  width: calc(100% - (100% - 600px));
   display: grid;
+  align-items: center;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  border-top: 1px solid #000;
-  background-color: #FFF;
+  margin-inline: calc((100% - 600px) / 2);
+  background-color: #000;
+`;
+
+const BottomNavigatorButton = styled.button`
+  height: 2em;
+  color: transparent;
+  background-image: url(${(props) => props.url});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 export default function BottomNavigator() {
@@ -60,24 +77,27 @@ export default function BottomNavigator() {
   return (
     <>
       <Container>
-        <button
+        <BottomNavigatorButton
           type="button"
+          url={location.pathname.includes('/posts') ? homeButtonSelected : homeButton}
           onClick={navigateHome}
         >
           홈
-        </button>
-        <button
+        </BottomNavigatorButton>
+        <BottomNavigatorButton
           type="button"
+          url={location.pathname.includes('/write') ? writeButtonSelected : writeButton}
           onClick={() => navigatePage('/write')}
         >
           글쓰기
-        </button>
-        <button
+        </BottomNavigatorButton>
+        <BottomNavigatorButton
           type="button"
+          url={location.pathname.includes('/chat') ? chatButtonSelected : chatButton}
           onClick={() => navigatePage('/chat')}
         >
           채팅
-        </button>
+        </BottomNavigatorButton>
       </Container>
       <ModalLoginGuide
         loginGuideModalState={loginGuideModalState}
