@@ -1,4 +1,4 @@
-import Container from './ui/Container';
+import Container from './ui/ComponentScreenContainer';
 
 export default function Welcome({
   name,

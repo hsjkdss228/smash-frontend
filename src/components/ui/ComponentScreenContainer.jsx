@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Container = styled.article`
+const ComponentScreenContainer = styled.article`
   padding-block: 30px;
   margin-inline: 25px;
   display: flex;
@@ -8,4 +8,4 @@ const Container = styled.article`
   align-items: center;
 `;
 
-export default Container;
+export default ComponentScreenContainer;

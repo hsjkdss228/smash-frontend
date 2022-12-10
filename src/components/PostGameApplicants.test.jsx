@@ -1,17 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import PostGameApplicantsInformation from './PostGameApplicantsInformation';
+import PostGameApplicants from './PostGameApplicants';
 
-describe('PostGameApplicantsInformation', () => {
+describe('PostGameApplicants', () => {
   const acceptRegister = jest.fn();
   const rejectRegister = jest.fn();
 
-  const renderPostGameApplicantsInformation = ({
+  const renderPostGameApplicants = ({
     applicants,
     cannotAcceptRegister,
   }) => {
     render((
-      <PostGameApplicantsInformation
+      <PostGameApplicants
         applicants={applicants}
         cannotAcceptRegister={cannotAcceptRegister}
         acceptRegister={acceptRegister}
@@ -25,7 +25,7 @@ describe('PostGameApplicantsInformation', () => {
     const cannotAcceptRegister = false;
 
     it('신청 버튼 출력', () => {
-      renderPostGameApplicantsInformation({
+      renderPostGameApplicants({
         applicants,
         cannotAcceptRegister,
       });
@@ -58,7 +58,7 @@ describe('PostGameApplicantsInformation', () => {
     const cannotAcceptRegister = false;
 
     it('각 신청자 정보 및 수락/거절 버튼 출력', () => {
-      renderPostGameApplicantsInformation({
+      renderPostGameApplicants({
         applicants,
         cannotAcceptRegister,
       });
@@ -85,7 +85,7 @@ describe('PostGameApplicantsInformation', () => {
 
     it('참가 신청을 수락하는 핸들러 함수 호출', () => {
       jest.clearAllMocks();
-      renderPostGameApplicantsInformation({
+      renderPostGameApplicants({
         applicants,
         cannotAcceptRegister,
       });
@@ -109,7 +109,7 @@ describe('PostGameApplicantsInformation', () => {
 
     it('참가 신청을 거절하는 핸들러 함수 호출', () => {
       jest.clearAllMocks();
-      renderPostGameApplicantsInformation({
+      renderPostGameApplicants({
         applicants,
         cannotAcceptRegister,
       });
@@ -133,7 +133,7 @@ describe('PostGameApplicantsInformation', () => {
 
     it('참가 신청 버튼을 눌러도 참가 신청 수락 핸들러 함수가 호출되지 않음', () => {
       jest.clearAllMocks();
-      renderPostGameApplicantsInformation({
+      renderPostGameApplicants({
         applicants,
         cannotAcceptRegister,
       });

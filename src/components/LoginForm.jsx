@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import BackwardButton from './BackwardButton';
 
-import Container from './ui/Container';
-import BackwardButton from './ui/BackwardButton';
+import Container from './ui/ComponentScreenContainer';
 
 const Form = styled.form`
   display: grid;
@@ -43,11 +43,8 @@ export default function LoginForm({
   return (
     <Container>
       <BackwardButton
-        type="button"
         onClick={handleClickBackward}
-      >
-        ⬅️
-      </BackwardButton>
+      />
       <Form onSubmit={handleSubmit(submit)}>
         <div>
           <label htmlFor="input-username">

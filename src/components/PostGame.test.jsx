@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import PostGameInformation from './PostGameInformation';
+import PostGame from './PostGame';
 
-describe('PostGameInformation', () => {
+describe('PostGame', () => {
   const renderPostGameInformation = ({
     type,
     date,
@@ -12,7 +12,7 @@ describe('PostGameInformation', () => {
     hits,
   }) => {
     render((
-      <PostGameInformation
+      <PostGame
         type={type}
         date={date}
         place={place}

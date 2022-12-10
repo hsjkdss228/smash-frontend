@@ -5,9 +5,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 
-import Container from './ui/Container';
-import BackwardButton from './ui/BackwardButton';
+import Container from './ui/ComponentScreenContainer';
 import SelectTime from './SelectTime';
+import BackwardButton from './BackwardButton';
 
 const Form = styled.form`
   display: flex;
@@ -187,11 +187,8 @@ export default function PostForm({
   return (
     <Container>
       <BackwardButton
-        type="button"
         onClick={handleClickBackward}
-      >
-        ⬅️
-      </BackwardButton>
+      />
       <Form onSubmit={handleSubmit}>
         <ExerciseSection>
           <TitleAndError>

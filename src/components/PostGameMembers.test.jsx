@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import PostGameMembersInformation from './PostGameMembersInformation';
+import PostGameMembers from './PostGameMembers';
 
-describe('PostGameMembersInformation', () => {
-  const renderPostGameMembersInformation = ({ members }) => {
+describe('PostGameMembers', () => {
+  const renderPostGameMembers = ({ members }) => {
     render((
-      <PostGameMembersInformation
+      <PostGameMembers
         members={members}
       />
     ));
@@ -28,7 +28,7 @@ describe('PostGameMembersInformation', () => {
     ];
 
     it('경기 정보를 출력', () => {
-      renderPostGameMembersInformation({ members });
+      renderPostGameMembers({ members });
 
       screen.getByText('참가자 정보');
       screen.getByText('조코비치');

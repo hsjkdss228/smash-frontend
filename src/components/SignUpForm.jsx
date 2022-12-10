@@ -1,8 +1,8 @@
 /* eslint-disable no-nested-ternary */
 
 import styled from 'styled-components';
-import BackwardButton from './ui/BackwardButton';
-import Container from './ui/Container';
+import BackwardButton from './BackwardButton';
+import Container from './ui/ComponentScreenContainer';
 
 const Form = styled.form`
   display: grid;
@@ -43,11 +43,8 @@ export default function SignUpForm({
   return (
     <Container>
       <BackwardButton
-        type="button"
         onClick={onClickBackward}
-      >
-        ⬅️
-      </BackwardButton>
+      />
       <Form onSubmit={handleSubmit(submit)}>
         <div>
           <label htmlFor="input-name">

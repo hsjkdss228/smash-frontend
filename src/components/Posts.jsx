@@ -4,8 +4,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import PostsContent from './PostsContent';
-import Container from './ui/Container';
-import PostsButton from './ui/PostsButton';
+import Container from './ui/ComponentScreenContainer';
+import Button from './ui/PrimaryButton';
 
 const SearchAndSettingToggleButton = styled.div`
   width: 100%;
@@ -153,61 +153,61 @@ export default function Posts({
           </button>
         </Search>
         <SettingToggleButtons>
-          <PostsButton
+          <Button
             type="button"
             onClick={toggleSearchSetting}
           >
             검색조건 설정
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
             onClick={toggleFilterSetting}
           >
             조회방식 설정
-          </PostsButton>
+          </Button>
         </SettingToggleButtons>
       </SearchAndSettingToggleButton>
       {searchSetting && (
         <SearchSettingSection>
-          <PostsButton
+          <Button
             type="button"
           >
             종목
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
           >
             장소
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
           >
             작성자
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
           >
             참가자
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
           >
             신청자
-          </PostsButton>
+          </Button>
         </SearchSettingSection>
       )}
       {filterSetting && (
         <FilterSettingSection>
-          <PostsButton
+          <Button
             type="button"
           >
             내가 참가하는 운동
-          </PostsButton>
-          <PostsButton
+          </Button>
+          <Button
             type="button"
           >
             내가 모집하는 운동
-          </PostsButton>
+          </Button>
         </FilterSettingSection>
       )}
       <PostsSection>
@@ -218,11 +218,11 @@ export default function Posts({
           >
             리스트
           </ListButton>
-          <PostsButton
+          <Button
             type="button"
           >
             지도
-          </PostsButton>
+          </Button>
         </SelectListOrMap>
         <PostsList>
           {posts.length === 0 ? (

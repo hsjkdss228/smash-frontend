@@ -1,39 +1,51 @@
 /* eslint-disable no-nested-ternary */
 
 import styled from 'styled-components';
-import PostGameInformation from './PostGameInformation';
-import PostGameMemberInformation from './PostGameMembersInformation';
+import PostGame from './PostGame';
+import PostGameMembers from './PostGameMembers';
 import PostRegisterButton from './PostRegisterButton';
-import PostGameApplicantsInformation from './PostGameApplicantsInformation';
-import BackwardButton from './ui/BackwardButton';
-import PostAuthorInformation from './PostAuthorInformation';
+import PostGameApplicants from './PostGameApplicants';
+import BackwardButton from './BackwardButton';
+import PostAuthorDetailAndImages from './ui/ComponentSectionContainer';
+import PostAuthor from './PostAuthor';
 import PostDetail from './PostDetail';
-import Container from './ui/Container';
+import Container from './ui/ComponentScreenContainer';
+import Button from './ui/PrimaryButton';
+import PostImages from './PostImages';
+import PostPlace from './PostPlace';
 
-const TopSection = styled.div`
+const BackwardAndFunctions = styled.div`
   width: 100%;
+  margin-bottom: 1.5em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
-const DeleteButton = styled.button`
-  padding-inline: 1em;
-  border: 1px solid #000;
-  margin-right: 1em;
+const Functions = styled.div`
+  
 `;
 
-const PostInformation = styled.div`
-
+const GameIsFull = styled.p`
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  padding: 1.25em;
+  border-radius: 5px;
+  background-color: #A3A3A3;
 `;
 
 const LoginGuidance = styled.div`
+  font-size: .9em;
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 1em;
-  
-  button {
-    border: 1px solid #000;
-  }
+  padding: 1.25em;
+  border-radius: 5px;
+  background-color: #fff;
 `;
 
 export default function Post({
@@ -100,55 +112,79 @@ export default function Post({
 
   return (
     <Container>
-      <TopSection>
+      <BackwardAndFunctions>
         <BackwardButton
-          type="button"
           onClick={onClickBackward}
-        >
-          ⬅️
-        </BackwardButton>
+        />
         {post.isAuthor ? (
-          <DeleteButton
-            type="button"
-            onClick={onClickDeletePost}
-          >
-            삭제하기
-          </DeleteButton>
+          <Functions>
+            <Button
+              type="button"
+            >
+              수정하기
+            </Button>
+            <Button
+              type="button"
+              onClick={onClickDeletePost}
+            >
+              삭제하기
+            </Button>
+          </Functions>
         ) : (
           null
         )}
-      </TopSection>
-      <PostInformation>
-        <PostGameInformation
-          type={game.type}
-          date={game.date}
-          place={place.name}
-          currentMemberCount={game.currentMemberCount}
-          targetMemberCount={game.targetMemberCount}
-          hits={post.hits}
-        />
-        <PostAuthorInformation
+      </BackwardAndFunctions>
+      {/* TODO: game.type을 name으로 바꿔야 함 */}
+      <PostGame
+        name={game.type}
+        date={game.date}
+        place={place.name}
+        currentMemberCount={game.currentMemberCount}
+        targetMemberCount={game.targetMemberCount}
+        hits={post.hits}
+      />
+      <PostAuthorDetailAndImages>
+        <PostAuthor
           authorName={post.authorName}
           authorPhoneNumber={post.authorPhoneNumber}
         />
         <PostDetail
           detail={post.detail}
         />
-        <PostGameMemberInformation
-          members={members}
-        />
-        {loggedIn ? (
-          post.isAuthor ? (
-            <PostGameApplicantsInformation
-              applicants={applicants}
-              cannotAcceptRegister={(
-                game.currentMemberCount >= game.targetMemberCount
-              )}
-              onClickAcceptRegister={onClickAcceptRegister}
-              onClickRejectRegister={onClickRejectRegister}
+        {/* TODO: 이미지를 받아와 prop로 전달, 받아올 이미지가 없으면 출력하지 않음 */}
+        <PostImages />
+      </PostAuthorDetailAndImages>
+      <PostPlace
+        name={place.name}
+      />
+      <PostGameMembers
+        members={members}
+        isAuthor={post.isAuthor}
+        registerStatus={game.registerStatus}
+      />
+      {loggedIn ? (
+        post.isAuthor ? (
+          <PostGameApplicants
+            applicants={applicants}
+            cannotAcceptRegister={(
+              game.currentMemberCount >= game.targetMemberCount
+            )}
+            onClickAcceptRegister={onClickAcceptRegister}
+            onClickRejectRegister={onClickRejectRegister}
+          />
+        ) : (
+          game.registerStatus === 'processing' || game.registerStatus === 'accepted' ? (
+            <PostRegisterButton
+              registerStatus={game.registerStatus}
+              onClickRegister={onClickRegister}
+              onClickRegisterCancel={onClickRegisterCancel}
+              onClickParticipateCancel={onClickParticipateCancel}
+              registerError={registerError}
             />
           ) : (
-            game.registerStatus === 'processing' || game.registerStatus === 'accepted' ? (
+            game.currentMemberCount >= game.targetMemberCount ? (
+              <p>참가 정원이 모두 찼습니다.</p>
+            ) : (
               <PostRegisterButton
                 registerStatus={game.registerStatus}
                 onClickRegister={onClickRegister}
@@ -156,42 +192,30 @@ export default function Post({
                 onClickParticipateCancel={onClickParticipateCancel}
                 registerError={registerError}
               />
-            ) : (
-              game.currentMemberCount >= game.targetMemberCount ? (
-                <p>참가 정원이 모두 찼습니다.</p>
-              ) : (
-                <PostRegisterButton
-                  registerStatus={game.registerStatus}
-                  onClickRegister={onClickRegister}
-                  onClickRegisterCancel={onClickRegisterCancel}
-                  onClickParticipateCancel={onClickParticipateCancel}
-                  registerError={registerError}
-                />
-              )
             )
           )
+        )
+      ) : (
+        game.currentMemberCount >= game.targetMemberCount ? (
+          <GameIsFull>참가 정원이 모두 찼습니다.</GameIsFull>
         ) : (
-          game.currentMemberCount >= game.targetMemberCount ? (
-            <p>참가 정원이 모두 찼습니다.</p>
-          ) : (
-            <LoginGuidance>
-              <p>운동에 참가를 신청하려면 로그인해주세요.</p>
-              <button
-                type="button"
-                onClick={onClickLogin}
-              >
-                로그인하기
-              </button>
-              <button
-                type="button"
-                onClick={onClickSelectTrialAccount}
-              >
-                체험 계정 선택하기
-              </button>
-            </LoginGuidance>
-          )
-        )}
-      </PostInformation>
+          <LoginGuidance>
+            <p>참가를 신청하려면 로그인이 필요합니다.</p>
+            <Button
+              type="button"
+              onClick={onClickLogin}
+            >
+              로그인하기
+            </Button>
+            <Button
+              type="button"
+              onClick={onClickSelectTrialAccount}
+            >
+              체험 계정 선택하기
+            </Button>
+          </LoginGuidance>
+        )
+      )}
     </Container>
   );
 }
