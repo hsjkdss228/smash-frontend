@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Container from './ui/Container';
-import BackwardButton from './ui/BackwardButton';
+import Container from './ui/ComponentScreenContainer';
+import BackwardButton from './BackwardButton';
 import NoticeList from './NoticeList';
 
 const TopSection = styled.div`
@@ -80,11 +80,8 @@ export default function Notices({
     <Container>
       <TopSection>
         <BackwardButton
-          type="button"
           onClick={onClickBackward}
-        >
-          ⬅️
-        </BackwardButton>
+        />
         <Functions>
           <button
             type="button"

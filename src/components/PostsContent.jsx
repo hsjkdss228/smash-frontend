@@ -143,7 +143,7 @@ export default function PostsContent({
           <p>
             {hits}
             {' '}
-            hits
+            조회
           </p>
           <p>
             1시간 전

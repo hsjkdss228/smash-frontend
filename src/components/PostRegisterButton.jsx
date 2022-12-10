@@ -1,19 +1,33 @@
 import styled from 'styled-components';
 
-const RegisterButtonSection = styled.div`
-  font-size: 1.1em;
-  display: flex;
-  align-items: center;
-
-  p {
-    margin-right: .7em;
-  }
-`;
-
-const Button = styled.button`
+const RegisterButton = styled.button`
   font-size: 1em;
-  padding: .3em;
-  border: 1px solid #000;
+  width: 100%;
+  font-weight: bold;
+  color: #FF7A63;
+  padding: 1.25em;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  background-color: #fff;
+
+  :hover {
+    color: #fff;
+    border-color: transparent;
+    background-color: #FF7A63;
+  }
+
+  :active {
+    color: #fff;
+    border-color: transparent;
+    background-color: #090040;
+  }
+
+  :disabled {
+    color: #fff;
+    border-color: transparent;
+    background-color: #A3A3A3;
+    cursor: default;
+  }
 `;
 
 export default function PostRegisterButton({
@@ -26,14 +40,12 @@ export default function PostRegisterButton({
   if (registerStatus === 'none') {
     return (
       <>
-        <RegisterButtonSection>
-          <Button
-            type="button"
-            onClick={onClickRegister}
-          >
-            신청
-          </Button>
-        </RegisterButtonSection>
+        <RegisterButton
+          type="button"
+          onClick={onClickRegister}
+        >
+          참가 신청하기
+        </RegisterButton>
         {registerError.errorCode ? (
           <p>{registerError.errorMessage}</p>
         ) : (
@@ -45,26 +57,22 @@ export default function PostRegisterButton({
 
   if (registerStatus === 'processing') {
     return (
-      <RegisterButtonSection>
-        <Button
-          type="button"
-          onClick={onClickRegisterCancel}
-        >
-          신청취소
-        </Button>
-      </RegisterButtonSection>
+      <RegisterButton
+        type="button"
+        onClick={onClickRegisterCancel}
+      >
+        신청 취소하기
+      </RegisterButton>
     );
   }
 
   // if (registerStatus === 'accepted')
   return (
-    <RegisterButtonSection>
-      <Button
-        type="button"
-        onClick={onClickParticipateCancel}
-      >
-        참가취소
-      </Button>
-    </RegisterButtonSection>
+    <RegisterButton
+      type="button"
+      onClick={onClickParticipateCancel}
+    >
+      참가 취소하기
+    </RegisterButton>
   );
 }

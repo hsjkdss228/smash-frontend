@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
-import PostAuthorInformation from './PostAuthorInformation';
+import PostAuthor from './PostAuthor';
 
-describe('PostAuthorInformation', () => {
-  const renderPostAuthorInformation = ({
+describe('PostAuthor', () => {
+  const renderPostAuthor = ({
     authorName,
     authorPhoneNumber,
   }) => {
     render((
-      <PostAuthorInformation
+      <PostAuthor
         authorName={authorName}
         authorPhoneNumber={authorPhoneNumber}
       />
@@ -20,7 +20,7 @@ describe('PostAuthorInformation', () => {
     const authorPhoneNumber = '010-1234-5678';
 
     it('작성자 정보를 출력', () => {
-      renderPostAuthorInformation({
+      renderPostAuthor({
         authorName,
         authorPhoneNumber,
       });
