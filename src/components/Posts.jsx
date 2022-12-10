@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import PostsContent from './PostsContent';
 import Container from './ui/ComponentScreenContainer';
-import Button from './ui/PrimaryButton';
+import SecondaryButton from './ui/SecondaryButton';
 
 const SearchAndSettingToggleButton = styled.div`
   width: 100%;
@@ -35,6 +35,40 @@ const Search = styled.div`
     border: 1px solid #CCC;
     border-radius: 5px;
     background-color: #fff;
+  }
+`;
+
+const ToggleButton = styled.button`
+  color: ${({ toggledState }) => (
+    toggledState ? '#fff' : '#FF7A63'
+  )};
+  padding: .5em 1.25em;
+  border: ${({ toggledState }) => (
+    toggledState ? '1px solid transparent' : '1px solid #CCC'
+  )};
+  border-radius: 5px;
+  margin-inline: .3em;
+  background-color: ${({ toggledState }) => (
+    toggledState ? '#FF7A63' : '#fff'
+  )};
+
+  :hover {
+    color: #fff;
+    border-color: transparent;
+    background-color: #FF7A63;
+  }
+
+  :active {
+    color: #fff;
+    border-color: transparent;
+    background-color: #090040;
+  }
+
+  :disabled {
+    color: #fff;
+    border-color: transparent;
+    background-color: #A3A3A3;
+    cursor: default;
   }
 `;
 
@@ -126,8 +160,33 @@ export default function Posts({
 
   const [searchKeyword, changeSearchKeyword] = useState('');
 
+  // TODO: toggledState 상태는 추후 검색을 위한 별도의 Store에서 관리하도록 하고,
+  //   임시로 설정한 setState 함수들도 모두 Store에서 처리하도록 해야 함
+
+  const [exerciseSelection, toggleExerciseSelection] = useState(false);
+  const [placeSelection, togglePlaceSelection] = useState(false);
+  const [authorSelection, toggleAuthorSelection] = useState(false);
+  const [memberSelection, toggleMemberSelection] = useState(false);
+  const [applicantSelection, toggleApplicantSelection] = useState(false);
+
+  const [registeredSelection, setRegisteredSelection] = useState(false);
+  const [writtenSelection, setWrittenSelection] = useState(false);
+
   const onClickPost = (postId) => {
     navigatePost(postId);
+  };
+
+  const resetToggleState = () => {
+    toggleExerciseSelection(false);
+    togglePlaceSelection(false);
+    toggleAuthorSelection(false);
+    toggleMemberSelection(false);
+    toggleApplicantSelection(false);
+  };
+
+  const resetRegisteredOrWritten = () => {
+    setRegisteredSelection(false);
+    setWrittenSelection(false);
   };
 
   // TODO: 컴포넌트들을 여러 개의 독립적인 컴포넌트들로 분리
@@ -153,61 +212,100 @@ export default function Posts({
           </button>
         </Search>
         <SettingToggleButtons>
-          <Button
+          <ToggleButton
+            toggledState={searchSetting}
             type="button"
             onClick={toggleSearchSetting}
           >
             검색조건 설정
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={filterSetting}
             type="button"
             onClick={toggleFilterSetting}
           >
             조회방식 설정
-          </Button>
+          </ToggleButton>
         </SettingToggleButtons>
       </SearchAndSettingToggleButton>
       {searchSetting && (
         <SearchSettingSection>
-          <Button
+          <ToggleButton
+            toggledState={exerciseSelection}
             type="button"
+            onClick={() => {
+              resetRegisteredOrWritten();
+              toggleExerciseSelection(!exerciseSelection);
+            }}
           >
             종목
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={placeSelection}
             type="button"
+            onClick={() => {
+              resetRegisteredOrWritten();
+              togglePlaceSelection(!placeSelection);
+            }}
           >
             장소
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={authorSelection}
             type="button"
+            onClick={() => {
+              resetRegisteredOrWritten();
+              toggleAuthorSelection(!authorSelection);
+            }}
           >
             작성자
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={memberSelection}
             type="button"
+            onClick={() => {
+              resetRegisteredOrWritten();
+              toggleMemberSelection(!memberSelection);
+            }}
           >
             참가자
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={applicantSelection}
             type="button"
+            onClick={() => {
+              resetRegisteredOrWritten();
+              toggleApplicantSelection(!applicantSelection);
+            }}
           >
             신청자
-          </Button>
+          </ToggleButton>
         </SearchSettingSection>
       )}
       {filterSetting && (
         <FilterSettingSection>
-          <Button
+          <ToggleButton
+            toggledState={registeredSelection}
             type="button"
+            onClick={() => {
+              resetToggleState();
+              setRegisteredSelection(true);
+              setWrittenSelection(false);
+            }}
           >
             내가 참가하는 운동
-          </Button>
-          <Button
+          </ToggleButton>
+          <ToggleButton
+            toggledState={writtenSelection}
             type="button"
+            onClick={() => {
+              resetToggleState();
+              setRegisteredSelection(false);
+              setWrittenSelection(true);
+            }}
           >
             내가 모집하는 운동
-          </Button>
+          </ToggleButton>
         </FilterSettingSection>
       )}
       <PostsSection>
@@ -218,11 +316,11 @@ export default function Posts({
           >
             리스트
           </ListButton>
-          <Button
+          <SecondaryButton
             type="button"
           >
             지도
-          </Button>
+          </SecondaryButton>
         </SelectListOrMap>
         <PostsList>
           {posts.length === 0 ? (

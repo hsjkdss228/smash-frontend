@@ -10,7 +10,7 @@ import useNoticeStore from '../hooks/useNoticeStore';
 import { userApiService } from '../services/UserApiService';
 import { noticeApiService } from '../services/NoticeApiService';
 
-import Logo from './ui/Logo';
+import Logo from './ui/HeaderLogo';
 
 const Container = styled.header`
   position: fixed;
