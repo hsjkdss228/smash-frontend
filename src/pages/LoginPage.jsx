@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import useUserStore from '../hooks/useUserStore';
 import LoginForm from '../components/LoginForm';
-import LoginErrors from '../components/LoginErrors';
 
 export default function LoginPage() {
   const location = useLocation();
@@ -17,6 +16,10 @@ export default function LoginPage() {
   const [, setAccessToken] = useLocalStorage('accessToken', '');
 
   const userStore = useUserStore();
+
+  const clearLoginError = () => {
+    userStore.clearLoginError();
+  };
 
   useEffect(() => {
     userStore.clearLoginError();
@@ -34,7 +37,9 @@ export default function LoginPage() {
     });
   };
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ reValidateMode: 'onSubmit' });
+  const {
+    register, handleSubmit, formState: { errors }, clearErrors,
+  } = useForm({ reValidateMode: 'onSubmit' });
 
   const login = async (data) => {
     const { username, password } = data;
@@ -48,18 +53,16 @@ export default function LoginPage() {
   const { loginServerError } = userStore;
 
   return (
-    <>
-      <LoginForm
-        onClickBackward={navigateBackward}
-        onClickSignUp={navigateSignUp}
-        register={register}
-        handleSubmit={handleSubmit}
-        login={login}
-      />
-      <LoginErrors
-        loginFormError={errors}
-        loginServerError={loginServerError}
-      />
-    </>
+    <LoginForm
+      onClickBackward={navigateBackward}
+      onClickSignUp={navigateSignUp}
+      register={register}
+      handleSubmit={handleSubmit}
+      clearErrors={clearErrors}
+      clearServerError={clearLoginError}
+      login={login}
+      loginFormError={errors}
+      loginServerError={loginServerError}
+    />
   );
 }

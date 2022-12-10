@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
-import logoUrl from '../assets/images/Logo.png';
+import logoUrl from '../assets/images/BlackLogo.png';
 
-const Logo = styled.h1`
-  height: 2em;
+const LoginLogo = styled.h1`
+  height: 7em;
+  width: 80%;
+  margin-bottom: 3em;
   color: transparent;
   background-image: url(${logoUrl});
   background-size: contain;
@@ -11,4 +13,4 @@ const Logo = styled.h1`
   background-position: center;
 `;
 
-export default Logo;
+export default LoginLogo;
