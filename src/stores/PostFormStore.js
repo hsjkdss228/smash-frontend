@@ -41,21 +41,25 @@ export default class PostFormStore extends Store {
   }
 
   changeGameExercise(exercise) {
+    this.formErrors.BLANK_GAME_EXERCISE = '';
     this.gameExercise = exercise;
     this.publish();
   }
 
   changeGameDate(date) {
+    this.formErrors.BLANK_GAME_DATE = '';
     this.gameDate = date;
     this.publish();
   }
 
   changeGameStartTimeAmPm(startTimeAmPm) {
+    this.formErrors.BLANK_GAME_START_AM_PM = '';
     this.gameStartTimeAmPm = startTimeAmPm;
     this.publish();
   }
 
   changeGameStartHour(startHour) {
+    this.formErrors.BLANK_GAME_START_HOUR = '';
     if (startHour.toString().length === 0
       || !timeInputCheck.test(startHour.toString())) {
       this.gameStartHour = '';
@@ -77,6 +81,7 @@ export default class PostFormStore extends Store {
   }
 
   changeGameStartMinute(startMinute) {
+    this.formErrors.BLANK_GAME_START_MINUTE = '';
     if (startMinute.toString().length === 0
       || !timeInputCheck.test(startMinute)) {
       this.gameStartMinute = '';
@@ -98,11 +103,13 @@ export default class PostFormStore extends Store {
   }
 
   changeGameEndTimeAmPm(endTimeAmPm) {
+    this.formErrors.BLANK_GAME_END_AM_PM = '';
     this.gameEndTimeAmPm = endTimeAmPm;
     this.publish();
   }
 
   changeGameEndHour(endHour) {
+    this.formErrors.BLANK_GAME_END_HOUR = '';
     if (endHour.toString().length === 0
       || !timeInputCheck.test(endHour.toString())) {
       this.gameEndHour = '';
@@ -124,6 +131,7 @@ export default class PostFormStore extends Store {
   }
 
   changeGameEndMinute(endMinute) {
+    this.formErrors.BLANK_GAME_END_MINUTE = '';
     if (endMinute.toString().length === 0
       || !timeInputCheck.test(endMinute.toString())) {
       this.gameEndMinute = '';
@@ -145,16 +153,20 @@ export default class PostFormStore extends Store {
   }
 
   changePlaceName(place) {
+    this.formErrors.BLANK_PLACE_NAME = '';
+    this.clearServerError();
     this.placeName = place;
     this.publish();
   }
 
   changeGameTargetMemberCount(targetMemberCount) {
+    this.formErrors.NULL_GAME_TARGET_MEMBER_COUNT = '';
     this.gameTargetMemberCount = targetMemberCount;
     this.publish();
   }
 
   changePostDetail(detail) {
+    this.formErrors.BLANK_POST_DETAIL = '';
     this.postDetail = detail;
     this.publish();
   }
@@ -263,6 +275,10 @@ export default class PostFormStore extends Store {
     this.hasFormErrors = false;
   }
 
+  clearServerError() {
+    this.serverError = '';
+  }
+
   clearStates() {
     this.gameExercise = '';
     this.gameDate = new Date();
@@ -276,7 +292,6 @@ export default class PostFormStore extends Store {
     this.gameTargetMemberCount = '';
     this.postDetail = '';
     this.clearFormErrors();
-
     this.serverError = '';
 
     this.publish();

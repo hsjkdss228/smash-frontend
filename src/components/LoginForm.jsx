@@ -112,7 +112,7 @@ export default function LoginForm({
         />
       </Top>
       <LoginSection>
-        <Font>나만의 스포츠 매칭 시스템</Font>
+        <Font>우리들의 스포츠 매칭 시스템</Font>
         <Logo>
           SMASH
         </Logo>

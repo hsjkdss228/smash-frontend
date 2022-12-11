@@ -25,8 +25,12 @@ export default function ModalConfirm({
   confirmModalState,
   setConfirmModalState,
 }) {
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setConfirmModalState(false);
+  };
+
+  const handleCloseModal = () => {
+    closeModal();
   };
 
   return (
