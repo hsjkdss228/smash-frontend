@@ -45,7 +45,7 @@ const Map = styled.iframe`
 `;
 
 export default function PostPlace({
-  name,
+  place,
 }) {
   return (
     <Container>
@@ -55,13 +55,13 @@ export default function PostPlace({
             장소 정보
           </Title>
           <Name>
-            {name}
+            {place.name}
           </Name>
           <Address>
-            장소 주소는 두 줄로 입력됩니다. 장소 주소는 두 줄로 입력됩니다. 장소 주소는 두 줄
+            {place.address}
           </Address>
           <ContactNumber>
-            02-0000-0000
+            {place.contactNumber}
           </ContactNumber>
         </PlaceInformation>
         <PlaceMap>

@@ -1,21 +1,68 @@
 import styled from 'styled-components';
 
-const Container = styled.ul`
-  
+import Container from './ui/ComponentSectionContainer';
+import SecondaryButton from './ui/SecondaryButton';
+
+const PaddingWrapper = styled.div`
+  padding-block: .75em;
 `;
 
 const Notice = styled.li`
-  
+  list-style: none;
 `;
 
 const NoticeTitle = styled.div`
-  font-size: .75em;
+  margin-top: ${({ selectedNoticeState }) => (
+    selectedNoticeState ? '1em' : '0'
+  )};
+  margin-bottom: 1.5em;
   display: flex;
-  gap: .5em;
+`;
+
+const Checkbox = styled.input`
+  margin-right: 1.5em;
+`;
+
+const NoticeTitleButton = styled.button`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CreatedAt = styled.p`
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: .2em;
+`;
+
+const TitleText = styled.p`
+  font-size: .9em;
+  text-align: left;
 `;
 
 const NoticeDetail = styled.div`
-  
+  padding: 1em;
+  border: 1px solid #CCC;
+  margin-inline: 1em;
+  background-color: #F9F9F9;
+  display: flex;
+  flex-direction: column;
+`;
+
+const DetailText = styled.p`
+  font-size: .8em;
+`;
+
+const CloseButton = styled.button`
+  color: #fff;
+  padding: .6em 1.4em;
+  border-radius: 5px;
+  align-self: flex-end;
+  background-color: #000;
+`;
+
+const ReadOrDeleteFunctions = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 export default function NoticeList({
@@ -40,85 +87,87 @@ export default function NoticeList({
 
   return (
     <Container>
-      {selectNoticeState && (
-        <div>
-          <button
-            type="button"
-            onClick={onClickSelectAllNotices}
-          >
-            전체선택
-          </button>
-          <button
-            type="button"
-            onClick={onClickDeselectAllNotices}
-          >
-            초기화
-          </button>
-        </div>
-      )}
-      {notices.map((notice, index) => (
-        <Notice key={notice.id}>
-          <NoticeTitle>
-            {selectNoticeState && (
-              <input
-                type="checkbox"
-                id={notice.id}
-                checked={noticesSelectedState[index]}
-                onChange={() => onClickSelectNotice({
+      <PaddingWrapper>
+        {selectNoticeState && (
+          <div>
+            <SecondaryButton
+              type="button"
+              onClick={onClickSelectAllNotices}
+            >
+              전체선택
+            </SecondaryButton>
+            <SecondaryButton
+              type="button"
+              onClick={onClickDeselectAllNotices}
+            >
+              초기화
+            </SecondaryButton>
+          </div>
+        )}
+        {notices.map((notice, index) => (
+          <Notice key={notice.id}>
+            <NoticeTitle
+              selectedNoticeState={selectNoticeState}
+            >
+              {selectNoticeState && (
+                <Checkbox
+                  type="checkbox"
+                  id={notice.id}
+                  checked={noticesSelectedState[index]}
+                  onChange={() => onClickSelectNotice({
+                    targetIndex: index,
+                    targetId: notice.id,
+                  })}
+                />
+              )}
+              <NoticeTitleButton
+                type="button"
+                onClick={() => onClickShowNoticeDetail({
                   targetIndex: index,
                   targetId: notice.id,
                 })}
-              />
-            )}
-            <button
-              type="button"
-              onClick={() => onClickShowNoticeDetail({
-                targetIndex: index,
-                targetId: notice.id,
-              })}
-            >
-              <p>
-                id:
-                {' '}
-                {notice.id}
-              </p>
-              <p>{notice.status}</p>
-              <p>{notice.createdAt}</p>
-              <p>{notice.title}</p>
-            </button>
-          </NoticeTitle>
-          {noticesDetailState[index] && (
-            <NoticeDetail>
-              <button
-                type="button"
-                onClick={() => onClickCloseNoticeDetail(index)}
               >
-                닫기
-              </button>
-              <p>{notice.detail}</p>
-            </NoticeDetail>
-          )}
-        </Notice>
-      ))}
-      {selectNoticeState && (
-        <div>
-          <p>선택한 알림을</p>
-          <div>
-            <button
+                {/* TODO: 시간 출력 내용은 백엔드에서 처리되어야 함 */}
+                <CreatedAt>
+                  {(
+                    `${notice.createdAt.split('T')[0]} ${
+                      notice.createdAt.split('T')[1].split('.')[0]
+                    }`
+                  )}
+                </CreatedAt>
+                <TitleText>{notice.title}</TitleText>
+              </NoticeTitleButton>
+              {noticesDetailState[index] && (
+                <NoticeDetail>
+                  <DetailText>{notice.detail}</DetailText>
+                  <CloseButton
+                    type="closeButton"
+                    onClick={() => onClickCloseNoticeDetail(index)}
+                  >
+                    닫기
+                  </CloseButton>
+                </NoticeDetail>
+              )}
+            </NoticeTitle>
+          </Notice>
+        ))}
+        {selectNoticeState && (
+          <ReadOrDeleteFunctions>
+            <SecondaryButton
               type="button"
               onClick={onClickReadSelectedNotices}
             >
               읽은 알림으로 처리
-            </button>
-            <button
+            </SecondaryButton>
+            <SecondaryButton
               type="button"
               onClick={onClickDeleteSelectedNotices}
             >
               삭제
-            </button>
-          </div>
-        </div>
-      )}
+            </SecondaryButton>
+          </ReadOrDeleteFunctions>
+        )}
+      </PaddingWrapper>
     </Container>
   );
 }

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import userProfileImage from './assets/images/UserProfile.png';
-
 const Container = styled.section`
   margin: 0 1em 1em;
   display: grid;
@@ -15,6 +13,7 @@ const AuthorProfile = styled.div`
 
   img {
     width: 12em;
+    border-radius: 100%;
   }
 `;
 
@@ -55,12 +54,14 @@ const SeeProfile = styled.button`
 export default function PostAuthor({
   authorName,
   authorPhoneNumber,
+  authorProfileImageUrl,
+  authorMannerScore,
 }) {
   return (
     <Container>
       <AuthorProfile>
         <img
-          src={userProfileImage}
+          src={authorProfileImageUrl}
           alt="사용자 프로필 이미지"
         />
       </AuthorProfile>
@@ -74,7 +75,9 @@ export default function PostAuthor({
       </AuthorInformation>
       <AuthorScoreAndSeeProfile>
         <Score>
-          작성자 평점
+          평점:
+          {' '}
+          {authorMannerScore}
         </Score>
         <SeeProfile
           type="button"

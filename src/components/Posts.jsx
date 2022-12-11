@@ -63,13 +63,6 @@ const ToggleButton = styled.button`
     border-color: transparent;
     background-color: #090040;
   }
-
-  :disabled {
-    color: #fff;
-    border-color: transparent;
-    background-color: #A3A3A3;
-    cursor: default;
-  }
 `;
 
 const SettingToggleButtons = styled.div`
@@ -333,6 +326,7 @@ export default function Posts({
                 <Thumbnail key={post.id}>
                   <PostsContent
                     loggedIn={loggedIn}
+                    imageUrl={post.thumbnailImageUrl}
                     hits={post.hits}
                     isAuthor={post.isAuthor}
                     type={post.game.type}

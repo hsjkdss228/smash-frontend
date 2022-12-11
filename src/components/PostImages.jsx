@@ -24,17 +24,27 @@ const Image = styled.img`
   width: 3em;
 `;
 
-export default function PostImages() {
+export default function PostImages({
+  imageUrls,
+}) {
+  if (imageUrls.length === 0) {
+    return (
+      null
+    );
+  }
+
   return (
     <Container>
-      {/* TODO: 데이터로 이미지를 받아오게 하기 */}
       <ImageList>
-        <li>
-          <Image
-            src={temporaryImageUrl}
-            alt="등록한 이미지"
-          />
-        </li>
+        {/* TODO: 같은 url의 이미지 여러 개가 전달될 가능성이 있는가? */}
+        {imageUrls.map((imageUrl, index) => (
+          <li key={imageUrl}>
+            <Image
+              src={imageUrl}
+              alt={`등록한 이미지 ${index + 1}`}
+            />
+          </li>
+        ))}
       </ImageList>
     </Container>
   );

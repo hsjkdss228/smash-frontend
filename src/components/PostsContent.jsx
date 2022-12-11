@@ -2,8 +2,6 @@
 
 import styled from 'styled-components';
 
-import noImageUrl from './assets/images/NoImage.png';
-
 const Container = styled.button`
   font-size: 1em;
   padding: .625em;
@@ -93,6 +91,7 @@ const RegisterStatus = styled.div`
 
 export default function PostsContent({
   loggedIn,
+  imageUrl,
   hits,
   isAuthor,
   type,
@@ -114,8 +113,8 @@ export default function PostsContent({
     >
       <Left>
         <img
-          src={noImageUrl}
-          alt="기본 이미지"
+          src={imageUrl}
+          alt="썸네일 이미지"
         />
       </Left>
       <Middle>
