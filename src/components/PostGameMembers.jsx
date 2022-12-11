@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import userProfileImage from './assets/images/UserProfile.png';
-
 import Container from './ui/ComponentSectionContainer';
 
 const Title = styled.p`
@@ -23,6 +21,7 @@ const MemberProfile = styled.div`
 
   img {
     width: 12em;
+    border-radius: 100%;
   }
 `;
 
@@ -115,7 +114,7 @@ export default function PostGameMembers({
           <Member key={member.id}>
             <MemberProfile>
               <img
-                src={userProfileImage}
+                src={member.profileImageUrl}
                 alt="사용자 프로필 이미지"
               />
             </MemberProfile>
@@ -130,7 +129,9 @@ export default function PostGameMembers({
             </MemberInformation>
             <MemberScoreAndSeeProfile>
               <Score>
-                신청자 평점
+                평점:
+                {' '}
+                {member.mannerScore}
               </Score>
               <SeeProfile>
                 프로필 확인하기

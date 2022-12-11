@@ -147,15 +147,18 @@ export default function Post({
         <PostAuthor
           authorName={post.authorName}
           authorPhoneNumber={post.authorPhoneNumber}
+          authorProfileImageUrl={post.authorProfileImageUrl}
+          authorMannerScore={post.authorMannerScore}
         />
         <PostDetail
           detail={post.detail}
         />
-        {/* TODO: 이미지를 받아와 prop로 전달, 받아올 이미지가 없으면 출력하지 않음 */}
-        <PostImages />
+        <PostImages
+          imageUrls={post.imageUrls}
+        />
       </PostAuthorDetailAndImages>
       <PostPlace
-        name={place.name}
+        place={place}
       />
       <PostGameMembers
         members={members}

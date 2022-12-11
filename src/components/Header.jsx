@@ -54,7 +54,7 @@ const LoginLogoutButton = styled.button`
 `;
 
 const UnreadNoticeCount = styled.span`
-  font-size: .5em;
+  font-size: 1em;
   color: #f00;
 `;
 
