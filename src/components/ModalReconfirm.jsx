@@ -26,12 +26,17 @@ export default function ModalReconfirm({
   reconfirmModalState,
   setReconfirmModalState,
 }) {
+  const closeModal = () => {
+    setReconfirmModalState(false);
+  };
+
   const handleClickProgress = async () => {
     await action();
+    closeModal();
   };
 
   const handleCloseModal = () => {
-    setReconfirmModalState(false);
+    closeModal();
   };
 
   return (

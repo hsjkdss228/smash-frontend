@@ -189,6 +189,8 @@ export default function PostPage() {
           setConfirmModalState={setConfirmModalState}
         />
       )}
+      {/* TODO: Modal에 함수를 전달할 수 있음, 이렇게 지저분하게 전달하지 않아도 되므로
+            Github Project에 남긴 Modal 추가 Task를 보고 수정할 것 */}
       {reconfirmModalState && (
         <ModalReconfirm
           action={(

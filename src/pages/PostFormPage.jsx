@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ModalReconfirm from '../components/ModalReconfirm';
 import PostForm from '../components/PostForm';
+
 import usePostFormStore from '../hooks/usePostFormStore';
 
 export default function PostFormPage() {
+  const [action, setAction] = useState(null);
   const [actionMessage, setActionMessage] = useState('');
   const [reconfirmModalState, setReconfirmModalState] = useState(false);
 
@@ -23,12 +25,14 @@ export default function PostFormPage() {
 
   const {
     gameExercise,
+    gameStartTimeAmPm,
     gameStartHour,
     gameStartMinute,
+    gameEndTimeAmPm,
     gameEndHour,
     gameEndMinute,
     gameDate,
-    gamePlace,
+    placeName,
     gameTargetMemberCount,
     postDetail,
     formErrors,
@@ -37,28 +41,38 @@ export default function PostFormPage() {
 
   const data = {
     gameExercise,
+    gameStartTimeAmPm,
     gameStartHour,
     gameStartMinute,
+    gameEndTimeAmPm,
     gameEndHour,
     gameEndMinute,
     gameDate,
-    gamePlace,
+    placeName,
     gameTargetMemberCount,
     postDetail,
   };
 
-  const seeReconfirmModal = ({ message }) => {
+  const seeReconfirmModal = ({ targetAction, message }) => {
+    setAction(targetAction);
     setActionMessage(message);
     setReconfirmModalState(true);
   };
 
-  const reconfirmNavigateBackward = () => {
-    seeReconfirmModal({ message: '게시글 작성을 중단' });
+  const clearStates = () => {
+    postFormStore.clearStates();
   };
 
   const navigateBackward = () => {
-    postFormStore.clearStates();
+    clearStates();
     navigate(previousPath || '/');
+  };
+
+  const reconfirmNavigateBackward = () => {
+    seeReconfirmModal({
+      targetAction: () => navigateBackward,
+      message: '게시글 작성을 중단',
+    });
   };
 
   const changeGameExercise = (exercise) => {
@@ -105,10 +119,17 @@ export default function PostFormPage() {
     postFormStore.changePostDetail(detail);
   };
 
+  const reconfirmResetForm = () => {
+    seeReconfirmModal({
+      targetAction: () => clearStates,
+      message: '입력 내용을 초기화',
+    });
+  };
+
   const createPost = async () => {
     const postId = await postFormStore.createPost();
     if (postId) {
-      postFormStore.clearStates();
+      clearStates();
       navigate('/posts/list', {
         state: {
           postStatus: 'created',
@@ -133,13 +154,14 @@ export default function PostFormPage() {
         changePlaceName={changePlaceName}
         changeGameTargetMemberCount={changeGameTargetMemberCount}
         changePostDetail={changePostDetail}
+        resetForm={reconfirmResetForm}
         createPost={createPost}
         formErrors={formErrors}
         serverError={serverError}
       />
       {reconfirmModalState && (
         <ModalReconfirm
-          action={navigateBackward}
+          action={action}
           actionMessage={actionMessage}
           reconfirmModalState={reconfirmModalState}
           setReconfirmModalState={setReconfirmModalState}

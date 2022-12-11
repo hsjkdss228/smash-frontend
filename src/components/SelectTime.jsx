@@ -6,6 +6,10 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 2em;
+
+  ::placeholder {
+    text-align: center;
+  }
 `;
 
 export default function SelectTime({
