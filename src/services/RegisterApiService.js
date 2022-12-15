@@ -37,7 +37,7 @@ export default class RegisterApiService {
     return data.gameId;
   }
 
-  async cancelRegisterToGame(registerId) {
+  async cancelRegisterGame(registerId) {
     const url = `${apiBaseUrl}/registers/${registerId}`;
     await axios.patch(url, { }, {
       params: { status: 'canceled' },
@@ -47,7 +47,7 @@ export default class RegisterApiService {
     });
   }
 
-  async cancelParticipateToGame(registerId) {
+  async cancelParticipateGame(registerId) {
     const url = `${apiBaseUrl}/registers/${registerId}`;
     await axios.patch(url, { }, {
       params: { status: 'canceled' },

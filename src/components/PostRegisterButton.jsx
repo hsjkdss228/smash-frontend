@@ -1,4 +1,14 @@
+/* eslint-disable no-nested-ternary */
+
+import { useState } from 'react';
+
 import styled from 'styled-components';
+
+import useGameStore from '../hooks/useGameStore';
+import useRegisterStore from '../hooks/useRegisterStore';
+
+import ModalConfirm from './ModalConfirm';
+import ModalReconfirm from './ModalReconfirm';
 
 const RegisterButton = styled.button`
   font-size: 1em;
@@ -31,48 +41,117 @@ const RegisterButton = styled.button`
 `;
 
 export default function PostRegisterButton({
-  registerStatus,
-  onClickRegister,
-  onClickRegisterCancel,
-  onClickParticipateCancel,
-  registerError,
+  fetchData,
 }) {
-  if (registerStatus === 'none') {
-    return (
-      <>
+  const [actionName, setActionName] = useState('');
+  const [actionMessage, setActionMessage] = useState('');
+  const [registerId, setRegisterId] = useState(0);
+  const [confirmModalState, setConfirmModalState] = useState(false);
+  const [reconfirmModalState, setReconfirmModalState] = useState(false);
+
+  const gameStore = useGameStore();
+  const registerStore = useRegisterStore();
+
+  const { game } = gameStore;
+  const { registerServerError } = registerStore;
+
+  const seeConfirmModal = ({ message }) => {
+    setActionMessage(message);
+    setConfirmModalState(true);
+  };
+
+  const handleClickRegister = async () => {
+    const applicationId = await registerStore.registerToGame(game.id);
+    if (applicationId) {
+      await fetchData();
+      seeConfirmModal({ message: '참가 신청이' });
+    }
+  };
+
+  const cancelRegisterGame = async () => {
+    await registerStore.cancelRegisterGame(registerId);
+    await fetchData();
+    seeConfirmModal({ message: '참가 신청 취소가' });
+  };
+
+  const cancelParticipateGame = async () => {
+    await registerStore.cancelParticipateGame(registerId);
+    await fetchData();
+    seeConfirmModal({ message: '참가 취소가' });
+  };
+
+  const seeReconfirmModal = ({ action, message }) => {
+    setActionName(action);
+    setActionMessage(message);
+    setReconfirmModalState(true);
+  };
+
+  const reconfirmRegisterCancel = (targetRegisterId) => {
+    setRegisterId(targetRegisterId);
+    seeReconfirmModal({ action: 'registerCancel', message: '참가 신청을 취소' });
+  };
+
+  const reconfirmParticipateCancel = (targetRegisterId) => {
+    setRegisterId(targetRegisterId);
+    seeReconfirmModal({ action: 'participateCancel', message: '참가를 취소' });
+  };
+
+  const handleClickRegisterCancel = () => {
+    reconfirmRegisterCancel(game.registerId);
+  };
+
+  const handleClickParticipateCancel = () => {
+    reconfirmParticipateCancel(game.registerId);
+  };
+
+  return (
+    <>
+      {game.registerStatus === 'none' ? (
+        <>
+          <RegisterButton
+            type="button"
+            onClick={handleClickRegister}
+          >
+            참가 신청하기
+          </RegisterButton>
+          {registerServerError && (
+            <p>{registerServerError}</p>
+          )}
+        </>
+      ) : game.registerStatus === 'processing' ? (
         <RegisterButton
           type="button"
-          onClick={onClickRegister}
+          onClick={handleClickRegisterCancel}
         >
-          참가 신청하기
+          신청 취소하기
         </RegisterButton>
-        {registerError.errorCode ? (
-          <p>{registerError.errorMessage}</p>
-        ) : (
-          null
-        )}
-      </>
-    );
-  }
-
-  if (registerStatus === 'processing') {
-    return (
-      <RegisterButton
-        type="button"
-        onClick={onClickRegisterCancel}
-      >
-        신청 취소하기
-      </RegisterButton>
-    );
-  }
-
-  // if (registerStatus === 'accepted')
-  return (
-    <RegisterButton
-      type="button"
-      onClick={onClickParticipateCancel}
-    >
-      참가 취소하기
-    </RegisterButton>
+      ) : (
+        <RegisterButton
+          type="button"
+          onClick={handleClickParticipateCancel}
+        >
+          참가 취소하기
+        </RegisterButton>
+      )}
+      {confirmModalState && (
+        <ModalConfirm
+          actionMessage={actionMessage}
+          confirmModalState={confirmModalState}
+          setConfirmModalState={setConfirmModalState}
+        />
+      )}
+      {reconfirmModalState && (
+        <ModalReconfirm
+          action={(
+            actionName === 'registerCancel'
+              ? cancelRegisterGame
+              : cancelParticipateGame
+          )}
+          actionMessage={actionMessage}
+          reconfirmModalState={reconfirmModalState}
+          setReconfirmModalState={setReconfirmModalState}
+        />
+      )}
+    </>
   );
 }

@@ -1,6 +1,12 @@
 /* eslint-disable no-nested-ternary */
 
+import { useEffect } from 'react';
+
 import styled from 'styled-components';
+
+import { useLocalStorage } from 'usehooks-ts';
+
+import { postApiService } from '../services/PostApiService';
 
 const Container = styled.button`
   font-size: 1em;
@@ -20,7 +26,9 @@ const Left = styled.div`
   background-color: #D9D9D9; 
 
   img {
-    height: 25%;
+    height: 7em;
+    width: 10em;
+    object-fit: cover;
   }
 `;
 
@@ -90,7 +98,6 @@ const RegisterStatus = styled.div`
 `;
 
 export default function PostsContent({
-  loggedIn,
   imageUrl,
   hits,
   isAuthor,
@@ -102,6 +109,13 @@ export default function PostsContent({
   registerStatus,
   onClickPost,
 }) {
+  const [accessToken] = useLocalStorage('accessToken', '');
+  const loggedIn = accessToken !== '';
+
+  useEffect(() => {
+    postApiService.setAccessToken(accessToken);
+  }, [accessToken]);
+
   const handleClickPostButton = () => {
     onClickPost();
   };
@@ -144,9 +158,9 @@ export default function PostsContent({
             {' '}
             조회
           </p>
-          <p>
+          {/* <p>
             1시간 전
-          </p>
+          </p> */}
         </CreatedAtAndHits>
         <RegisterStatus>
           {loggedIn ? (

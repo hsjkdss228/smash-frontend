@@ -36,31 +36,17 @@ export default class PostApiService {
   }
 
   async createPost({
-    gameExercise,
-    gameDate,
-    gameStartTimeAmPm,
-    gameStartHour,
-    gameStartMinute,
-    gameEndTimeAmPm,
-    gameEndHour,
-    gameEndMinute,
-    placeName,
-    gameTargetMemberCount,
-    postDetail,
+    post,
+    game,
+    exercise,
+    place,
   }) {
     const url = `${apiBaseUrl}/posts`;
     const { data } = await axios.post(url, {
-      gameExercise,
-      gameDate,
-      gameStartTimeAmPm,
-      gameStartHour,
-      gameStartMinute,
-      gameEndTimeAmPm,
-      gameEndHour,
-      gameEndMinute,
-      placeName,
-      gameTargetMemberCount,
-      postDetail,
+      post,
+      game,
+      exercise,
+      place,
     }, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,

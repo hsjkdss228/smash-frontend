@@ -5,7 +5,7 @@ const ComponentSectionContainer = styled.article`
   padding: 1em;
   border: 1px solid #ccc;
   margin-bottom: 1em;
-  background-color: #fff;
+  background-color: ${(props) => props.backgroundColor};
 `;
 
 export default ComponentSectionContainer;

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-import Container from './ui/ComponentSectionContainer';
+import useGameStore from '../hooks/useGameStore';
+import usePlaceStore from '../hooks/usePlaceStore';
+import usePostStore from '../hooks/usePostStore';
+
+import ComponentSectionContainer from './ui/ComponentSectionContainer';
 
 const ExerciseName = styled.p`
   font-size: 1em;
@@ -42,28 +46,31 @@ const Hits = styled.p`
   
 `;
 
-export default function PostGame({
-  name,
-  date,
-  place,
-  currentMemberCount,
-  targetMemberCount,
-  hits,
-}) {
+export default function PostGame() {
+  const postStore = usePostStore();
+  const gameStore = useGameStore();
+  const placeStore = usePlaceStore();
+
+  const { post } = postStore;
+  const { game } = gameStore;
+  const { place } = placeStore;
+
   return (
-    <Container>
+    <ComponentSectionContainer
+      backgroundColor="#FFF"
+    >
       <ExerciseName>
-        {name}
+        {game.type}
       </ExerciseName>
       <DateAndPlace>
-        <p>{date}</p>
-        <p>{place}</p>
+        <p>{game.date}</p>
+        <p>{place.name}</p>
       </DateAndPlace>
       <MembersCreatedAtAndHits>
         <Members>
-          {currentMemberCount}
+          {game.currentMemberCount}
           /
-          {targetMemberCount}
+          {game.targetMemberCount}
           명 참가 중
         </Members>
         <CreatedAtAndHits>
@@ -72,12 +79,12 @@ export default function PostGame({
             작성시간
           </CreatedAt>
           <Hits>
-            {hits}
+            {post.hits}
             {' '}
             조회
           </Hits>
         </CreatedAtAndHits>
       </MembersCreatedAtAndHits>
-    </Container>
+    </ComponentSectionContainer>
   );
 }

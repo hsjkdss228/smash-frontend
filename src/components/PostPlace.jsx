@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-import Container from './ui/ComponentSectionContainer';
+import usePlaceStore from '../hooks/usePlaceStore';
+
+import ComponentSectionContainer from './ui/ComponentSectionContainer';
 
 const PlaceInformation = styled.div`
   
@@ -44,11 +46,15 @@ const Map = styled.iframe`
   background-color: #D9D9D9;
 `;
 
-export default function PostPlace({
-  place,
-}) {
+export default function PostPlace() {
+  const placeStore = usePlaceStore();
+
+  const { place } = placeStore;
+
   return (
-    <Container>
+    <ComponentSectionContainer
+      backgroundColor="#FFF"
+    >
       <GridWrapper>
         <PlaceInformation>
           <Title>
@@ -68,6 +74,6 @@ export default function PostPlace({
           <Map />
         </PlaceMap>
       </GridWrapper>
-    </Container>
+    </ComponentSectionContainer>
   );
 }

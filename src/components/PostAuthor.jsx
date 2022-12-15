@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import usePostStore from '../hooks/usePostStore';
+
 const Container = styled.section`
   margin: 0 1em 1em;
   display: grid;
@@ -12,7 +14,9 @@ const AuthorProfile = styled.div`
   margin-right: 2em;
 
   img {
+    height: 12em;
     width: 12em;
+    object-fit: cover;
     border-radius: 100%;
   }
 `;
@@ -51,33 +55,32 @@ const SeeProfile = styled.button`
   }
 `;
 
-export default function PostAuthor({
-  authorName,
-  authorPhoneNumber,
-  authorProfileImageUrl,
-  authorMannerScore,
-}) {
+export default function PostAuthor() {
+  const postStore = usePostStore();
+
+  const { post } = postStore;
+
   return (
     <Container>
       <AuthorProfile>
         <img
-          src={authorProfileImageUrl}
+          src={post.authorInformation.profileImageUrl}
           alt="사용자 프로필 이미지"
         />
       </AuthorProfile>
       <AuthorInformation>
         <AuthorName>
-          {authorName}
+          {post.authorInformation.name}
         </AuthorName>
         <AuthorPhoneNumber>
-          {authorPhoneNumber}
+          {post.authorInformation.phoneNumber}
         </AuthorPhoneNumber>
       </AuthorInformation>
       <AuthorScoreAndSeeProfile>
         <Score>
           평점:
           {' '}
-          {authorMannerScore}
+          {post.authorInformation.mannerScore}
         </Score>
         <SeeProfile
           type="button"

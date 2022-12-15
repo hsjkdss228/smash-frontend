@@ -237,18 +237,31 @@ export default class PostFormStore extends Store {
         return '';
       }
 
+      const post = {
+        detail: this.postDetail,
+      };
+      const game = {
+        date: this.gameDate.toISOString(),
+        startTimeAmPm: this.gameStartTimeAmPm,
+        startHour: this.gameStartHour,
+        startMinute: this.gameStartMinute,
+        endTimeAmPm: this.gameEndTimeAmPm,
+        endHour: this.gameEndHour,
+        endMinute: this.gameEndMinute,
+        targetMemberCount: this.gameTargetMemberCount,
+      };
+      const exercise = {
+        name: this.gameExercise,
+      };
+      const place = {
+        name: this.placeName,
+      };
+
       const data = await postApiService.createPost({
-        gameExercise: this.gameExercise,
-        gameDate: this.gameDate.toISOString(),
-        gameStartTimeAmPm: this.gameStartTimeAmPm,
-        gameStartHour: this.gameStartHour,
-        gameStartMinute: this.gameStartMinute,
-        gameEndTimeAmPm: this.gameEndTimeAmPm,
-        gameEndHour: this.gameEndHour,
-        gameEndMinute: this.gameEndMinute,
-        placeName: this.placeName,
-        gameTargetMemberCount: this.gameTargetMemberCount,
-        postDetail: this.postDetail,
+        post,
+        game,
+        exercise,
+        place,
       });
       return data.postId;
     } catch (error) {
