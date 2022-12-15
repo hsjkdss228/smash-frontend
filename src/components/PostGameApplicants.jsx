@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+import useGameStore from '../hooks/useGameStore';
 
-import userProfileImage from './assets/images/UserProfile.png';
+import useRegisterStore from '../hooks/useRegisterStore';
+import ModalConfirm from './ModalConfirm';
+import ModalReconfirm from './ModalReconfirm';
 
-import Container from './ui/ComponentSectionContainer';
+import ComponentSectionContainer from './ui/ComponentSectionContainer';
 import Button from './ui/PrimaryButton';
 
 const Title = styled.p`
@@ -23,7 +27,10 @@ const ApplicantProfile = styled.div`
   margin-right: 2em;
 
   img {
+    height: 12em;
     width: 12em;
+    border-radius: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -70,17 +77,57 @@ const Buttons = styled.div`
 `;
 
 export default function PostGameApplicants({
-  applicants,
-  cannotAcceptRegister,
-  onClickAcceptRegister,
-  onClickRejectRegister,
+  fetchData,
 }) {
-  const handleClickAcceptRegister = (applicantId) => {
-    onClickAcceptRegister(applicantId);
+  const [actionName, setActionName] = useState('');
+  const [actionMessage, setActionMessage] = useState('');
+  const [applicantId, setApplicantId] = useState(0);
+  const [confirmModalState, setConfirmModalState] = useState(false);
+  const [reconfirmModalState, setReconfirmModalState] = useState(false);
+
+  const gameStore = useGameStore();
+  const registerStore = useRegisterStore();
+
+  const { game } = gameStore;
+  const cannotAcceptRegister = (
+    game.currentMemberCount >= game.targetMemberCount
+  );
+  const { applicants } = registerStore;
+
+  const seeConfirmModal = ({ message }) => {
+    setActionMessage(message);
+    setConfirmModalState(true);
   };
 
-  const handleClickRejectRegister = (applicantId) => {
-    onClickRejectRegister(applicantId);
+  const acceptRegister = async (targetApplicantId) => {
+    await registerStore.acceptRegister(targetApplicantId);
+    await fetchData();
+    seeConfirmModal({ message: '참가 신청이' });
+  };
+
+  const rejectRegister = async () => {
+    await registerStore.rejectRegister(applicantId);
+    await fetchData();
+    seeConfirmModal({ message: '참가 신청 거절이' });
+  };
+
+  const seeReconfirmModal = ({ action, message }) => {
+    setActionName(action);
+    setActionMessage(message);
+    setReconfirmModalState(true);
+  };
+
+  const reconfirmRegisterReject = (targetApplicantId) => {
+    setApplicantId(targetApplicantId);
+    seeReconfirmModal({ action: 'registerReject', message: '참가 신청을 거절' });
+  };
+
+  const handleClickRegisterAccept = (targetApplicantId) => {
+    acceptRegister(targetApplicantId);
+  };
+
+  const handleClickRegisterReject = (targetApplicantId) => {
+    reconfirmRegisterReject(targetApplicantId);
   };
 
   if (!applicants) {
@@ -89,64 +136,86 @@ export default function PostGameApplicants({
     );
   }
 
-  if (applicants.length === 0) {
-    return (
-      <Container>
-        <Title>신청자 정보</Title>
-        <p>신청자가 없습니다.</p>
-      </Container>
-    );
-  }
-
   return (
-    <Container>
-      <Title>
-        신청자 정보
-      </Title>
-      <ul>
-        {applicants.map((applicant) => (
-          <Applicant key={applicant.id}>
-            <ApplicantProfile>
-              <img
-                src={userProfileImage}
-                alt="사용자 프로필 이미지"
-              />
-            </ApplicantProfile>
-            <ApplicantInformation>
-              <NameAndGender>
-                <p>{applicant.name}</p>
-                <p>{applicant.gender}</p>
-              </NameAndGender>
-              <PhoneNumber>
-                <p>{applicant.phoneNumber}</p>
-              </PhoneNumber>
-            </ApplicantInformation>
-            <ApplicantScoreAndSeeProfile>
-              <Score>
-                신청자 평점
-              </Score>
-              <SeeProfile>
-                프로필 확인하기
-              </SeeProfile>
-            </ApplicantScoreAndSeeProfile>
-            <Buttons>
-              <Button
-                type="button"
-                disabled={cannotAcceptRegister}
-                onClick={() => handleClickAcceptRegister(applicant.id)}
-              >
-                수락
-              </Button>
-              <Button
-                type="button"
-                onClick={() => handleClickRejectRegister(applicant.id)}
-              >
-                거절
-              </Button>
-            </Buttons>
-          </Applicant>
-        ))}
-      </ul>
-    </Container>
+    <>
+      <ComponentSectionContainer
+        backgroundColor="#FFF"
+      >
+        <Title>
+          신청자 정보
+        </Title>
+        {applicants.length === 0 ? (
+          <p>신청자가 없습니다.</p>
+        ) : (
+          <ul>
+            {applicants.map((applicant) => (
+              <Applicant key={applicant.registerId}>
+                <ApplicantProfile>
+                  <img
+                    src={applicant.userInformation.profileImageUrl}
+                    alt="사용자 프로필 이미지"
+                  />
+                </ApplicantProfile>
+                <ApplicantInformation>
+                  <NameAndGender>
+                    <p>{applicant.userInformation.name}</p>
+                    <p>{applicant.userInformation.gender}</p>
+                  </NameAndGender>
+                  <PhoneNumber>
+                    <p>{applicant.userInformation.phoneNumber}</p>
+                  </PhoneNumber>
+                </ApplicantInformation>
+                <ApplicantScoreAndSeeProfile>
+                  <Score>
+                    신청자 평점
+                  </Score>
+                  <SeeProfile>
+                    프로필 확인하기
+                  </SeeProfile>
+                </ApplicantScoreAndSeeProfile>
+                <Buttons>
+                  <Button
+                    type="button"
+                    disabled={cannotAcceptRegister}
+                    onClick={() => (
+                      handleClickRegisterAccept(applicant.registerId)
+                    )}
+                  >
+                    수락
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => (
+                      handleClickRegisterReject(applicant.registerId)
+                    )}
+                  >
+                    거절
+                  </Button>
+                </Buttons>
+              </Applicant>
+            ))}
+          </ul>
+        )}
+      </ComponentSectionContainer>
+      {confirmModalState && (
+        <ModalConfirm
+          actionMessage={actionMessage}
+          confirmModalState={confirmModalState}
+          setConfirmModalState={setConfirmModalState}
+        />
+      )}
+      {reconfirmModalState && (
+        <ModalReconfirm
+          action={(
+            actionName === 'registerReject'
+              ? rejectRegister
+              : acceptRegister
+          )}
+          actionMessage={actionMessage}
+          reconfirmModalState={reconfirmModalState}
+          setReconfirmModalState={setReconfirmModalState}
+        />
+      )}
+    </>
   );
 }

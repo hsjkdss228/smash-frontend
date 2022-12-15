@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useLocalStorage } from 'usehooks-ts';
-
-import usePostStore from '../hooks/usePostStore';
-
+import ComponentScreenContainer from '../components/ui/ComponentScreenContainer';
 import Posts from '../components/Posts';
-import { postApiService } from '../services/PostApiService';
 import ModalConfirm from '../components/ModalConfirm';
+import PostsSearchAndSettings from '../components/PostsSearchAndSettings';
 
 export default function PostsPage() {
   const [actionMessage, setActionMessage] = useState('');
@@ -19,14 +16,6 @@ export default function PostsPage() {
   const postStatus = !location.state
     ? null
     : location.state.postStatus;
-
-  const [accessToken] = useLocalStorage('accessToken', '');
-  const loggedIn = accessToken !== '';
-
-  const [searchSetting, toggleSearchSetting] = useState(false);
-  const [filterSetting, toggleFilterSetting] = useState(false);
-
-  const postStore = usePostStore();
 
   const seeConfirmModal = ({ message }) => {
     setActionMessage(message);
@@ -41,24 +30,7 @@ export default function PostsPage() {
           : '게시글 삭제가',
       });
     }
-    postApiService.setAccessToken(accessToken);
-    postStore.fetchPosts();
-  }, [accessToken]);
-
-  const {
-    posts,
-    postsServerError,
-  } = postStore;
-
-  const handleClickToggleSearchSetting = () => {
-    toggleSearchSetting(!searchSetting);
-    toggleFilterSetting(false);
-  };
-
-  const handleClickToggleFilterSetting = () => {
-    toggleSearchSetting(false);
-    toggleFilterSetting(!filterSetting);
-  };
+  }, []);
 
   const navigatePost = (postId) => {
     navigate(`/posts/${postId}`, {
@@ -69,16 +41,10 @@ export default function PostsPage() {
   };
 
   return (
-    <>
+    <ComponentScreenContainer>
+      <PostsSearchAndSettings />
       <Posts
-        loggedIn={loggedIn}
-        searchSetting={searchSetting}
-        filterSetting={filterSetting}
-        toggleSearchSetting={handleClickToggleSearchSetting}
-        toggleFilterSetting={handleClickToggleFilterSetting}
-        posts={posts}
         navigatePost={navigatePost}
-        postsServerError={postsServerError}
       />
       {confirmModalState && (
         <ModalConfirm
@@ -87,6 +53,6 @@ export default function PostsPage() {
           setConfirmModalState={setConfirmModalState}
         />
       )}
-    </>
+    </ComponentScreenContainer>
   );
 }

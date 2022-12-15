@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-import Container from './ui/ComponentSectionContainer';
+import usePostStore from '../hooks/usePostStore';
+import useGameStore from '../hooks/useGameStore';
+import useRegisterStore from '../hooks/useRegisterStore';
+
+import ComponentSectionContainer from './ui/ComponentSectionContainer';
 
 const Title = styled.p`
   font-size: 1em;
@@ -20,8 +24,10 @@ const MemberProfile = styled.div`
   margin-right: 2em;
 
   img {
+    height: 12em;
     width: 12em;
     border-radius: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -91,47 +97,55 @@ const EnterChatRoomButton = styled.button`
   }
 `;
 
-export default function PostGameMembers({
-  members,
-  isAuthor,
-  registerStatus,
-}) {
+export default function PostGameMembers() {
+  const postStore = usePostStore();
+  const gameStore = useGameStore();
+  const registerStore = useRegisterStore();
+
+  const { post } = postStore;
+  const { game } = gameStore;
+  const { members } = registerStore;
+
   if (members.length === 0) {
     return (
-      <Container>
+      <ComponentSectionContainer
+        backgroundColor="#FFF"
+      >
         <p>참가자가 없습니다.</p>
-      </Container>
+      </ComponentSectionContainer>
     );
   }
 
   return (
-    <Container>
+    <ComponentSectionContainer
+      backgroundColor="#FFF"
+    >
       <Title>
         참가자 정보
       </Title>
       <ul>
         {members.map((member) => (
-          <Member key={member.id}>
+          <Member key={member.registerId}>
             <MemberProfile>
               <img
-                src={member.profileImageUrl}
+                src={member.userInformation.profileImageUrl}
                 alt="사용자 프로필 이미지"
               />
             </MemberProfile>
             <MemberInformation>
               <NameAndGender>
-                <p>{member.name}</p>
-                <p>{member.gender}</p>
+                <p>{member.userInformation.name}</p>
+                <p>{member.userInformation.gender}</p>
               </NameAndGender>
               <PhoneNumber>
-                <p>{member.phoneNumber}</p>
+                <p>{member.userInformation.phoneNumber}</p>
               </PhoneNumber>
             </MemberInformation>
             <MemberScoreAndSeeProfile>
               <Score>
                 평점:
                 {' '}
-                {member.mannerScore}
+                {member.userInformation.mannerScore}
               </Score>
               <SeeProfile>
                 프로필 확인하기
@@ -140,7 +154,7 @@ export default function PostGameMembers({
           </Member>
         ))}
       </ul>
-      {isAuthor || registerStatus === 'accepted' ? (
+      {post.isAuthor || game.registerStatus === 'accepted' ? (
         <EnterChatRoomButton
           type="button"
         >
@@ -149,6 +163,6 @@ export default function PostGameMembers({
       ) : (
         null
       )}
-    </Container>
+    </ComponentSectionContainer>
   );
 }

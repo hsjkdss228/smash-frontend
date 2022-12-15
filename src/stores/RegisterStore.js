@@ -52,12 +52,12 @@ export default class RegisterStore extends Store {
     }
   }
 
-  async cancelRegisterToGame(registerId) {
-    await registerApiService.cancelRegisterToGame(registerId);
+  async cancelRegisterGame(registerId) {
+    await registerApiService.cancelRegisterGame(registerId);
   }
 
-  async cancelParticipateToGame(registerId) {
-    await registerApiService.cancelParticipateToGame(registerId);
+  async cancelParticipateGame(registerId) {
+    await registerApiService.cancelParticipateGame(registerId);
   }
 
   async acceptRegister(registerId) {

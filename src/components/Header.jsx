@@ -55,6 +55,7 @@ const LoginLogoutButton = styled.button`
 
 const UnreadNoticeCount = styled.span`
   font-size: 1em;
+  font-weight: bold;
   color: #f00;
 `;
 
@@ -92,6 +93,14 @@ export default function Header() {
     navigate('/');
   };
 
+  const navigateMain = () => {
+    navigate('/', {
+      state: {
+        previousPath: location.pathname,
+      },
+    });
+  };
+
   const navigateLogin = () => {
     navigate('/login', {
       state: {
@@ -110,7 +119,14 @@ export default function Header() {
 
   return (
     <Container>
-      <Logo>SMASH</Logo>
+      <button
+        type="button"
+        onClick={navigateMain}
+      >
+        <Logo>
+          SMASH
+        </Logo>
+      </button>
       <Side>
         {accessToken ? (
           <>

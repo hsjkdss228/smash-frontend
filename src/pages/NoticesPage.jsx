@@ -1,10 +1,7 @@
 /* eslint-disable no-nested-ternary */
 
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
-
-import useNoticeStore from '../hooks/useNoticeStore';
 
 import Notices from '../components/Notices';
 
@@ -27,93 +24,13 @@ export default function NoticesPage() {
     navigate('/login');
   };
 
-  const noticeStore = useNoticeStore();
-
-  useEffect(() => {
-    noticeStore.closeSelectNoticeState();
-  }, []);
-
-  useEffect(() => {
-    if (!loggedIn) {
-      navigateLogin();
-    }
-    noticeStore.fetchNotices();
-  }, [accessToken]);
-
-  const {
-    noticesAll,
-    noticesUnread,
-    noticeStateToShow,
-    noticesDetailState,
-    selectNoticeState,
-    noticesSelectedState,
-  } = noticeStore;
-
-  const notices = noticeStateToShow === 'all'
-    ? noticesAll
-    : noticesUnread;
-
-  const showAll = async () => {
-    await noticeStore.showAll();
-  };
-
-  const showUnreadOnly = async () => {
-    await noticeStore.showUnreadOnly();
-  };
-
-  const showNoticeDetail = async ({ targetIndex, targetId }) => {
-    await noticeStore.showNoticeDetail(targetIndex);
-    await noticeStore.readNotice(targetId);
-  };
-
-  const closeNoticeDetail = (targetIndex) => {
-    noticeStore.closeNoticeDetail(targetIndex);
-  };
-
-  const toggleSelectNoticeState = () => {
-    noticeStore.toggleSelectNoticeState();
-  };
-
-  const selectNotice = ({ targetIndex, targetId }) => {
-    noticeStore.selectNotice({ targetIndex, targetId });
-  };
-
-  const selectAllNotices = () => {
-    noticeStore.selectAllNotices();
-  };
-
-  const deselectAllNotices = () => {
-    noticeStore.deselectAllNotices();
-  };
-
-  const readSelectedNotices = async () => {
-    await noticeStore.readSelectedNotices();
-    await noticeStore.fetchNotices();
-  };
-
-  const deleteSelectedNotices = async () => {
-    await noticeStore.deleteSelectedNotices();
-    await noticeStore.fetchNotices();
-  };
+  if (!loggedIn) {
+    navigateLogin();
+  }
 
   return (
     <Notices
       navigateBackward={navigateBackward}
-      notices={notices}
-      noticeStateToShow={noticeStateToShow}
-      showAll={showAll}
-      showUnreadOnly={showUnreadOnly}
-      noticesDetailState={noticesDetailState}
-      showNoticeDetail={showNoticeDetail}
-      closeNoticeDetail={closeNoticeDetail}
-      selectNoticeState={selectNoticeState}
-      toggleSelectNoticeState={toggleSelectNoticeState}
-      noticesSelectedState={noticesSelectedState}
-      selectNotice={selectNotice}
-      selectAllNotices={selectAllNotices}
-      deselectAllNotices={deselectAllNotices}
-      readSelectedNotices={readSelectedNotices}
-      deleteSelectedNotices={deleteSelectedNotices}
     />
   );
 }

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-import temporaryImageUrl from './assets/images/TemporaryImage.png';
+import usePostStore from '../hooks/usePostStore';
 
 const Container = styled.section`
 `;
@@ -21,13 +20,17 @@ const ImageList = styled.ul`
 `;
 
 const Image = styled.img`
-  width: 3em;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `;
 
-export default function PostImages({
-  imageUrls,
-}) {
-  if (imageUrls.length === 0) {
+export default function PostImages() {
+  const postStore = usePostStore();
+
+  const { post } = postStore;
+
+  if (post.imageUrls.length === 0) {
     return (
       null
     );
@@ -37,7 +40,7 @@ export default function PostImages({
     <Container>
       <ImageList>
         {/* TODO: 같은 url의 이미지 여러 개가 전달될 가능성이 있는가? */}
-        {imageUrls.map((imageUrl, index) => (
+        {post.imageUrls.map((imageUrl, index) => (
           <li key={imageUrl}>
             <Image
               src={imageUrl}
