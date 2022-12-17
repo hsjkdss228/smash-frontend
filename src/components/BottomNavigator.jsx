@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+
 import { useLocalStorage } from 'usehooks-ts';
+import styled from 'styled-components';
+
 import ModalLoginGuide from './ModalLoginGuide';
 
 import homeButton from './assets/images/Home.png';
@@ -10,6 +12,7 @@ import chatButton from './assets/images/Chat.png';
 import homeButtonSelected from './assets/images/HomeSelected.png';
 import writeButtonSelected from './assets/images/WriteSelected.png';
 import chatButtonSelected from './assets/images/ChatSelected.png';
+import BottomNavigatorButton from './ui/BottomNavigatorButton';
 
 const Container = styled.nav`
   position: fixed;
@@ -22,15 +25,6 @@ const Container = styled.nav`
   grid-template-columns: 1fr 1fr 1fr;
   margin-inline: calc((100% - 650px) / 2);
   background-color: #000;
-`;
-
-const BottomNavigatorButton = styled.button`
-  height: 2em;
-  color: transparent;
-  background-image: url(${(props) => props.url});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
 `;
 
 export default function BottomNavigator() {

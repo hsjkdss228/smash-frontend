@@ -67,6 +67,7 @@ export default function PostFormDetail() {
             formErrors.BLANK_POST_DETAIL
           ) : '운동 상세 내용을 입력해주세요.'
         )}
+        maxLength="2000"
         rows="12"
         value={postDetail}
         onChange={handleChangePostDetail}

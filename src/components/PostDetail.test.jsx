@@ -2,26 +2,29 @@ import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import PostDetail from './PostDetail';
 
+let post;
+jest.mock('../hooks/usePostStore', () => () => ({
+  post,
+}));
+
 describe('PostDetail', () => {
-  const renderPostDetail = ({
-    detail,
-  }) => {
+  function renderPostDetail() {
     render((
-      <PostDetail
-        detail={detail}
-      />
+      <PostDetail />
     ));
-  };
+  }
 
-  context('게시글 상세 정보가 전달된 경우', () => {
-    const detail = '사용자 1이 쓴 운동 모집 게시글의 내용입니다.';
+  context('게시글 상세 정보 중 상세 글 내용 컴포넌트는', () => {
+    beforeEach(() => {
+      post = {
+        detail: '작성자가 직접 입력한 상제 글 내용',
+      };
+    });
 
-    it('게시글 상세 정보를 출력', () => {
-      renderPostDetail({
-        detail,
-      });
+    it('작성자가 입력한 글 내용으로 구성됨', () => {
+      renderPostDetail();
 
-      screen.getByText('사용자 1이 쓴 운동 모집 게시글의 내용입니다.');
+      screen.getByText('작성자가 직접 입력한 상제 글 내용');
     });
   });
 });

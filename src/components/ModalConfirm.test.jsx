@@ -1,8 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
+import ReactModal from 'react-modal';
 import ModalConfirm from './ModalConfirm';
 
 describe('ModalConfirm', () => {
+  ReactModal.setAppElement('*');
   const setConfirmModalState = jest.fn();
 
   function renderModalConfirm({

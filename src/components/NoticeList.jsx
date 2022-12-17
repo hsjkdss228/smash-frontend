@@ -2,12 +2,14 @@
 
 import { useEffect } from 'react';
 import styled from 'styled-components';
+
 import useNoticeStore from '../hooks/useNoticeStore';
+
+import ComponentSectionContainer from './ui/ComponentSectionContainer';
+
 import NoticeFunctionsForSelected from './NoticeFunctionsForSelected';
 import NoticeSelectMethodButtons from './NoticeSelectMethodButtons';
 import NoticeTitle from './NoticeTitle';
-
-import ComponentSectionContainer from './ui/ComponentSectionContainer';
 
 const PaddingWrapper = styled.div`
   padding-block: .75em;
@@ -37,6 +39,8 @@ export default function NoticeList() {
     noticesUnread,
     noticeStateToShown,
     selectNoticeMode,
+    selectedNotices,
+    isOpenedNotice,
   } = noticeStore;
 
   const notices = noticeStateToShown === 'all'
@@ -61,6 +65,9 @@ export default function NoticeList() {
               <NoticeTitle
                 notice={notice}
                 index={index}
+                selectNoticeMode={selectNoticeMode}
+                isSelected={selectedNotices[index]}
+                isDetailOpened={isOpenedNotice[index]}
               />
             </Notice>
           ))}

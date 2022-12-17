@@ -44,7 +44,7 @@ export default function PostImages() {
           <li key={imageUrl}>
             <Image
               src={imageUrl}
-              alt={`등록한 이미지 ${index + 1}`}
+              alt={`등록된 이미지 ${index + 1}`}
             />
           </li>
         ))}

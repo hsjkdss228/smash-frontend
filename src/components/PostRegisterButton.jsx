@@ -61,7 +61,7 @@ export default function PostRegisterButton({
   };
 
   const handleClickRegister = async () => {
-    const applicationId = await registerStore.registerToGame(game.id);
+    const applicationId = await registerStore.registerGame(game.id);
     if (applicationId) {
       await fetchData();
       seeConfirmModal({ message: '참가 신청이' });

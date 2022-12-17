@@ -1,13 +1,21 @@
-/* eslint-disable no-nested-ternary */
-
 import styled from 'styled-components';
 
+import { useLocalStorage } from 'usehooks-ts';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useUserStore from '../hooks/useUserStore';
+
 import Container from './ui/ComponentFullHeightScreenContainer';
-import BackwardButton from './BackwardButton';
-import PrimaryButton from './ui/PrimaryButton';
-import SecondaryButton from './ui/SecondaryButton';
+
+import logoUrl from './assets/images/BlackLogo.png';
 
 import Logo from './ui/LoginLogo';
+import BackwardButton from './BackwardButton';
+import LoginFormInput from './LoginFormInput';
+import PrimaryButton from './ui/PrimaryButton';
+import SecondaryButton from './ui/SecondaryButton';
+import LoginError from './LoginError';
 
 const Top = styled.div`
   width: 100%;
@@ -46,23 +54,6 @@ const InputSection = styled.div`
   
 `;
 
-const Input = styled.input`
-  width: 100%;
-  font-size: 1em;
-  padding: 1em;
-  border: 1px solid #D8D8D8;
-  margin-bottom: .75em;
-
-  :focus {
-    outline: none;
-  }
-
-  ::placeholder {
-    font-size: .8em;
-    color: #A0A0A0;
-  }
-`;
-
 const ButtonSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -74,34 +65,48 @@ const ButtonSection = styled.div`
   }
 `;
 
-const Error = styled.p`
-  font-size: .8em;
-  text-align: center;
-  margin-top: 3em;
-  color: #F00;
-`;
-
 export default function LoginForm({
-  onClickBackward,
-  onClickSignUp,
-  register,
-  handleSubmit,
-  clearErrors,
-  clearServerError,
-  login,
-  loginFormError,
-  loginServerError,
+  navigateBackward,
+  navigateSignUp,
 }) {
+  const [, setAccessToken] = useLocalStorage('accessToken', '');
+
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    userStore.clearLoginError();
+  }, []);
+
+  const { loginServerError } = userStore;
+
+  const {
+    register, handleSubmit, formState: { errors }, clearErrors,
+  } = useForm({ reValidateMode: 'onSubmit' });
+
   const handleClickBackward = () => {
-    onClickBackward();
+    navigateBackward();
   };
 
-  const submit = async (data) => {
-    await login(data);
+  const handleClearErrors = () => {
+    clearErrors();
+    userStore.clearLoginError();
+  };
+
+  const login = async ({ username, password }) => {
+    const verifiedAccessToken = await userStore.login({ username, password });
+    if (verifiedAccessToken) {
+      setAccessToken(verifiedAccessToken);
+      navigateBackward();
+    }
+  };
+
+  const onSubmit = async (data, event) => {
+    event.preventDefault();
+    await login({ username: data.username, password: data.password });
   };
 
   const handleClickSignUp = () => {
-    onClickSignUp();
+    navigateSignUp();
   };
 
   return (
@@ -113,47 +118,35 @@ export default function LoginForm({
       </Top>
       <LoginSection>
         <Font>우리들의 스포츠 매칭 시스템</Font>
-        <Logo>
+        <Logo
+          logoUrl={logoUrl}
+        >
           SMASH
         </Logo>
-        <Form onSubmit={handleSubmit(submit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <InputSection>
-            <div>
-              <label htmlFor="input-username">
-                아이디
-              </label>
-              <Input
-                id="input-username"
-                type="text"
-                placeholder="Username"
-                {...register(
-                  'username',
-                  { required: { value: true, message: '아이디를 입력해주세요.' } },
-                )}
-                onChange={() => {
-                  clearErrors();
-                  clearServerError();
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor="input-password">
-                비밀번호
-              </label>
-              <Input
-                id="input-password"
-                type="password"
-                placeholder="Password"
-                {...register(
-                  'password',
-                  { required: { value: true, message: '비밀번호를 입력해주세요.' } },
-                )}
-                onChange={() => {
-                  clearErrors();
-                  clearServerError();
-                }}
-              />
-            </div>
+            <LoginFormInput
+              htmlFor="input-username"
+              labelName="아이디"
+              id="input-username"
+              type="text"
+              placeholder="Username"
+              register={register}
+              name="username"
+              requiredMessage="아이디를 입력해주세요."
+              clearErrors={handleClearErrors}
+            />
+            <LoginFormInput
+              htmlFor="input-password"
+              labelName="비밀번호"
+              id="input-password"
+              type="password"
+              placeholder="Password"
+              register={register}
+              name="password"
+              requiredMessage="비밀번호를 입력해주세요."
+              clearErrors={handleClearErrors}
+            />
           </InputSection>
           <ButtonSection>
             <PrimaryButton
@@ -167,21 +160,12 @@ export default function LoginForm({
             >
               회원가입
             </SecondaryButton>
-            {!Object.keys(loginFormError).length && !loginServerError ? (
-              null
-            ) : Object.keys(loginFormError).length >= 1 ? (
-              <div>
-                {loginFormError.username ? (
-                  <Error>{loginFormError.username.message}</Error>
-                ) : (
-                  <Error>{loginFormError.password.message}</Error>
-                )}
-              </div>
-            ) : (
-              <Error>{loginServerError}</Error>
-            )}
           </ButtonSection>
         </Form>
+        <LoginError
+          loginFormError={errors}
+          loginServerError={loginServerError}
+        />
       </LoginSection>
     </Container>
   );

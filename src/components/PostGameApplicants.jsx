@@ -102,7 +102,7 @@ export default function PostGameApplicants({
   const acceptRegister = async (targetApplicantId) => {
     await registerStore.acceptRegister(targetApplicantId);
     await fetchData();
-    seeConfirmModal({ message: '참가 신청이' });
+    seeConfirmModal({ message: '참가 신청 수락이' });
   };
 
   const rejectRegister = async () => {
