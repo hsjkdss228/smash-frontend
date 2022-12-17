@@ -10,6 +10,7 @@ import useNoticeStore from '../hooks/useNoticeStore';
 import { userApiService } from '../services/UserApiService';
 import { noticeApiService } from '../services/NoticeApiService';
 
+import colorLogo from './assets/images/ColorLogo.png';
 import Logo from './ui/HeaderLogo';
 
 const Container = styled.header`
@@ -123,7 +124,9 @@ export default function Header() {
         type="button"
         onClick={navigateMain}
       >
-        <Logo>
+        <Logo
+          logoUrl={colorLogo}
+        >
           SMASH
         </Logo>
       </button>

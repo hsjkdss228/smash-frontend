@@ -41,9 +41,9 @@ export default class RegisterStore extends Store {
     }
   }
 
-  async registerToGame(gameId) {
+  async registerGame(gameId) {
     try {
-      this.registeredGameId = await registerApiService.registerToGame(gameId);
+      this.registeredGameId = await registerApiService.registerGame(gameId);
       return this.registeredGameId;
     } catch (error) {
       this.registerServerError = error.response.data;

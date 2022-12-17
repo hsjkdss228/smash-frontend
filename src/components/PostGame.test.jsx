@@ -2,50 +2,52 @@ import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import PostGame from './PostGame';
 
+let post;
+jest.mock('../hooks/usePostStore', () => () => ({
+  post,
+}));
+let game;
+jest.mock('../hooks/useGameStore', () => () => ({
+  game,
+}));
+let place;
+jest.mock('../hooks/usePlaceStore', () => () => ({
+  place,
+}));
+
 describe('PostGame', () => {
-  const renderPostGameInformation = ({
-    type,
-    date,
-    place,
-    currentMemberCount,
-    targetMemberCount,
-    hits,
-  }) => {
+  function renderPostGame() {
     render((
-      <PostGame
-        type={type}
-        date={date}
-        place={place}
-        currentMemberCount={currentMemberCount}
-        targetMemberCount={targetMemberCount}
-        hits={hits}
-      />
+      <PostGame />
     ));
-  };
+  }
 
-  context('경기 정보가 전달된 경우', () => {
-    const type = '테니스';
-    const date = '2024년 10월 24일 13:00~16:00';
-    const place = '올림픽공원 테니스경기장';
-    const currentMemberCount = 3;
-    const targetMemberCount = 4;
-    const hits = 9999;
+  context('게시글 상세 정보 중 운동 정보 컴포넌트는', () => {
+    beforeEach(() => {
+      post = {
+        // TODO: 게시물 작성 시점이 전달되어야 함
+        hits: 10,
+      };
+      game = {
+        type: '테니스',
+        date: '2024년 10월 24일 오후 02:00 ~ 오후 04:00',
+        currentMemberCount: 2,
+        targetMemberCount: 6,
+      };
+      place = {
+        name: '올림픽공원 테니스경기장',
+      };
+    });
 
-    it('경기 정보를 출력', () => {
-      renderPostGameInformation({
-        type,
-        date,
-        place,
-        currentMemberCount,
-        targetMemberCount,
-        hits,
-      });
+    it('운동 종류, 운동 예정 날짜, 장소 이름, 현재 인원/모집 인원, 작성 시점, 게시물 조회수로 구성됨', () => {
+      renderPostGame();
 
       screen.getByText('테니스');
-      screen.getByText('2024년 10월 24일 13:00~16:00');
+      screen.getByText('2024년 10월 24일 오후 02:00 ~ 오후 04:00');
       screen.getByText('올림픽공원 테니스경기장');
-      screen.getByText('3/4명 참가 중');
-      screen.getByText('9999 hits');
+      screen.getByText('2/6명 참가 중');
+      screen.getByText('작성시간');
+      screen.getByText('10 조회');
     });
   });
 });

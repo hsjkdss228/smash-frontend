@@ -42,7 +42,6 @@ const GameIsFull = styled.p`
 `;
 
 export default function Post({
-  loggedIn,
   postId,
   navigateBackward,
   navigateLogin,
@@ -50,6 +49,7 @@ export default function Post({
   navigatePostsAfterDeleted,
 }) {
   const [accessToken] = useLocalStorage('accessToken', '');
+  const loggedIn = accessToken !== '';
 
   const postStore = usePostStore();
   const gameStore = useGameStore();
@@ -112,7 +112,7 @@ export default function Post({
               />
             ) : (
               game.currentMemberCount >= game.targetMemberCount ? (
-                <p>참가 정원이 모두 찼습니다.</p>
+                <GameIsFull>참가 정원이 모두 찼습니다.</GameIsFull>
               ) : (
                 <PostRegisterButton
                   fetchData={fetchData}

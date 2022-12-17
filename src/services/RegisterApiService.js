@@ -27,7 +27,7 @@ export default class RegisterApiService {
     return data;
   }
 
-  async registerToGame(gameId) {
+  async registerGame(gameId) {
     const url = `${apiBaseUrl}/registers/games/${gameId}`;
     const { data } = await axios.post(url, {}, {
       headers: {

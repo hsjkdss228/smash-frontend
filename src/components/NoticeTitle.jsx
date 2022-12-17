@@ -33,14 +33,11 @@ const TitleText = styled.p`
 export default function NoticeTitle({
   notice,
   index,
+  selectNoticeMode,
+  isSelected,
+  isDetailOpened,
 }) {
   const noticeStore = useNoticeStore();
-
-  const {
-    selectNoticeMode,
-    selectedNotices,
-    isOpenedNotice,
-  } = noticeStore;
 
   const handleSelectNotice = ({
     targetIndex,
@@ -65,7 +62,7 @@ export default function NoticeTitle({
         <Checkbox
           type="checkbox"
           id={notice.id}
-          checked={selectedNotices[index]}
+          checked={isSelected}
           onChange={() => handleSelectNotice({
             targetIndex: index,
             targetId: notice.id,
@@ -89,7 +86,7 @@ export default function NoticeTitle({
           {notice.title}
         </TitleText>
       </NoticeTitleButton>
-      {isOpenedNotice[index] && (
+      {isDetailOpened && (
         <NoticeDetail
           notice={notice}
           index={index}

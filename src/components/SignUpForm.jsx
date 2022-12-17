@@ -121,6 +121,10 @@ export default function SignUpForm({
     await signUp(data);
   };
 
+  // TODO: onChange를 register 안에 반드시 넣을 것!!!!!!
+  //   그렇지 않으면 테스트를 짤 때 지옥의 고통을 맛보게 될 것임...
+  //   WebSocket 공부할 시간에 테스트 리팩터링하느라 하루를 날린 이의 말씀...
+
   return (
     <Container>
       <Top>

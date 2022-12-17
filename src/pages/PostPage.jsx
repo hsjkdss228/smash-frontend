@@ -1,12 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
 
 import Post from '../components/Post';
 
 export default function PostPage() {
-  const [accessToken] = useLocalStorage('accessToken', '');
-  const loggedIn = accessToken !== '';
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +42,6 @@ export default function PostPage() {
 
   return (
     <Post
-      loggedIn={loggedIn}
       postId={postId}
       navigateBackward={navigateBackward}
       navigateLogin={navigateLogin}

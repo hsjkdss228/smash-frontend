@@ -1,164 +1,144 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import context from 'jest-plugin-context';
+import ReactModal from 'react-modal';
 import PostRegisterButton from './PostRegisterButton';
 
-describe('PostRegisterButton', () => {
-  const onClickRegister = jest.fn();
-  const onClickRegisterCancel = jest.fn();
-  const onClickParticipateCancel = jest.fn();
+let game;
+jest.mock('../hooks/useGameStore', () => () => ({
+  game,
+}));
+let registerServerError;
+const registerGame = jest.fn(() => game.id);
+const cancelRegisterGame = jest.fn();
+const cancelParticipateGame = jest.fn();
+jest.mock('../hooks/useRegisterStore', () => () => ({
+  registerGame,
+  cancelRegisterGame,
+  cancelParticipateGame,
+  registerServerError,
+}));
 
-  const renderPostRegisterButton = ({
-    currentMemberCount,
-    targetMemberCount,
-    registerStatus,
-    registerError,
-  }) => {
+describe('PostRegisterButton', () => {
+  ReactModal.setAppElement('*');
+  const fetchData = jest.fn();
+
+  function renderPostRegisterButton() {
     render((
       <PostRegisterButton
-        currentMemberCount={currentMemberCount}
-        targetMemberCount={targetMemberCount}
-        registerStatus={registerStatus}
-        onClickRegister={onClickRegister}
-        onClickRegisterCancel={onClickRegisterCancel}
-        onClickParticipateCancel={onClickParticipateCancel}
-        registerError={registerError}
+        fetchData={fetchData}
       />
     ));
-  };
+  }
 
   context('사용자가 게시글의 게임에 참가 신청을 하지 않았거나, 취소했거나, 거절당했었을 경우', () => {
-    const currentMemberCount = 4;
-    const targetMemberCount = 6;
-    const registerStatus = 'none';
-    const registerError = {};
+    beforeEach(() => {
+      game = {
+        id: 1,
+        registerStatus: 'none',
+        registerId: null,
+      };
+      registerServerError = '';
+    });
 
-    it('신청 버튼 출력', () => {
-      renderPostRegisterButton({
-        currentMemberCount,
-        targetMemberCount,
-        registerStatus,
-        registerError,
+    it('신청 버튼을 출력', () => {
+      renderPostRegisterButton();
+
+      screen.getByText('참가 신청하기');
+    });
+
+    context('서버로부터 전달된 에러 메시지가 존재하는 경우', () => {
+      beforeEach(() => {
+        registerServerError = 'Already Joined Game';
       });
 
-      screen.getByText('신청');
+      it('신청 버튼 옆에 에러 메시지를 같이 출력', () => {
+        renderPostRegisterButton();
+
+        screen.getByText('참가 신청하기');
+        screen.getByText('Already Joined Game');
+      });
     });
 
     context('신청 버튼을 클릭하면', () => {
-      it('운동 참가 신청 핸들러 함수 호출', () => {
-        renderPostRegisterButton({
-          currentMemberCount,
-          targetMemberCount,
-          registerStatus,
-          registerError,
-        });
+      it('운동 참가 신청 함수 호출, 신청한 게임 id가 반환되면 '
+        + '게시글 상세 정보 상태 갱신 함수를 호출한 뒤 참가 신청이 완료되었다는 Modal 출력 ', async () => {
+        renderPostRegisterButton();
 
-        fireEvent.click(screen.getByText('신청'));
-        expect(onClickRegister).toBeCalled();
+        fireEvent.click(screen.getByText('참가 신청하기'));
+        await waitFor(() => {
+          expect(registerGame).toBeCalledWith(game.id);
+          expect(fetchData).toBeCalled();
+          screen.getByText('참가 신청이 완료되었습니다.');
+        });
       });
     });
   });
 
   context('사용자가 게시글의 게임에 참가 신청을 한 상태인 경우', () => {
-    const currentMemberCount = 4;
-    const targetMemberCount = 6;
-    const registerStatus = 'processing';
-    const registerError = {};
-
-    it('신청취소 버튼 출력', () => {
-      renderPostRegisterButton({
-        currentMemberCount,
-        targetMemberCount,
-        registerStatus,
-        registerError,
-      });
-
-      screen.getByText('신청취소');
+    beforeEach(() => {
+      game = {
+        id: 1,
+        registerStatus: 'processing',
+        registerId: 5,
+      };
     });
 
-    context('신청취소 버튼을 클릭하면', () => {
-      it('운동 참가 신청 취소 핸들러 함수 호출', () => {
-        renderPostRegisterButton({
-          currentMemberCount,
-          targetMemberCount,
-          registerStatus,
-          registerError,
-        });
+    it('신청 취소 버튼을 출력', () => {
+      renderPostRegisterButton();
 
-        fireEvent.click(screen.getByText('신청취소'));
-        expect(onClickRegisterCancel).toBeCalled();
+      screen.getByText('신청 취소하기');
+    });
+
+    context('신청 취소 버튼을 클릭하면', () => {
+      it('운동 참가 신청 취소를 확인하는 Modal 출력, Modal에서 예 버튼을 누르면 '
+        + '참가 신청을 취소하는 함수를 호출하고, 게시글 상세 정보 상태 갱신 함수를 호출한 뒤 '
+        + '참가 신청 취소가 완료되었다는 Modal 출력', async () => {
+        renderPostRegisterButton();
+
+        fireEvent.click(screen.getByText('신청 취소하기'));
+        screen.getByText('정말로 참가 신청을 취소하시겠습니까?');
+        fireEvent.click(screen.getByText('예'));
+        await waitFor(() => {
+          expect(cancelRegisterGame).toBeCalledWith(game.registerId);
+          expect(fetchData).toBeCalled();
+          screen.getByText('참가 신청 취소가 완료되었습니다.');
+        });
       });
     });
   });
 
   context('사용자가 게시글의 게임에 참가하는 상태인 경우', () => {
-    const currentMemberCount = 4;
-    const targetMemberCount = 6;
-    const registerStatus = 'accepted';
-    const registerError = {};
-
-    it('참가취소 버튼 출력', () => {
-      renderPostRegisterButton({
-        currentMemberCount,
-        targetMemberCount,
-        registerStatus,
-        registerError,
-      });
-
-      screen.getByText('참가취소');
+    beforeEach(() => {
+      game = {
+        id: 1,
+        registerStatus: 'accepted',
+        registerId: 3,
+      };
     });
 
-    context('참가취소 버튼을 클릭하면', () => {
-      it('운동 참가 취소 핸들러 함수 호출', () => {
-        renderPostRegisterButton({
-          currentMemberCount,
-          targetMemberCount,
-          registerStatus,
-          registerError,
+    it('참가 취소 버튼을 출력', () => {
+      renderPostRegisterButton();
+
+      screen.getByText('참가 취소하기');
+    });
+
+    context('신청 버튼을 클릭하면', () => {
+      it('운동 참가 취소를 확인하는 Modal 출력, Modal에서 예 버튼을 누르면 '
+        + '참가를 취소하는 함수를 호출하고, 게시글 상세 정보 상태 갱신 함수를 호출한 뒤 '
+        + '참가 취소가 완료되었다는 Modal 출력', async () => {
+        renderPostRegisterButton();
+
+        fireEvent.click(screen.getByText('참가 취소하기'));
+        screen.getByText('정말로 참가를 취소하시겠습니까?');
+        fireEvent.click(screen.getByText('예'));
+        await waitFor(() => {
+          expect(cancelParticipateGame).toBeCalledWith(game.registerId);
+          expect(fetchData).toBeCalled();
+          screen.getByText('참가 취소가 완료되었습니다.');
         });
-
-        fireEvent.click(screen.getByText('참가취소'));
-        expect(onClickParticipateCancel).toBeCalled();
       });
-    });
-  });
-
-  context('게시글에 신청하지 않은 상태에서 정원이 가득 찬 상태인 경우', () => {
-    const currentMemberCount = 6;
-    const targetMemberCount = 6;
-    const registerStatus = 'none';
-    const registerError = {};
-
-    it('버튼 대신 정원이 가득 찼다는 메시지 출력', () => {
-      renderPostRegisterButton({
-        currentMemberCount,
-        targetMemberCount,
-        registerStatus,
-        registerError,
-      });
-
-      screen.getByText('참가 정원이 모두 찼습니다.');
-    });
-  });
-
-  context('정원이 가득 찼다는 에러 메세지가 전달되었을 경우', () => {
-    const currentMemberCount = 5;
-    const targetMemberCount = 6;
-    const registerStatus = 'none';
-    const registerError = {
-      errorCode: 100,
-      errorMessage: '참가 정원이 모두 차 참가를 신청할 수 없습니다.',
-    };
-
-    it('버튼 아래에 에러 메세지를 출력', () => {
-      renderPostRegisterButton({
-        currentMemberCount,
-        targetMemberCount,
-        registerStatus,
-        registerError,
-      });
-
-      screen.getByText('신청');
-      screen.getByText('참가 정원이 모두 차 참가를 신청할 수 없습니다.');
     });
   });
 });
