@@ -1,138 +1,89 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import Posts from './Posts';
 
-describe('Posts', () => {
-  const navigateToPost = jest.fn();
-  const toggleSearchSetting = jest.fn();
-  const toggleFilterSetting = jest.fn();
+let posts;
+const fetchPosts = jest.fn();
+jest.mock('../hooks/usePostStore', () => () => ({
+  posts,
+  fetchPosts,
+}));
 
-  const renderPosts = ({
-    loggedIn,
-    searchSetting,
-    filterSetting,
-    posts,
-    postsErrorMessage,
-  }) => {
+describe('Posts', () => {
+  const navigatePost = jest.fn();
+
+  function renderPosts() {
     render((
       <Posts
-        loggedIn={loggedIn}
-        searchSetting={searchSetting}
-        filterSetting={filterSetting}
-        toggleSearchSetting={toggleSearchSetting}
-        toggleFilterSetting={toggleFilterSetting}
-        posts={posts}
-        navigateToPost={navigateToPost}
-        postsErrorMessage={postsErrorMessage}
+        navigatePost={navigatePost}
       />
     ));
-  };
+  }
 
-  context('등록된 게시글이 존재하지 않는 경우', () => {
-    const loggedIn = false;
-    const searchSetting = false;
-    const filterSetting = false;
-    const posts = [];
-    const postsErrorMessage = '';
-
-    it('게시물 미존재 안내 메세지 출력', () => {
-      renderPosts({
-        loggedIn,
-        searchSetting,
-        filterSetting,
-        posts,
-        postsErrorMessage,
+  context('게시물 목록 컴포넌트는', () => {
+    context('게시물 목록에 게시물이 존재할 경우', () => {
+      beforeEach(() => {
+        posts = [
+          {
+            id: 1,
+            hits: 123,
+            thumbnailImageUrl: 'imageUrl',
+            isAuthor: false,
+            game: {
+              id: 1,
+              type: '운동 종목 1',
+              date: '2022년 12월 22일 오전 08:00 ~ 오전 10:00',
+              currentMemberCount: 3,
+              targetMemberCount: 6,
+              registerId: null,
+              registerStatus: 'none',
+            },
+            place: {
+              name: '운동 장소 1',
+            },
+          },
+          {
+            id: 2,
+            hits: 456,
+            thumbnailImageUrl: 'imageUrl',
+            isAuthor: true,
+            game: {
+              id: 2,
+              type: '운동 종목 2',
+              date: '2022년 12월 23일 오후 04:00 ~ 오후 08:00',
+              currentMemberCount: 9,
+              targetMemberCount: 12,
+              registerId: 4,
+              registerStatus: 'accepted',
+            },
+            place: {
+              name: '운동 장소 2',
+            },
+          },
+        ];
       });
 
-      screen.getByText(/등록된 게시물이 존재하지 않습니다./);
+      it('조회 방식 선택 영역, 게시글 목록 영역으로 구성', () => {
+        renderPosts();
+
+        screen.getByText('조회 방식 선택');
+        screen.getByText('리스트');
+        screen.getByText('지도');
+        screen.getByText('운동 종목 1');
+        screen.getByText('운동 종목 2');
+      });
     });
-  });
 
-  context('게임이 찾아지지 않은 에러가 발생한 경우', () => {
-    const loggedIn = false;
-    const searchSetting = false;
-    const filterSetting = false;
-    const posts = [
-      {
-        id: 1,
-        hits: 334,
-        isAuthor: false,
-        game: {},
-      },
-    ];
-    const postsErrorMessage = '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.';
-
-    it('에러 메세지 출력', () => {
-      renderPosts({
-        loggedIn,
-        searchSetting,
-        filterSetting,
-        posts,
-        postsErrorMessage,
+    context('게시물 목록에 게시물이 존재하지 않을 경우', () => {
+      beforeEach(() => {
+        posts = [];
       });
 
-      screen.getByText(/주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다./);
-    });
-  });
+      it('등록된 게시물이 존재하지 않는다는 메시지 출력', () => {
+        renderPosts();
 
-  context('등록된 게시물이 있을 경우', () => {
-    const loggedIn = false;
-    const searchSetting = false;
-    const filterSetting = false;
-    const posts = [
-      {
-        id: 1,
-        hits: 334,
-        isAuthor: false,
-        game: {
-          id: 2,
-          type: '배드민턴',
-          date: '2022년 10월 24일 13:00~16:00',
-          place: '올림픽공원 핸드볼경기장',
-          currentMemberCount: 4,
-          targetMemberCount: 5,
-          registerId: -1,
-          registerStatus: 'none',
-        },
-      },
-    ];
-    const postsErrorMessage = '';
-
-    it('게시물 내용 클릭 시 해당 게시물 상세 정보 보기로 이동하는 navigate 함수 호출', () => {
-      renderPosts({
-        loggedIn,
-        searchSetting,
-        filterSetting,
-        posts,
-        postsErrorMessage,
+        screen.getByText('등록된 게시물이 존재하지 않습니다.');
       });
-
-      fireEvent.click(screen.getByText('배드민턴'));
-      const expectedPostId = 1;
-      expect(navigateToPost).toBeCalledWith(expectedPostId);
-    });
-  });
-
-  context('검색조건 또는 조회방식 설정 버튼을 클릭하는 경우', () => {
-    const loggedIn = false;
-    const searchSetting = false;
-    const filterSetting = false;
-    const posts = [];
-    const postsErrorMessage = '';
-
-    it('각 설정 버튼 출력 상태를 toggle하는 함수 호출', () => {
-      renderPosts({
-        loggedIn,
-        searchSetting,
-        filterSetting,
-        posts,
-        postsErrorMessage,
-      });
-
-      fireEvent.click(screen.getByText('검색조건 설정'));
-      expect(toggleSearchSetting).toBeCalled();
-      fireEvent.click(screen.getByText('조회방식 설정'));
-      expect(toggleFilterSetting).toBeCalled();
     });
   });
 });

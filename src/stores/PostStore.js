@@ -74,7 +74,7 @@ export default class PostStore extends Store {
 
   setRegisteredSelection() {
     this.resetSearchConditionState();
-    this.registeredSelection = true;
+    this.registeredSelection = !this.registeredSelection;
     this.writtenSelection = false;
     this.publish();
   }
@@ -82,7 +82,7 @@ export default class PostStore extends Store {
   setWrittenSelection() {
     this.resetSearchConditionState();
     this.registeredSelection = false;
-    this.writtenSelection = true;
+    this.writtenSelection = !this.writtenSelection;
     this.publish();
   }
 

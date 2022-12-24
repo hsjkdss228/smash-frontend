@@ -14,10 +14,10 @@ const Input = styled.input`
 
 export default function SelectTime({
   id,
-  onChange,
   type,
   time,
   value,
+  onChange,
 }) {
   return (
     <div>
@@ -27,6 +27,7 @@ export default function SelectTime({
         {time}
       </Label>
       <Input
+        id={id}
         type="text"
         min={(
           time === 'hour'
