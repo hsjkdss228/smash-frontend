@@ -1,66 +1,57 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
 import SelectTime from './SelectTime';
 
 describe('SelectTime', () => {
-  // const onChange = jest.fn();
+  const onChange = jest.fn();
 
-  // const renderSelectTime = ({
-  //   id,
-  //   type,
-  //   time,
-  // }) => {
-  //   render((
-  //     <SelectTime
-  //       id={id}
-  //       onChange={onChange}
-  //       type={type}
-  //       time={time}
-  //     />
-  //   ));
-  // };
+  function renderSelectTime({
+    id,
+    type,
+    time,
+    value,
+  }) {
+    render((
+      <SelectTime
+        id={id}
+        type={type}
+        time={time}
+        value={value}
+        onChange={onChange}
+      />
+    ));
+  }
 
-  context('시간 선택 Select 컴포넌트를 불러오면', () => {
-    // const id = 'input-game-start-hour';
-    // const type = 'start';
-    // const time = 'hour';
+  context('게시글 입력 폼 중 시간 값 입력 필드는', () => {
+    const id = 'input-game-start-minute';
+    const type = 'start';
+    const time = 'minute';
+    const value = '30';
 
-    it('1~12까지 있는 option 태그를 출력', () => {
-    //   renderSelectTime({
-    //     id,
-    //     type,
-    //     time,
-    //   });
+    it('입력 필드 식별을 위한 label과 시간을 입력할 수 있는 입력 필드로 구성됨', () => {
+      renderSelectTime({
+        id,
+        type,
+        time,
+        value,
+      });
 
-    //   screen.getByText(/start hour/);
-    //   Array(12).fill(0).forEach((_, index) => {
-    //     const value = index + 1 < 10
-    //       ? `0${index + 1}`
-    //       : (index + 1).toString();
-    //     screen.getByText(value);
-    //   });
+      screen.getByLabelText('start minute');
+      screen.getByDisplayValue('30');
+    });
+
+    it('입력 필드의 값을 변경하면 입력 필드의 값을 변경하는 핸들러 함수 호출', () => {
+      renderSelectTime({
+        id,
+        type,
+        time,
+        value,
+      });
+
+      fireEvent.change(screen.getByLabelText('start minute'), {
+        target: { value: '9' },
+      });
+      expect(onChange).toBeCalled();
     });
   });
-
-  // context('분 선택 Select 컴포넌트를 불러오면', () => {
-  //   const id = 'input-game-end-hour';
-  //   const type = 'end';
-  //   const time = 'minute';
-
-  //   it('00, 10, 20, 30, 40, 50까지 있는 option 태그를 출력', () => {
-  //     renderSelectTime({
-  //       id,
-  //       type,
-  //       time,
-  //     });
-
-  //     screen.getByText(/end minute/);
-  //     Array(6).fill(0).forEach((_, index) => {
-  //       const value = index === 0
-  //         ? '00'
-  //         : (index * 10).toString();
-  //       screen.getByText(value);
-  //     });
-  //   });
-  // });
 });

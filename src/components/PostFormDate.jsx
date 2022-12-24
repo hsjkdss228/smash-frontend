@@ -83,6 +83,7 @@ export default function PostFormDate() {
         </DateLabel>
         <DatePickerWrapper>
           <DatePicker
+            label="input-game-date"
             id="input-game-date"
             locale={ko}
             minDate={new Date()}

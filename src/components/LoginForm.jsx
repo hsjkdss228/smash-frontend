@@ -133,7 +133,7 @@ export default function LoginForm({
               placeholder="Username"
               register={register}
               name="username"
-              requiredMessage="아이디를 입력해주세요."
+              requiredErrorMessage="아이디를 입력해주세요."
               clearErrors={handleClearErrors}
             />
             <LoginFormInput
@@ -144,7 +144,7 @@ export default function LoginForm({
               placeholder="Password"
               register={register}
               name="password"
-              requiredMessage="비밀번호를 입력해주세요."
+              requiredErrorMessage="비밀번호를 입력해주세요."
               clearErrors={handleClearErrors}
             />
           </InputSection>

@@ -25,7 +25,7 @@ export default function LoginFormInput({
   placeholder,
   register,
   name,
-  requiredMessage,
+  requiredErrorMessage,
   clearErrors,
 }) {
   return (
@@ -40,7 +40,7 @@ export default function LoginFormInput({
         {...register(
           name,
           {
-            required: { value: true, message: requiredMessage },
+            required: { value: true, message: requiredErrorMessage },
             onChange: clearErrors,
           },
         )}

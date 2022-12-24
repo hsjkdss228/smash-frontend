@@ -102,6 +102,7 @@ describe('LoginForm', () => {
 
       context('폼에 아이디나 비밀번호를 입력하지 않고 로그인 버튼을 누르면', () => {
         beforeEach(() => {
+          login = jest.fn();
           jest.clearAllMocks();
         });
 
@@ -115,7 +116,10 @@ describe('LoginForm', () => {
           });
           fireEvent.submit(screen.getByText('로그인'));
 
-          expect(login).not.toBeCalled();
+          await waitFor(() => {
+            expect(login).not.toBeCalled();
+            screen.getByText('비밀번호를 입력해주세요.');
+          });
         });
       });
 
