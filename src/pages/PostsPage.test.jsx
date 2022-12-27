@@ -1,22 +1,29 @@
-import {
-  fireEvent, render, screen,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import context from 'jest-plugin-context';
+import ReactModal from 'react-modal';
 import PostsPage from './PostsPage';
 
+let location;
 const navigate = jest.fn();
 jest.mock('react-router-dom', () => ({
+  useLocation: () => (
+    location
+  ),
   useNavigate: () => (
     navigate
   ),
 }));
 
 let posts;
-let postsErrorMessage;
+let postsServerError;
+const resetSearchConditionState = jest.fn();
+const resetLookUpConditionState = jest.fn();
 const fetchPosts = jest.fn();
 jest.mock('../hooks/usePostStore', () => () => ({
   posts,
-  postsErrorMessage,
+  postsServerError,
+  resetSearchConditionState,
+  resetLookUpConditionState,
   fetchPosts,
 }));
 
@@ -27,74 +34,96 @@ describe('PostsPage', () => {
     ));
   }
 
-  context('운동 모집 게시글 상세 조회 페이지가 호출되면', () => {
-    beforeEach(() => {
-      posts = [
-        {
+  beforeEach(() => {
+    posts = [
+      {
+        id: 1,
+        hits: 123,
+        thumbnailImageUrl: 'imageUrl',
+        isAuthor: false,
+        game: {
           id: 1,
-          hits: 100,
-          isAuthor: false,
-          game: {
-            id: 22,
-            type: '축구',
-            date: '2022년 12월 19일 08:00~11:00',
-            place: '상암월드컵경기장',
-            currentMemberCount: 23,
-            targetMemberCount: 26,
-            registerId: -1,
-            registerStatus: 'none',
-          },
+          type: '운동 종목 1',
+          date: '2022년 12월 22일 오전 08:00 ~ 오전 10:00',
+          currentMemberCount: 3,
+          targetMemberCount: 6,
+          registerId: null,
+          registerStatus: 'none',
         },
-        {
+        place: {
+          name: '운동 장소 1',
+        },
+      },
+      {
+        id: 2,
+        hits: 456,
+        thumbnailImageUrl: 'imageUrl',
+        isAuthor: false,
+        game: {
           id: 2,
-          hits: 5000,
-          isAuthor: false,
-          game: {
-            id: 48,
-            type: '야구',
-            date: '2022년 10월 17일 13:00~17:00',
-            place: '문학야구장',
-            currentMemberCount: 17,
-            targetMemberCount: 30,
-            registerId: 25,
-            registerStatus: 'processing',
-          },
+          type: '운동 종목 2',
+          date: '2022년 12월 23일 오후 04:00 ~ 오후 08:00',
+          currentMemberCount: 9,
+          targetMemberCount: 12,
+          registerId: 4,
+          registerStatus: 'processing',
         },
-        {
-          id: 3,
-          hits: 363,
-          isAuthor: false,
-          game: {
-            id: 100,
-            type: '골프',
-            date: '2022년 10월 18일 10:00~16:00',
-            place: '남양주CC',
-            currentMemberCount: 2,
-            targetMemberCount: 5,
-            registerId: 40,
-            registerStatus: 'accepted',
-          },
+        place: {
+          name: '운동 장소 2',
         },
-      ];
-      postsErrorMessage = '';
+      },
+    ];
+  });
+
+  context('게시글 목록 페이지에', () => {
+    beforeEach(() => {
+      ReactModal.setAppElement('*');
     });
 
-    it('운동 모집 게시글 상태를 가져오기 위한 fetchPost 수행', async () => {
-      renderPostsPage();
+    context('게시글 작성을 완료하여 접속하는 경우', () => {
+      beforeEach(() => {
+        location = {
+          state: {
+            postStatus: 'created',
+          },
+        };
+      });
 
-      await expect(fetchPosts).toBeCalled();
-    });
-
-    context('운동 모집 게시글 리스트 중 하나의 내용을 클릭하면', () => {
-      it('운동 게시글 상세 보기로 이동하는 navigate 함수 호출', () => {
-        jest.clearAllMocks();
-
+      it('게시글 작성을 완료했음을 알리는 Modal을 출력', () => {
         renderPostsPage();
 
-        fireEvent.click(screen.getByText('문학야구장'));
-        expect(navigate).toBeCalledWith('/posts/2', {
+        screen.getByText('게시글 작성이 완료되었습니다.');
+        fireEvent.click(screen.getByText('확인'));
+        expect(screen.queryByText('게시글 작성이 완료되었습니다.')).toBe(null);
+      });
+    });
+
+    context('게시글 삭제를 완료하여 접속하는 경우', () => {
+      beforeEach(() => {
+        location = {
           state: {
-            postId: 2,
+            postStatus: 'deleted',
+          },
+        };
+      });
+
+      it('게시글 삭제를 완료했음을 알리는 Modal을 출력', () => {
+        renderPostsPage();
+
+        screen.getByText('게시글 삭제가 완료되었습니다.');
+        fireEvent.click(screen.getByText('확인'));
+        expect(screen.queryByText('게시글 작성이 완료되었습니다.')).toBe(null);
+      });
+    });
+
+    context('접속해서 특정 게시글 썸네일을 클릭하는 경우', () => {
+      it('해당 게시글의 상세 정보 보기 페이지로 navigate', () => {
+        renderPostsPage();
+
+        fireEvent.click(screen.getByText('운동 종목 2'));
+        expect(navigate).toBeCalledWith(`/posts/${posts[1].id}`, {
+          state: {
+            postId: posts[1].id,
           },
         });
       });

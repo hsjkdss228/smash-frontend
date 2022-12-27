@@ -30,8 +30,13 @@ export default class UserStore extends Store {
       this.name = data.name;
       this.publish();
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.fetchUserNameServerError = errorMessage;
+      const errorMessage = error.response.data;
+
+      this.fetchUserNameServerError = '알 수 없는 에러입니다.';
+      if (errorMessage === 'User Not Found') {
+        this.fetchUserNameServerError = '사용자를 찾을 수 없습니다.';
+      }
+
       this.publish();
     }
   }

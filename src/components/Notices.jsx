@@ -4,6 +4,7 @@ import Container from './ui/ComponentScreenContainer';
 import BackwardButton from './BackwardButton';
 import NoticeList from './NoticeList';
 import NoticeSettings from './NoticeSettings';
+import useNoticeStore from '../hooks/useNoticeStore';
 
 const BackwardAndSettings = styled.div`
   width: 100%;
@@ -20,15 +21,25 @@ export default function Notices({
     navigateBackward();
   };
 
+  const noticeStore = useNoticeStore();
+
+  const { serverError } = noticeStore;
+
   return (
     <Container>
-      <BackwardAndSettings>
-        <BackwardButton
-          onClick={handleClickBackward}
-        />
-        <NoticeSettings />
-      </BackwardAndSettings>
-      <NoticeList />
+      {serverError ? (
+        <p>올비르지 않은 사용자 정보입니다.</p>
+      ) : (
+        <>
+          <BackwardAndSettings>
+            <BackwardButton
+              onClick={handleClickBackward}
+            />
+            <NoticeSettings />
+          </BackwardAndSettings>
+          <NoticeList />
+        </>
+      )}
     </Container>
   );
 }

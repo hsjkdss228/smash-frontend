@@ -15,7 +15,7 @@ const PaddingWrapper = styled.div`
   padding-block: .75em;
 `;
 
-const NoNotices = styled.p`
+const EmptyNotices = styled.p`
   font-size: 1em;
   font-weight: bold;
   text-align: center;
@@ -37,13 +37,13 @@ export default function NoticeList() {
   const {
     noticesAll,
     noticesUnread,
-    noticeStateToShown,
+    noticeStateToShow,
     selectNoticeMode,
     selectedNotices,
     isOpenedNotice,
   } = noticeStore;
 
-  const notices = noticeStateToShown === 'all'
+  const notices = noticeStateToShow === 'all'
     ? noticesAll
     : noticesUnread;
 
@@ -51,10 +51,10 @@ export default function NoticeList() {
     <ComponentSectionContainer
       backgroundColor="#FFF"
     >
-      {noticeStateToShown === 'all' && (!notices || notices.length === 0) ? (
-        <NoNotices>조회 가능한 알림이 없습니다.</NoNotices>
-      ) : noticeStateToShown === 'unread' && notices.length === 0 ? (
-        <NoNotices>읽지 않은 알림이 없습니다.</NoNotices>
+      {noticeStateToShow === 'all' && (!notices || notices.length === 0) ? (
+        <EmptyNotices>조회 가능한 알림이 없습니다.</EmptyNotices>
+      ) : noticeStateToShow === 'unread' && notices.length === 0 ? (
+        <EmptyNotices>읽지 않은 알림이 없습니다.</EmptyNotices>
       ) : (
         <PaddingWrapper>
           {selectNoticeMode && (

@@ -24,7 +24,12 @@ export default class PostStore extends Store {
 
     this.post = {};
     this.postServerError = '';
+
+    this.deletePostServerError = '';
   }
+
+  // TODO: 내가 참가하는 운동, 내가 작성한 운동 조회를 위한
+  //   적용하기 버튼 추가하기
 
   resetSearchConditionState() {
     this.exerciseSelection = false;
@@ -33,9 +38,6 @@ export default class PostStore extends Store {
     this.memberSelection = false;
     this.applicantSelection = false;
   }
-
-  // TODO: 내가 참가하는 운동, 내가 작성한 운동 조회는
-  //   선택 시 바로 filtering에 들어갈 수 있을 것 같음
 
   resetLookUpConditionState() {
     this.registeredSelection = false;
@@ -92,7 +94,19 @@ export default class PostStore extends Store {
       this.posts = data.posts;
       this.publish();
     } catch (error) {
-      this.postsServerError = error.response.data;
+      const errorMessage = error.response.data;
+
+      this.postsServerError = '알 수 없는 에러입니다.';
+      if (errorMessage === 'User Not Found') {
+        this.postsServerError = '사용자를 찾을 수 없습니다.';
+      }
+      if (errorMessage === 'Game Not Found') {
+        this.postsServerError = '경기를 찾을 수 없습니다.';
+      }
+      if (errorMessage === 'Place Not Found') {
+        this.postsServerError = '운동 장소를 찾을 수 없습니다.';
+      }
+
       this.publish();
     }
   }
@@ -102,14 +116,41 @@ export default class PostStore extends Store {
       const data = await postApiService.fetchPost(postId);
       this.post = data;
     } catch (error) {
-      this.postServerError = error.response.data;
+      const errorMessage = error.response.data;
+
+      this.postServerError = '알 수 없는 에러입니다.';
+      if (errorMessage === 'Post Not Found') {
+        this.postServerError = '게시글을 찾을 수 없습니다.';
+      }
+      if (errorMessage === 'User Not Found') {
+        this.postServerError = '사용자를 찾을 수 없습니다.';
+      }
+
+      this.publish();
     }
   }
 
   // TODO: 게시글을 생성하는 POST 요청이 PostFormStore에서 여기로 옮겨와져야 함
 
   async deletePost(postId) {
-    await postApiService.deletePost(postId);
+    try {
+      await postApiService.deletePost(postId);
+    } catch (error) {
+      const errorMessage = error.response.data;
+
+      this.deletePostServerError = '알 수 없는 에러입니다.';
+      if (errorMessage === 'Post Not Found') {
+        this.deletePostServerError = '게시글을 찾을 수 없습니다.';
+      }
+      if (errorMessage === 'User Is Not Author') {
+        this.deletePostServerError = '접속한 사용자가 작성자가 아닙니다.';
+      }
+      if (errorMessage === 'Game Not Found') {
+        this.deletePostServerError = '경기를 찾을 수 없습니다.';
+      }
+
+      this.publish();
+    }
   }
 }
 

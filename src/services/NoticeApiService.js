@@ -30,17 +30,6 @@ export default class NoticeApiService {
     await axios.patch(url);
   }
 
-  async fetchUnreadNoticeCount() {
-    const url = `${apiBaseUrl}/notice-count`;
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-      params: { status: 'unread' },
-    });
-    return data;
-  }
-
   async readSelectedNotices({ selectedNoticeIds }) {
     const url = `${apiBaseUrl}/notices`;
     await axios.patch(url, { ids: selectedNoticeIds }, {
@@ -53,6 +42,17 @@ export default class NoticeApiService {
     await axios.patch(url, { ids: selectedNoticeIds }, {
       params: { status: 'deleted' },
     });
+  }
+
+  async fetchUnreadNoticeCount() {
+    const url = `${apiBaseUrl}/notice-count`;
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      params: { status: 'unread' },
+    });
+    return data;
   }
 }
 

@@ -29,7 +29,3 @@ export default function LoginPage() {
     />
   );
 }
-
-// TODO: AccessToken 관련 오류가 발생할 경우 이 구문을 적용시켜보기
-// jest.spyOn(Object.getPrototypeOf(window.localStorage), 'setItem');
-// Object.setPrototypeOf(window.localStorage.setItem, jest.fn());

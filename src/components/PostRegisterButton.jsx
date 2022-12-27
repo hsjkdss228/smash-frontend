@@ -53,7 +53,10 @@ export default function PostRegisterButton({
   const registerStore = useRegisterStore();
 
   const { game } = gameStore;
-  const { registerServerError } = registerStore;
+  const {
+    registerServerError,
+    changeRegisterServerError,
+  } = registerStore;
 
   const seeConfirmModal = ({ message }) => {
     setActionMessage(message);
@@ -119,19 +122,29 @@ export default function PostRegisterButton({
           )}
         </>
       ) : game.registerStatus === 'processing' ? (
-        <RegisterButton
-          type="button"
-          onClick={handleClickRegisterCancel}
-        >
-          신청 취소하기
-        </RegisterButton>
+        <>
+          <RegisterButton
+            type="button"
+            onClick={handleClickRegisterCancel}
+          >
+            신청 취소하기
+          </RegisterButton>
+          {changeRegisterServerError && (
+            <p>{changeRegisterServerError}</p>
+          )}
+        </>
       ) : (
-        <RegisterButton
-          type="button"
-          onClick={handleClickParticipateCancel}
-        >
-          참가 취소하기
-        </RegisterButton>
+        <>
+          <RegisterButton
+            type="button"
+            onClick={handleClickParticipateCancel}
+          >
+            참가 취소하기
+          </RegisterButton>
+          {changeRegisterServerError && (
+            <p>{changeRegisterServerError}</p>
+          )}
+        </>
       )}
       {confirmModalState && (
         <ModalConfirm

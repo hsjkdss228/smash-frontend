@@ -5,10 +5,7 @@ export default class NoticeStore extends Store {
   constructor() {
     super();
 
-    this.showAllNoticesMode = true;
-    this.showUnreadNoticesMode = false;
-
-    this.noticeStateToShown = 'all';
+    this.noticeStateToShow = 'all';
 
     this.isOpenedNotice = [];
 
@@ -23,9 +20,13 @@ export default class NoticeStore extends Store {
     this.serverError = '';
   }
 
+  closeSelectNoticeMode() {
+    this.selectNoticeMode = false;
+  }
+
   initNoticesDetailState() {
     this.isOpenedNotice = Array((
-      this.noticeStateToShown === 'all'
+      this.noticeStateToShow === 'all'
         ? this.noticesAll.length
         : this.noticesUnread.length
     )).fill(false);
@@ -33,7 +34,7 @@ export default class NoticeStore extends Store {
 
   initSelectedNotices() {
     this.selectedNotices = Array((
-      this.noticeStateToShown === 'all'
+      this.noticeStateToShow === 'all'
         ? this.noticesAll.length
         : this.noticesUnread.length
     )).fill('');
@@ -41,29 +42,21 @@ export default class NoticeStore extends Store {
 
   toggleSelectNoticeMode() {
     this.selectNoticeMode = !this.selectNoticeMode;
-    if (!this.selectedNoticeMode) {
+    if (!this.selectNoticeMode) {
       this.initSelectedNotices();
     }
     this.publish();
   }
 
   async showAll() {
-    this.showAllNoticesMode = true;
-    this.showUnreadNoticesMode = false;
+    this.noticeStateToShow = 'all';
     await this.fetchNotices();
-    this.noticeStateToShown = 'all';
-    this.initNoticesDetailState();
-    this.initSelectedNotices();
     this.publish();
   }
 
   async showUnreadOnly() {
-    this.showAllNoticesMode = false;
-    this.showUnreadNoticesMode = true;
+    this.noticeStateToShow = 'unread';
     await this.fetchNotices();
-    this.noticeStateToShown = 'unread';
-    this.initNoticesDetailState();
-    this.initSelectedNotices();
     this.publish();
   }
 
@@ -76,7 +69,6 @@ export default class NoticeStore extends Store {
 
       this.initNoticesDetailState();
       this.initSelectedNotices();
-
       this.publish();
     } catch (error) {
       this.serverError = error.response.data;
@@ -84,60 +76,28 @@ export default class NoticeStore extends Store {
     }
   }
 
+  chooseArrayForSelectionByStateToShow() {
+    return this.noticeStateToShow === 'all'
+      ? this.noticesAll
+      : this.noticesUnread;
+  }
+
   selectAllNotices() {
-    const notices = this.chooseArrayByStateToShow();
+    const notices = this.chooseArrayForSelectionByStateToShow();
     this.selectedNotices = notices.map((notice) => notice.id);
     this.publish();
   }
 
   deselectAllNotices() {
-    const notices = this.chooseArrayByStateToShow();
+    const notices = this.chooseArrayForSelectionByStateToShow();
     this.selectedNotices = notices.map(() => '');
     this.publish();
-  }
-
-  chooseArrayByStateToShow() {
-    return this.noticeStateToShown === 'all'
-      ? this.noticesAll
-      : this.noticesUnread;
-  }
-
-  showNoticeDetail(targetIndex) {
-    this.isOpenedNotice = this.isOpenedNotice
-      .map((_, index) => index === targetIndex);
-    this.publish();
-  }
-
-  async readNotice(targetId) {
-    const notices = this.chooseArrayByStateToShow();
-
-    const found = notices
-      .find((notice) => notice.id === targetId);
-    if (found && found.status === 'unread') {
-      await noticeApiService.readNotice(found.id);
-      await this.fetchUnreadNoticeCount();
-    }
-  }
-
-  closeNoticeDetail(targetIndex) {
-    this.isOpenedNotice[targetIndex] = false;
-    this.publish();
-  }
-
-  closeSelectNoticeMode() {
-    this.selectNoticeMode = false;
   }
 
   selectNotice({ targetIndex, targetId }) {
     this.selectedNotices[targetIndex] = this.selectedNotices[targetIndex]
       ? ''
       : targetId;
-    this.publish();
-  }
-
-  async fetchUnreadNoticeCount() {
-    const data = await noticeApiService.fetchUnreadNoticeCount();
-    this.unreadNoticeCount = data.count;
     this.publish();
   }
 
@@ -155,6 +115,34 @@ export default class NoticeStore extends Store {
     await noticeApiService
       .deleteSelectedNotices({ selectedNoticeIds });
     await this.fetchNotices();
+  }
+
+  async fetchUnreadNoticeCount() {
+    const data = await noticeApiService.fetchUnreadNoticeCount();
+    this.unreadNoticeCount = data.count;
+    this.publish();
+  }
+
+  showNoticeDetail(targetIndex) {
+    this.isOpenedNotice = this.isOpenedNotice
+      .map((_, index) => index === targetIndex);
+    this.publish();
+  }
+
+  async readNotice(targetId) {
+    const notices = this.chooseArrayForSelectionByStateToShow();
+
+    const found = notices
+      .find((notice) => notice.id === targetId);
+    if (found && found.status === 'unread') {
+      await noticeApiService.readNotice(found.id);
+      await this.fetchUnreadNoticeCount();
+    }
+  }
+
+  closeNoticeDetail(targetIndex) {
+    this.isOpenedNotice[targetIndex] = false;
+    this.publish();
   }
 }
 
