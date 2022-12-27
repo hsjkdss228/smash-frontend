@@ -2,151 +2,112 @@ import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import context from 'jest-plugin-context';
+import ReactModal from 'react-modal';
 import PostFormPage from './PostFormPage';
 
+let location;
 const navigate = jest.fn();
 jest.mock('react-router-dom', () => ({
+  useLocation: () => (
+    location
+  ),
   useNavigate: () => (
     navigate
   ),
 }));
 
-let gameExercise;
-let gameDate;
-let gamePlace;
-let gameTargetMemberCount;
-let postDetail;
-let formErrors;
-let serverErrors;
-const changeGameExercise = jest.fn();
-const changeGameDate = jest.fn();
-const changeGameStartTimeAmPm = jest.fn();
-const changeGameStartHour = jest.fn();
-const changeGameStartMinute = jest.fn();
-const changeGameEndTimeAmPm = jest.fn();
-const changeGameEndHour = jest.fn();
-const changeGameEndMinute = jest.fn();
-const changeGamePlace = jest.fn();
-const changeGameTargetMemberCount = jest.fn();
-const changePostDetail = jest.fn();
-let createPost;
 const clearStates = jest.fn();
+const resetForm = jest.fn();
+const formErrors = {};
+let createPost;
 jest.mock('../hooks/usePostFormStore', () => () => ({
-  gameExercise,
-  gameDate,
-  gamePlace,
-  gameTargetMemberCount,
-  postDetail,
-  formErrors,
-  serverErrors,
-  changeGameExercise,
-  changeGameDate,
-  changeGameStartTimeAmPm,
-  changeGameStartHour,
-  changeGameStartMinute,
-  changeGameEndTimeAmPm,
-  changeGameEndHour,
-  changeGameEndMinute,
-  changeGamePlace,
-  changeGameTargetMemberCount,
-  changePostDetail,
-  createPost,
   clearStates,
+  resetForm,
+  formErrors,
+  createPost,
 }));
 
 describe('PostFormPage', () => {
-  // TODO: 게시글 수정 기능을 추가할 때는 fetchPost, fetchGame, fetchMember로
-  //   게시글의 내용을 가져오는 동작을 전달하는지 검증해야 함
-  //   근데 수정할 때는 참가자 목록이 보여야 하네?
-
-  const renderPostFormPage = () => {
+  function renderPostFormPage() {
     render((
       <PostFormPage />
     ));
-  };
+  }
 
-  context('게시글 작성하기 페이지에 접속해 각 입력 폼의 내용을 수정하면', () => {
-    beforeEach(() => {
-      gameExercise = '';
-      gameDate = new Date('2022-11-23T00:00:00.000Z');
-      gamePlace = '';
-      gameTargetMemberCount = 0;
-      postDetail = '';
-      formErrors = {};
-      serverErrors = {};
-    });
+  context('게시글 작성 페이지에서', () => {
+    context('내용 입력을 정상적으로 마친 상태에서 작성하기 버튼을 누르면', () => {
+      beforeEach(() => {
+        location = {
+          state: null,
+        };
 
-    it('입력되는 내용을 상태로 저장하는 Store의 메서드 호출', () => {
-      renderPostFormPage();
-
-      fireEvent.change(screen.getByLabelText(/종목/), {
-        target: { value: '야구' },
+        const expectedPostId = 99;
+        createPost = jest.fn(() => expectedPostId);
       });
-      expect(changeGameExercise).toBeCalledWith('야구');
 
-      fireEvent.change(screen.getByLabelText(/날짜/), {
-        target: { value: '2022년 11월 24일' },
-      });
-      expect(changeGameDate)
-        .toBeCalledWith(new Date('2022-11-24T00:00:00.000Z'));
-
-      fireEvent.click(screen.getByLabelText(/시작 오후/));
-      expect(changeGameStartTimeAmPm).toBeCalledWith('pm');
-
-      fireEvent.change(screen.getByLabelText(/start hour/), {
-        target: { value: '05' },
-      });
-      expect(changeGameStartHour).toBeCalledWith('05');
-
-      fireEvent.change(screen.getByLabelText(/start minute/), {
-        target: { value: '20' },
-      });
-      expect(changeGameStartMinute).toBeCalledWith('20');
-
-      fireEvent.click(screen.getByLabelText(/종료 오전/));
-      expect(changeGameEndTimeAmPm).toBeCalledWith('am');
-
-      fireEvent.change(screen.getByLabelText(/end hour/), {
-        target: { value: '12' },
-      });
-      expect(changeGameEndHour).toBeCalledWith('12');
-
-      fireEvent.change(screen.getByLabelText(/end minute/), {
-        target: { value: '30' },
-      });
-      expect(changeGameEndMinute).toBeCalledWith('30');
-
-      fireEvent.change(screen.getByLabelText(/장소/), {
-        target: { value: '고척스카이돔' },
-      });
-      expect(changeGamePlace).toBeCalledWith('고척스카이돔');
-
-      fireEvent.change(screen.getByLabelText(/모집 인원/), {
-        target: { value: 20 },
-      });
-      expect(changeGameTargetMemberCount).toBeCalledWith('20');
-
-      fireEvent.change(screen.getByLabelText(/상세 내용/), {
-        target: { value: '상세 내용' },
-      });
-      expect(changePostDetail).toBeCalledWith('상세 내용');
-    });
-
-    context('작성하기 버튼을 누르면', () => {
-      it('게시글 생성 API 요청을 호출하는 Store의 메서드 호출한 뒤, '
-        + '생성된 게시글 아이디가 반환되면 '
-        + 'Store의 상태를 비우고 게시글 목록 보기 페이지로 navigate', async () => {
-        jest.clearAllMocks();
-        const createdPostId = 10;
-        createPost = jest.fn(() => createdPostId);
-
+      // TODO: 게시글 목록 페이지가 아니라
+      //   작성한 게시글의 상세 내용 페이지로 navigate되도록 수정하는 게 좋겠다.
+      it('게시글 목록 페이지로 navigate', async () => {
         renderPostFormPage();
 
         fireEvent.click(screen.getByText('작성하기'));
         await waitFor(() => {
-          expect(createPost).toBeCalled();
-          expect(clearStates).toBeCalled();
-          expect(navigate).toBeCalledWith('/posts/list');
+          expect(navigate).toBeCalledWith('/posts/list', {
+            state: {
+              postStatus: 'created',
+            },
+          });
+        });
+      });
+    });
+
+    context('뒤로가기 버튼을 누르고, 동작 수행 재확인 Modal에서 예 버튼을 눌렀을 경우', () => {
+      beforeEach(() => {
+        ReactModal.setAppElement('*');
+      });
+
+      context('이전에 접속했었던 화면의 경로가 존재할 경우', () => {
+        const previousPath = '/posts/3';
+        beforeEach(() => {
+          location = {
+            state: {
+              previousPath,
+            },
+          };
+
+          jest.clearAllMocks();
+        });
+
+        it('접속하기 이전의 주소로 navigate', async () => {
+          renderPostFormPage();
+
+          fireEvent.click(screen.getByText('뒤로가기'));
+          screen.getByText('정말로 게시글 작성을 중단하시겠습니까?');
+          fireEvent.click(screen.getByText('예'));
+          await waitFor(() => {
+            expect(navigate).toBeCalledWith(previousPath);
+          });
+        });
+      });
+
+      context('주소로 직접 접근했었을 경우', () => {
+        beforeEach(() => {
+          location = {
+            state: null,
+          };
+
+          jest.clearAllMocks();
+        });
+
+        it('홈 화면 주소로 navigate', async () => {
+          renderPostFormPage();
+
+          fireEvent.click(screen.getByText('뒤로가기'));
+          screen.getByText('정말로 게시글 작성을 중단하시겠습니까?');
+          fireEvent.click(screen.getByText('예'));
+          await waitFor(() => {
+            expect(navigate).toBeCalledWith('/');
+          });
         });
       });
     });

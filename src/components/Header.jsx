@@ -69,17 +69,22 @@ export default function Header() {
   const userStore = useUserStore();
   const noticeStore = useNoticeStore();
 
-  const { unreadNoticeCount } = noticeStore;
-  const { name } = userStore;
-
   useEffect(() => {
     if (accessToken) {
       userApiService.setAccessToken(accessToken);
       noticeApiService.setAccessToken(accessToken);
       userStore.fetchUserName();
-      noticeStore.fetchUnreadNoticeCount();
     }
   }, [accessToken]);
+
+  useEffect(() => {
+    if (accessToken) {
+      noticeStore.fetchUnreadNoticeCount();
+    }
+  }, [accessToken, noticeStore.unreadNoticeCount]);
+
+  const { name } = userStore;
+  const { unreadNoticeCount } = noticeStore;
 
   const navigateNoticesPage = () => {
     navigate('/notices', {

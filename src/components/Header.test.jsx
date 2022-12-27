@@ -1,5 +1,5 @@
 import {
-  fireEvent, render, screen,
+  fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 
 import context from 'jest-plugin-context';
@@ -37,6 +37,10 @@ describe('Header', () => {
       <Header />
     ));
   }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   context('헤더 컴포넌트 확인 시', () => {
     it('애플리케이션 이름 출력', () => {
@@ -113,6 +117,23 @@ describe('Header', () => {
       });
     });
 
+    // context('읽지 않은 알림 개수에 변동이 생길 경우', () => {
+    //   beforeEach(() => {
+    //     unreadNoticeCount = 2;
+    //   });
+
+    //   it('읽지 않은 알림 개수를 fetch하는 함수를 다시 호출', async () => {
+    //     renderHeader();
+
+    //     expect(fetchUnreadNoticeCount).toBeCalledTimes(1);
+
+    //     unreadNoticeCount -= 1;
+    //     await waitFor(() => {
+    //       expect(fetchUnreadNoticeCount).toBeCalledTimes(2);
+    //     });
+    //   });
+    // });
+
     context('알림 목록 확인으로 이동 버튼을 누를 경우', () => {
       it('알림 목록 확인 페이지로 이동하는 navigate 함수 호출', () => {
         renderHeader();
@@ -132,6 +153,7 @@ describe('Header', () => {
       screen.getByText('마이페이지');
     });
 
+    // TODO: 마이페이지 기능 추가 시 마이페이지 페이지로 navigate 호출 테스트
     context('마이페이지 이동 버튼을 누를 경우', () => {
       it('아무것도 하지 않음', () => {
         renderHeader();

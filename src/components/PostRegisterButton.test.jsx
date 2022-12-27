@@ -10,6 +10,7 @@ jest.mock('../hooks/useGameStore', () => () => ({
   game,
 }));
 let registerServerError;
+let changeRegisterServerError;
 const registerGame = jest.fn(() => game.id);
 const cancelRegisterGame = jest.fn();
 const cancelParticipateGame = jest.fn();
@@ -18,6 +19,7 @@ jest.mock('../hooks/useRegisterStore', () => () => ({
   cancelRegisterGame,
   cancelParticipateGame,
   registerServerError,
+  changeRegisterServerError,
 }));
 
 describe('PostRegisterButton', () => {
@@ -91,6 +93,19 @@ describe('PostRegisterButton', () => {
       screen.getByText('신청 취소하기');
     });
 
+    context('서버로부터 전달된 에러 메시지가 존재하는 경우', () => {
+      beforeEach(() => {
+        changeRegisterServerError = '신청 상태가 접속한 사용자의 신청 상태가 아닙니다.';
+      });
+
+      it('신청 취소 버튼 옆에 에러 메시지를 같이 출력', () => {
+        renderPostRegisterButton();
+
+        screen.getByText('신청 취소하기');
+        screen.getByText('신청 상태가 접속한 사용자의 신청 상태가 아닙니다.');
+      });
+    });
+
     context('신청 취소 버튼을 클릭하면', () => {
       it('운동 참가 신청 취소를 확인하는 Modal 출력, Modal에서 예 버튼을 누르면 '
         + '참가 신청을 취소하는 함수를 호출하고, 게시글 상세 정보 상태 갱신 함수를 호출한 뒤 '
@@ -122,6 +137,19 @@ describe('PostRegisterButton', () => {
       renderPostRegisterButton();
 
       screen.getByText('참가 취소하기');
+    });
+
+    context('서버로부터 전달된 에러 메시지가 존재하는 경우', () => {
+      beforeEach(() => {
+        changeRegisterServerError = '등록된 신청 상태를 찾을 수 없습니다.';
+      });
+
+      it('참가 취소 버튼 옆에 에러 메시지를 같이 출력', () => {
+        renderPostRegisterButton();
+
+        screen.getByText('참가 취소하기');
+        screen.getByText('등록된 신청 상태를 찾을 수 없습니다.');
+      });
     });
 
     context('신청 버튼을 클릭하면', () => {

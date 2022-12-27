@@ -38,8 +38,7 @@ export default function NoticeSettings() {
 
   const {
     selectNoticeMode,
-    showAllNoticesMode,
-    showUnreadNoticesMode,
+    noticeStateToShow,
   } = noticeStore;
 
   const handleClickSelectNoticeMode = () => {
@@ -47,14 +46,14 @@ export default function NoticeSettings() {
   };
 
   const handleClickShowAll = async () => {
-    if (showAllNoticesMode) {
+    if (noticeStateToShow === 'all') {
       return;
     }
     await noticeStore.showAll();
   };
 
   const handleClickShowUnreadOnly = async () => {
-    if (showUnreadNoticesMode) {
+    if (noticeStateToShow === 'unread') {
       return;
     }
     await noticeStore.showUnreadOnly();
@@ -71,14 +70,14 @@ export default function NoticeSettings() {
       </ToggleButton>
       <ToggleButton
         type="button"
-        selected={showAllNoticesMode}
+        selected={noticeStateToShow === 'all'}
         onClick={handleClickShowAll}
       >
         모든 알림 확인
       </ToggleButton>
       <ToggleButton
         type="button"
-        selected={showUnreadNoticesMode}
+        selected={noticeStateToShow === 'unread'}
         onClick={handleClickShowUnreadOnly}
       >
         읽지 않은 알림만 확인

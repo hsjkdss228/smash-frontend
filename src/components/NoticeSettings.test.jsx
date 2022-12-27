@@ -3,15 +3,13 @@ import context from 'jest-plugin-context';
 import NoticeSettings from './NoticeSettings';
 
 let selectNoticeMode;
-let showAllNoticesMode;
-let showUnreadNoticesMode;
+let noticeStateToShow;
 const toggleSelectNoticeMode = jest.fn();
 const showAll = jest.fn();
 const showUnreadOnly = jest.fn();
 jest.mock('../hooks/useNoticeStore', () => () => ({
   selectNoticeMode,
-  showAllNoticesMode,
-  showUnreadNoticesMode,
+  noticeStateToShow,
   toggleSelectNoticeMode,
   showAll,
   showUnreadOnly,
@@ -27,8 +25,7 @@ describe('NoticeSettings', () => {
   context('알림 선택 기능 활성화 및 조회할 알림 종류 선택 컴포넌트는', () => {
     beforeEach(() => {
       selectNoticeMode = false;
-      showAllNoticesMode = true;
-      showUnreadNoticesMode = false;
+      noticeStateToShow = 'all';
     });
 
     it('알림 선택, 모든 알림 확인, 읽지 않은 알림만 확인 버튼으로 구성됨', () => {
@@ -43,8 +40,7 @@ describe('NoticeSettings', () => {
   context('알림 선택 모드 활성화 버튼을 클릭하는 경우', () => {
     beforeEach(() => {
       selectNoticeMode = true;
-      showAllNoticesMode = true;
-      showUnreadNoticesMode = false;
+      noticeStateToShow = 'all';
     });
 
     it('알림 선택 모드 상태를 변경하는 함수 호출', () => {
@@ -60,8 +56,7 @@ describe('NoticeSettings', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         selectNoticeMode = true;
-        showAllNoticesMode = false;
-        showUnreadNoticesMode = true;
+        noticeStateToShow = 'unread';
       });
 
       it('모든 알림 확인 모드를 활성화하는 함수 호출', () => {
@@ -76,8 +71,7 @@ describe('NoticeSettings', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         selectNoticeMode = false;
-        showAllNoticesMode = true;
-        showUnreadNoticesMode = false;
+        noticeStateToShow = 'all';
       });
 
       it('아무런 동작도 하지 않음', () => {
@@ -94,8 +88,7 @@ describe('NoticeSettings', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         selectNoticeMode = false;
-        showAllNoticesMode = true;
-        showUnreadNoticesMode = false;
+        noticeStateToShow = 'all';
       });
 
       it('읽지 않은 알림 확인 모드를 활성화하는 함수 호출', () => {
@@ -110,8 +103,7 @@ describe('NoticeSettings', () => {
       beforeEach(() => {
         jest.clearAllMocks();
         selectNoticeMode = false;
-        showAllNoticesMode = false;
-        showUnreadNoticesMode = true;
+        noticeStateToShow = 'unread';
       });
 
       it('아무런 동작도 하지 않음', () => {

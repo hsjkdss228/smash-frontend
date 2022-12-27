@@ -15,8 +15,7 @@ export default class PlaceStore extends Store {
       this.place = data;
       this.publish();
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.placeServerError = errorMessage;
+      this.placeServerError = error.response.data;
       this.publish();
     }
   }

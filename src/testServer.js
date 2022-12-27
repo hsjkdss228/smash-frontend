@@ -21,6 +21,7 @@ const testServer = setupServer(
             {
               id: 1,
               hits: 334,
+              thumbnailImageUrl: 'image url 1',
               isAuthor: false,
               game: {
                 id: 1,
@@ -38,6 +39,7 @@ const testServer = setupServer(
             {
               id: 2,
               hits: 10,
+              thumbnailImageUrl: 'image url 2',
               isAuthor: false,
               game: {
                 id: 1,
@@ -49,19 +51,31 @@ const testServer = setupServer(
                 registerStatus: 'accepted',
               },
               place: {
-                name: '대전월드컵경기장',
+                name: '농구장',
               },
             },
           ],
         }));
       }
 
-      if (accessToken === 'userId 4') {
+      if (accessToken === 'userId 4 where UserNotFound error occurs') {
         return response(
           context.status(400),
-          context.json({
-            errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
-          }),
+          context.json('User Not Found'),
+        );
+      }
+
+      if (accessToken === 'userId 10 where GameNotFound error occurs') {
+        return response(
+          context.status(400),
+          context.json('Game Not Found'),
+        );
+      }
+
+      if (accessToken === 'userId 99 where PlaceNotFound error occurs') {
+        return response(
+          context.status(400),
+          context.json('Place Not Found'),
         );
       }
 
@@ -69,80 +83,57 @@ const testServer = setupServer(
     },
   ),
 
-  // registerToGame
-  rest.post(
-    `${apiBaseUrl}/registers/games/:gameId`,
+  // fetchPost
+  rest.get(
+    `${apiBaseUrl}/posts/:postId`,
     async (request, response, context) => {
       const accessToken = await request.headers.get('Authorization')
         .substring('bearer '.length);
-      const { gameId } = await request.params;
+      const { postId } = await request.params;
 
-      if (gameId === '1' && accessToken === 'userId 1') {
-        return response(context.json({
-          gameId: 1,
-        }));
-      }
-
-      if (gameId === '100' && accessToken === 'userId 1') {
+      const normalPostId = '1';
+      if (postId === normalPostId && accessToken === 'userId 1') {
         return response(
-          context.status(400),
+          context.status(200),
           context.json({
-            errorCode: 100,
-            errorMessage: '주어진 게임 번호에 해당하는 게임을 찾을 수 없습니다.',
-            gameId: null,
+            id: 1,
+            hits: 223,
+            authorInformation: {
+              id: 1,
+              name: '작성자',
+              gender: '남성',
+              phoneNumber: '010-1111-2222',
+              profileImageUrl: 'image url 1',
+              mannerScore: 9.5,
+            },
+            detail: '탁구 비는 인원 모집',
+            imageUrls: [
+              'image url 1',
+              'image url 2',
+            ],
+            isAuthor: true,
           }),
         );
       }
 
-      if (gameId === '1' && accessToken === 'already registered userId 2') {
+      const wrongPostId = '9999';
+      if (postId === wrongPostId) {
         return response(
-          context.status(400),
-          context.json({
-            errorCode: 101,
-            errorMessage: '이미 신청 중이거나 신청이 완료된 운동입니다.',
-            gameId: null,
-          }),
+          context.status(404),
+          context.json('Post Not Found'),
         );
       }
 
-      if (gameId === '1' && accessToken === 'not existed userId 3') {
+      if (accessToken === 'userId 22 where UserNotFound error occurs') {
         return response(
-          context.status(400),
-          context.json({
-            errorCode: 102,
-            errorMessage: '주어진 사용자 번호에 해당하는 사용자를 찾을 수 없습니다.',
-            gameId: null,
-          }),
+          context.status(404),
+          context.json('User Not Found'),
         );
       }
 
-      if (gameId === '1' && accessToken === 'fully participated userId 3') {
-        return response(
-          context.status(400),
-          context.json({
-            errorCode: 103,
-            errorMessage: '참가 정원이 모두 차 참가를 신청할 수 없습니다.',
-            gameId: 1,
-          }),
-        );
-      }
-
-      return response(context.status(400));
-    },
-  ),
-
-  // cancelParticipateGame
-  rest.patch(
-    `${apiBaseUrl}/registers/games/:gameId`,
-    async (request, response, context) => {
-      const accessToken = await request.headers.get('Authorization');
-      const { gameId } = await request.params;
-
-      if (gameId === '1' && accessToken) {
-        return response(context.status(204));
-      }
-
-      return response(context.status(400));
+      return response(
+        context.status(400),
+      );
     },
   ),
 
@@ -206,34 +197,6 @@ const testServer = setupServer(
     },
   ),
 
-  // fetchPost
-  rest.get(
-    `${apiBaseUrl}/posts/:postId`,
-    async (request, response, context) => {
-      const accessToken = await request.headers.get('Authorization')
-        .substring('bearer '.length);
-      const { postId } = await request.params;
-
-      if (postId === '1' && accessToken === 'userId 1') {
-        return response(
-          context.status(200),
-          context.json({
-            id: 1,
-            hits: 223,
-            authorName: '작성자',
-            authorPhoneNumber: '010-1111-2222',
-            detail: '점심먹고 가볍게 탁구하실분?',
-            isAuthor: true,
-          }),
-        );
-      }
-
-      return response(
-        context.status(400),
-      );
-    },
-  ),
-
   // fetchGame
   rest.get(
     `${apiBaseUrl}/games/posts/:postId`,
@@ -249,12 +212,26 @@ const testServer = setupServer(
             id: 1,
             placeId: 1,
             type: '탁구',
-            date: '2022년 10월 19일 12:30~13:30',
+            date: '2022년 10월 19일 12:30 ~ 13:30',
             currentMemberCount: 2,
             targetMemberCount: 4,
             registerId: -1,
             registerStatus: 'none',
           }),
+        );
+      }
+
+      if (accessToken === 'Wrong Access Token') {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
+        );
+      }
+
+      if (postId === '444') {
+        return response(
+          context.status(404),
+          context.json('Game Not Found'),
         );
       }
 
@@ -268,11 +245,9 @@ const testServer = setupServer(
   rest.get(
     `${apiBaseUrl}/places/:placeId`,
     async (request, response, context) => {
-      const accessToken = await request.headers.get('Authorization')
-        .substring('bearer '.length);
       const { placeId } = await request.params;
 
-      if (placeId === '1' && accessToken === 'userId 1') {
+      if (placeId === '1') {
         return response(
           context.status(200),
           context.json({
@@ -282,6 +257,13 @@ const testServer = setupServer(
             address: '주소지',
             contactNumber: '02-0000-0000',
           }),
+        );
+      }
+
+      if (placeId === '4444') {
+        return response(
+          context.status(404),
+          context.json('Place Not Found'),
         );
       }
 
@@ -303,19 +285,36 @@ const testServer = setupServer(
           context.json({
             members: [
               {
-                id: 1,
-                name: '작성자',
-                gender: '남성',
-                phoneNumber: '010-1111-2222',
+                registerId: 1,
+                userInformation: {
+                  id: 1,
+                  name: '작성자',
+                  gender: '남성',
+                  phoneNumber: '010-1111-2222',
+                  profileImageUrl: 'Image Url 1',
+                  mannerScore: 10.0,
+                },
               },
               {
-                id: 2,
-                name: '사용자 2',
-                gender: '여성',
-                phoneNumber: '010-9999-9999',
+                registerId: 2,
+                userInformation: {
+                  id: 2,
+                  name: '사용자 2',
+                  gender: '여성',
+                  phoneNumber: '010-9999-9999',
+                  profileImageUrl: 'Image Url 2',
+                  mannerScore: 0.1,
+                },
               },
             ],
           }),
+        );
+      }
+
+      if (gameId === '444') {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
         );
       }
 
@@ -337,19 +336,36 @@ const testServer = setupServer(
           context.json({
             applicants: [
               {
-                id: 1,
-                name: '신청자 1',
-                gender: '여성',
-                phoneNumber: '010-1357-1357',
+                registerId: 3,
+                userInformation: {
+                  id: 3,
+                  name: '신청자 1',
+                  gender: '여성',
+                  phoneNumber: '010-1357-1357',
+                  profileImageUrl: 'Image Url 3',
+                  mannerScore: 5.0,
+                },
               },
               {
-                id: 2,
-                name: '신청자 2',
-                gender: '남성',
-                phoneNumber: '010-2468-2468',
+                registerId: 4,
+                userInformation: {
+                  id: 4,
+                  name: '신청자 2',
+                  gender: '남성',
+                  phoneNumber: '010-2468-2468',
+                  profileImageUrl: 'Image Url 4',
+                  mannerScore: 6.9,
+                },
               },
             ],
           }),
+        );
+      }
+
+      if (gameId === '666') {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
         );
       }
 
@@ -359,27 +375,151 @@ const testServer = setupServer(
     },
   ),
 
+  // registerGame
+  rest.post(
+    `${apiBaseUrl}/registers/games/:gameId`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+      const { gameId } = await request.params;
+
+      const normalGameId = '1';
+      if (gameId === normalGameId && accessToken === 'userId 1') {
+        return response(
+          context.status(201),
+          context.json({
+            gameId: 1,
+          }),
+        );
+      }
+
+      if (accessToken === 'wrong userId 4444') {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
+        );
+      }
+
+      const notExistingGameId = '6646';
+      if (gameId === notExistingGameId) {
+        return response(
+          context.status(404),
+          context.json('Game Not Found'),
+        );
+      }
+
+      const alreadyJoinedGameId = '123';
+      if (gameId === alreadyJoinedGameId) {
+        return response(
+          context.status(400),
+          context.json('Already Joined Game'),
+        );
+      }
+
+      const alreadyFullGameId = '987';
+      if (gameId === alreadyFullGameId) {
+        return response(
+          context.status(400),
+          context.json('Game Is Full'),
+        );
+      }
+
+      const gameIdWithoutPost = '7272';
+      if (gameId === gameIdWithoutPost) {
+        return response(
+          context.status(404),
+          context.json('Post Not Found'),
+        );
+      }
+
+      return response(context.status(400));
+    },
+  ),
+
+  // cancelParticipateGame
+  rest.patch(
+    `${apiBaseUrl}/registers/games/:gameId`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization');
+      const { gameId } = await request.params;
+
+      if (gameId === '1' && accessToken) {
+        return response(context.status(204));
+      }
+
+      return response(context.status(400));
+    },
+  ),
+
   // change register state methods
   rest.patch(
     `${apiBaseUrl}/registers/:registerId`,
     async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
       const { registerId } = await request.params;
       const status = await request.url.searchParams.get('status');
 
-      if (registerId === '2') {
+      const normalRegisterId = '1';
+
+      if (accessToken === 'userId 1'
+        && registerId === normalRegisterId
+        && (status === 'canceled'
+        || status === 'accepted'
+        || status === 'rejected')) {
         return response(
-          context.status(400),
-          context.json(
-            '정원이 가득 차 있어 운동 참가 신청을 수락할 수 없습니다.',
-          ),
+          context.status(204),
         );
       }
 
-      if (status === 'canceled'
-        || status === 'accepted'
-        || status === 'rejected') {
+      const notExistingRegisterId = '4455';
+      if (accessToken === 'userId 1'
+        && (status === 'canceled'
+          || status === 'accepted'
+          || status === 'rejected')
+        && registerId === notExistingRegisterId) {
         return response(
-          context.status(204),
+          context.status(404),
+          context.json('Register Not Found'),
+        );
+      }
+
+      if (accessToken === 'userId 4444'
+        && status === 'canceled'
+        && registerId === normalRegisterId) {
+        return response(
+          context.status(400),
+          context.json('Is Not Register Of Current User'),
+        );
+      }
+
+      const registerIdWithoutGame = '273';
+      if (accessToken === 'userId 1'
+        && status === 'accepted'
+        && registerId === registerIdWithoutGame) {
+        return response(
+          context.status(404),
+          context.json('Game Not Found'),
+        );
+      }
+
+      const registerIdWithAlreadyFullGame = '555';
+      if (accessToken === 'userId 1'
+        && status === 'accepted'
+        && registerId === registerIdWithAlreadyFullGame) {
+        return response(
+          context.status(400),
+          context.json('Game Is Full'),
+        );
+      }
+
+      const registerIdWithoutUser = '2580';
+      if (accessToken === 'userId 1'
+        && status === 'accepted'
+        && registerId === registerIdWithoutUser) {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
         );
       }
 
@@ -394,38 +534,38 @@ const testServer = setupServer(
     `${apiBaseUrl}/posts`,
     async (request, response, context) => {
       const {
-        gameExercise,
-        gameDate,
-        gameStartTimeAmPm,
-        gameStartHour,
-        gameStartMinute,
-        gameEndTimeAmPm,
-        gameEndHour,
-        gameEndMinute,
-        gamePlace,
-        gameTargetMemberCount,
-        postDetail,
+        post,
+        game,
+        exercise,
+        place,
       } = await request.json();
       const accessToken = await request.headers.get('Authorization')
         .substring('bearer '.length);
 
-      if (gameExercise === '스케이트'
-        && gameDate === new Date('2022-12-31T00:00:00.000Z').toISOString()
-        && gameStartTimeAmPm === 'am'
-        && gameStartHour === '10'
-        && gameStartMinute === '00'
-        && gameEndTimeAmPm === 'pm'
-        && gameEndHour === '04'
-        && gameEndMinute === '30'
-        && gamePlace === '롯데월드 아이스링크'
-        && gameTargetMemberCount === '12'
-        && postDetail === '스케이트 입문자 모집!'
+      if (exercise.name === '스케이트'
+        && game.date === new Date('2022-12-31T00:00:00.000Z').toISOString()
+        && game.startTimeAmPm === 'am'
+        && game.startHour === '10'
+        && game.startMinute === '00'
+        && game.endTimeAmPm === 'pm'
+        && game.endHour === '04'
+        && game.endMinute === '30'
+        && place.name === '롯데월드 아이스링크'
+        && game.targetMemberCount === '12'
+        && post.detail === '스케이트 입문자 모집!'
         && accessToken === 'userId 1') {
         return response(
           context.status(201),
           context.json({
             postId: 1,
           }),
+        );
+      }
+
+      if (place.name === '서버 에러가 발생하는 장소 이름') {
+        return response(
+          context.status(400),
+          context.json('Place Not Found'),
         );
       }
 
@@ -443,9 +583,33 @@ const testServer = setupServer(
       const accessToken = await request.headers.get('Authorization')
         .substring('bearer '.length);
 
-      if (postId === '1' && accessToken === 'userId 1') {
+      const normalPostId = '1';
+      if (postId === normalPostId && accessToken === 'userId 1') {
         return response(
           context.status(204),
+        );
+      }
+
+      const wrongPostId = '9999';
+      if (postId === wrongPostId) {
+        return response(
+          context.status(404),
+          context.json('Post Not Found'),
+        );
+      }
+
+      if (accessToken === 'another userId 122') {
+        return response(
+          context.status(400),
+          context.json('User Is Not Author'),
+        );
+      }
+
+      const postIdWhereGameNotFound = '7876';
+      if (postId === postIdWhereGameNotFound) {
+        return response(
+          context.status(404),
+          context.json('Game Not Found'),
         );
       }
 
@@ -487,6 +651,13 @@ const testServer = setupServer(
         );
       }
 
+      if (accessToken === 'Wrong Access Token') {
+        return response(
+          context.status(400),
+          context.json('Authentication Error'),
+        );
+      }
+
       return response(
         context.status(400),
       );
@@ -509,43 +680,131 @@ const testServer = setupServer(
         context.status(400),
       );
     },
+  ),
 
-    // TODO: fetchUserName 테스트 코드 추가 필요 (Store, Component)
+  // readSelectedNotices
+  // deleteSelectedNotices
+  rest.patch(
+    `${apiBaseUrl}/notices`,
+    async (request, response, context) => {
+      // const { ids } = await request.json();
+      const status = await request.url.searchParams.get('status');
 
-    // TODO: 안 짠 테스트가 많다... 많나...?
+      if (status === 'read') {
+        return response(
+          context.status(204),
+        );
+      }
 
-    // signUp
-    rest.post(
-      `${apiBaseUrl}/users`,
-      async (request, response, context) => {
-        const {
-          name,
-          username,
-          password,
-          confirmPassword,
-          gender,
-          phoneNumber,
-        } = await request.json();
+      if (status === 'deleted') {
+        return response(
+          context.status(204),
+        );
+      }
 
-        if (name === '황인우'
-        && username === 'hsjkdss228'
-        && password === 'Password!1'
-        && confirmPassword === 'Password!1'
-        && gender === '남성'
-        && phoneNumber === '01012345678') {
-          return response(
-            context.status(201),
-            context.json({
-              enrolledName: '황인우',
-            }),
-          );
-        }
+      return response(
+        context.status(400),
+      );
+    },
+  ),
 
+  // fetchUnreadNoticeCount
+  rest.get(
+    `${apiBaseUrl}/notice-count`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+
+      if (accessToken === 'userId 1') {
+        return response(
+          context.status(200),
+          context.json({
+            count: 1,
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // fetchUserName
+  rest.get(
+    `${apiBaseUrl}/users/me`,
+    async (request, response, context) => {
+      const accessToken = await request.headers.get('Authorization')
+        .substring('bearer '.length);
+
+      if (accessToken === 'userId 1') {
+        return response(
+          context.status(200),
+          context.json({
+            name: '황인우',
+          }),
+        );
+      }
+
+      if (accessToken === 'not existing userId 333') {
+        return response(
+          context.status(404),
+          context.json('User Not Found'),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
+  // signUp
+  rest.post(
+    `${apiBaseUrl}/users`,
+    async (request, response, context) => {
+      const {
+        name,
+        username,
+        password,
+        confirmPassword,
+        gender,
+        phoneNumber,
+      } = await request.json();
+
+      if (name === '황인우'
+          && username === 'hsjkdss228'
+          && password === 'Password!1'
+          && confirmPassword === 'Password!1'
+          && gender === '남성'
+          && phoneNumber === '01012345678') {
+        return response(
+          context.status(201),
+          context.json({
+            enrolledName: '황인우',
+          }),
+        );
+      }
+
+      if (username === 'alreadyregisteredid12') {
         return response(
           context.status(400),
+          context.json('이미 등록된 아이디입니다.'),
         );
-      },
-    ),
+      }
+
+      if (password === 'Password!1'
+        && confirmPassword === 'wrongPassword!1') {
+        return response(
+          context.status(400),
+          context.json('비밀번호 확인이 일치하지 않습니다.'),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
   ),
 );
 

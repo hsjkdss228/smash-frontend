@@ -4,7 +4,7 @@ import NoticeList from './NoticeList';
 
 let noticesAll;
 let noticesUnread;
-let noticeStateToShown;
+let noticeStateToShow;
 let selectNoticeMode;
 let selectedNotices;
 let isOpenedNotice;
@@ -13,7 +13,7 @@ const closeSelectNoticeMode = jest.fn();
 jest.mock('../hooks/useNoticeStore', () => () => ({
   noticesAll,
   noticesUnread,
-  noticeStateToShown,
+  noticeStateToShow,
   selectNoticeMode,
   selectedNotices,
   isOpenedNotice,
@@ -87,7 +87,7 @@ describe('NoticeList', () => {
 
     context('알림 목록이 존재하고 모든 알림을 조회하는 경우', () => {
       beforeEach(() => {
-        noticeStateToShown = 'all';
+        noticeStateToShow = 'all';
       });
 
       it('모든 알림 목록을 출력', () => {
@@ -125,7 +125,7 @@ describe('NoticeList', () => {
 
     context('읽지 않은 알림 목록이 존재하고 읽지 않은 알림만 조회하는 경우', () => {
       beforeEach(() => {
-        noticeStateToShown = 'unread';
+        noticeStateToShow = 'unread';
         selectedNotices = [false];
         isOpenedNotice = [false];
       });
@@ -174,7 +174,7 @@ describe('NoticeList', () => {
           detail: '알림 상세 내용 1',
         },
       ];
-      noticeStateToShown = 'all';
+      noticeStateToShow = 'all';
       selectNoticeMode = true;
       selectedNotices = [false];
       isOpenedNotice = [false];

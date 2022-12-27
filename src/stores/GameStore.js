@@ -15,8 +15,7 @@ export default class GameStore extends Store {
       this.game = data;
       return this.game.id;
     } catch (error) {
-      const { errorMessage } = error.response.data;
-      this.gameServerError = errorMessage;
+      this.gameServerError = error.response.data;
       return '';
     }
   }

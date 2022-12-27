@@ -22,8 +22,7 @@ export default function PostPage() {
     });
   };
 
-  // TODO: 체험 계정 선택하기 페이지로 이동시키기
-
+  // TODO: 체험 계정 선택하기는 체험 계정 선택하기 페이지로 이동해야 함
   const navigateSelectTrialAccount = () => {
     navigate('/login', {
       state: {
