@@ -85,6 +85,20 @@ describe('NoticeStore', () => {
 
   context('서버에 알림 목록을 요청할 경우', () => {
     context('정상적인 Access Token으로 요청할 경우', () => {
+      context('서버에서 응답으로 전달된 에러 메시지가 있었을 경우', () => {
+        beforeEach(() => {
+          noticeStore.serverError = 'Authentication Error';
+        });
+
+        it('에러 메시지를 비우고 요청을 시도', async () => {
+          expect(noticeStore.serverError).toBeTruthy();
+
+          await noticeStore.fetchNotices();
+
+          expect(noticeStore.serverError).toBeFalsy();
+        });
+      });
+
       it('응답으로 전달받은 알림 목록을 이용해 전체 알림 목록 배열과 읽지 않은 알림 목록 배열을 생성해 상태로 저장, '
       + '상세 정보를 조회 중인 알림 상태 배열과 알림 선택 상태 배열은 초기화', async () => {
         await noticeStore.fetchNotices();

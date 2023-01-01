@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "smash",
     "scripts": {
+        "build": "parcel build index.html --public-url ./",
         "start": "parcel index.html --port 9999",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx",
         "test": "jest",

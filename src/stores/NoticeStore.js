@@ -62,6 +62,8 @@ export default class NoticeStore extends Store {
 
   async fetchNotices() {
     try {
+      this.serverError = '';
+
       const data = await noticeApiService.fetchNotices();
       this.noticesAll = data.notices;
       this.noticesUnread = this.noticesAll
