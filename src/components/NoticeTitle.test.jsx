@@ -34,6 +34,7 @@ describe('NoticeTitle', () => {
 
   const notice = {
     id: 1,
+    status: 'read',
     createdAt: '2022-12-17T05:03:21.783Z',
     title: '알림 제목',
     detail: '알림 상세 내용',
@@ -50,7 +51,7 @@ describe('NoticeTitle', () => {
       isDetailOpened = false;
     });
 
-    it('알림 생성 시각과 알림 제목을 출력', () => {
+    it('알림 생성 시각과 알림 제목, 알림 조회 상태를 출력', () => {
       renderNoticeTitle({
         notice,
         index,
@@ -62,6 +63,42 @@ describe('NoticeTitle', () => {
       screen.getByText('2022-12-17 05:03:21');
       screen.getByText('알림 제목');
       expect(screen.queryByText('알림 상세 내용')).toBe(null);
+    });
+
+    context('알림이 읽지 않은 상태인 경우', () => {
+      beforeEach(() => {
+        notice.status = 'unread';
+      });
+
+      it('읽지 않은 상태임을 출력', () => {
+        renderNoticeTitle({
+          notice,
+          index,
+          selectNoticeMode,
+          isSelected,
+          isDetailOpened,
+        });
+
+        screen.getByText('읽지 않음');
+      });
+    });
+
+    context('알림이 읽은 상태인 경우', () => {
+      beforeEach(() => {
+        notice.status = 'read';
+      });
+
+      it('읽은 상태임을 출력', () => {
+        renderNoticeTitle({
+          notice,
+          index,
+          selectNoticeMode,
+          isSelected,
+          isDetailOpened,
+        });
+
+        screen.getByText('읽음');
+      });
     });
 
     context('해당 알림 제목을 클릭하면', () => {

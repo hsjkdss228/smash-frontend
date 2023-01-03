@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -24,9 +25,11 @@ export default function NoticesPage() {
     navigate('/login');
   };
 
-  if (!loggedIn) {
-    navigateLogin();
-  }
+  useEffect(() => {
+    if (!loggedIn) {
+      navigateLogin();
+    }
+  }, []);
 
   return (
     <Notices

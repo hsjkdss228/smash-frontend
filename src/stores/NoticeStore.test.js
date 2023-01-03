@@ -259,13 +259,20 @@ describe('NoticeStore', () => {
     });
 
     context('해당 알림이 읽지 않은 상태였다면', () => {
-      it('서버에 해당 알림의 상태를 읽은 상태로 변경할 것을 요청한 뒤, '
+      it('서버에서 해당 알림의 상태를 읽은 상태로 변경할 것을 요청한 뒤, '
+        + '상태로 관리하는 해당 알림의 상태도 직접 읽은 상태로 변경, 이후 '
         + '서버에 읽지 않은 알림 개수를 다시 요청', async () => {
         const targetId = 1;
         await noticeStore.readNotice(targetId);
 
         await waitFor(() => {
           expect(spyReadNotice).toBeCalledWith(targetId);
+
+          const targetNotice = noticeStore
+            .chooseArrayForSelectionByStateToShow()
+            .find((notice) => notice.id === targetId);
+          expect(targetNotice.status).toBe('read');
+
           expect(spyFetchUnreadNoticeCount).toBeCalled();
         });
       });

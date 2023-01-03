@@ -63,6 +63,7 @@ export default function NoticeList() {
           {notices.map((notice, index) => (
             <Notice key={notice.id}>
               <NoticeTitle
+                id="notice"
                 notice={notice}
                 index={index}
                 selectNoticeMode={selectNoticeMode}

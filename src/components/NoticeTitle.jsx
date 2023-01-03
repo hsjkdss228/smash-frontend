@@ -19,10 +19,20 @@ const NoticeTitleButton = styled.button`
   flex-direction: column;
 `;
 
+const CreatedAtAndStatus = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const CreatedAt = styled.p`
   font-weight: bold;
   text-align: left;
+  margin-right: 2em;
   margin-bottom: .2em;
+`;
+
+const Status = styled.p`
+  font-size: .8em;
 `;
 
 const TitleText = styled.p`
@@ -77,11 +87,22 @@ export default function NoticeTitle({
         })}
       >
         {/* TODO: 시간 출력 내용은 백엔드에서 처리되어야 함 */}
-        <CreatedAt>
-          {(`${notice.createdAt.split('T')[0]} ${
-            notice.createdAt.split('T')[1].split('.')[0]
-          }`)}
-        </CreatedAt>
+        <CreatedAtAndStatus>
+          <CreatedAt>
+            {(`${notice.createdAt.split('T')[0]} ${
+              notice.createdAt.split('T')[1].split('.')[0]
+            }`)}
+          </CreatedAt>
+          <Status
+            className={notice.status === 'unread'
+              ? 'notice-status-unread'
+              : 'notice-status-read'}
+          >
+            {notice.status === 'unread'
+              ? '읽지 않음'
+              : '읽음'}
+          </Status>
+        </CreatedAtAndStatus>
         <TitleText>
           {notice.title}
         </TitleText>

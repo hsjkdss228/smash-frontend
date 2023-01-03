@@ -43,7 +43,7 @@ describe('LoginForm', () => {
       screen.getByText('SMASH');
       screen.getByText('아이디');
       screen.getByText('비밀번호');
-      screen.getByText('로그인');
+      screen.getByText('LOGIN');
       screen.getByText('회원가입');
     });
 
@@ -91,7 +91,7 @@ describe('LoginForm', () => {
           fireEvent.change(screen.getByLabelText('비밀번호'), {
             target: { value: password },
           });
-          fireEvent.submit(screen.getByText('로그인'));
+          fireEvent.submit(screen.getByText('LOGIN'));
 
           await waitFor(() => {
             expect(login).toBeCalledWith({ username, password });
@@ -114,7 +114,7 @@ describe('LoginForm', () => {
           fireEvent.change(screen.getByLabelText('아이디'), {
             target: { value: username },
           });
-          fireEvent.submit(screen.getByText('로그인'));
+          fireEvent.submit(screen.getByText('LOGIN'));
 
           await waitFor(() => {
             expect(login).not.toBeCalled();
@@ -143,7 +143,7 @@ describe('LoginForm', () => {
           fireEvent.change(screen.getByLabelText('비밀번호'), {
             target: { value: password },
           });
-          fireEvent.submit(screen.getByText('로그인'));
+          fireEvent.submit(screen.getByText('LOGIN'));
 
           await waitFor(() => {
             expect(login).toBeCalledWith({ username, password });

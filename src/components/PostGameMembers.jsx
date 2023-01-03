@@ -125,7 +125,10 @@ export default function PostGameMembers() {
       </Title>
       <ul>
         {members.map((member) => (
-          <Member key={member.registerId}>
+          <Member
+            className="member"
+            key={member.registerId}
+          >
             <MemberProfile>
               <img
                 src={member.userInformation.profileImageUrl}

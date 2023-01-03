@@ -110,7 +110,9 @@ export default function Header() {
   const navigateLogin = () => {
     navigate('/login', {
       state: {
-        previousPath: location.pathname,
+        previousPath: location.pathname === '/login'
+          ? '/'
+          : location.pathname,
       },
     });
   };

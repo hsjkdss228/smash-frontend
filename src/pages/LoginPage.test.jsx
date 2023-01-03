@@ -60,7 +60,7 @@ describe('LoginPage', () => {
           renderLoginPage();
 
           fillInput();
-          fireEvent.click(screen.getByText('로그인'));
+          fireEvent.click(screen.getByText('LOGIN'));
 
           await waitFor(() => {
             expect(navigate).toBeCalledWith('/posts');
@@ -81,7 +81,7 @@ describe('LoginPage', () => {
           renderLoginPage();
 
           fillInput();
-          fireEvent.click(screen.getByText('로그인'));
+          fireEvent.click(screen.getByText('LOGIN'));
 
           await waitFor(() => {
             expect(navigate).toBeCalledWith('/');

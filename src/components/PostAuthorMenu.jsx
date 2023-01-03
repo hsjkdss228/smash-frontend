@@ -65,6 +65,5 @@ export default function PostAuthorMenu({
         />
       )}
     </>
-
   );
 }

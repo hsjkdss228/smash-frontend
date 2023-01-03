@@ -5,6 +5,7 @@ import Store from './Store';
 import { postApiService } from '../services/PostApiService';
 
 const timeInputCheck = /^[\d]*$/;
+const dateOffset = 1000 * 60 * 60 * 9;
 
 export default class PostFormStore extends Store {
   constructor() {
@@ -241,7 +242,7 @@ export default class PostFormStore extends Store {
         detail: this.postDetail,
       };
       const game = {
-        date: this.gameDate.toISOString(),
+        date: (new Date(this.gameDate.getTime() + dateOffset)).toISOString(),
         startTimeAmPm: this.gameStartTimeAmPm,
         startHour: this.gameStartHour,
         startMinute: this.gameStartMinute,

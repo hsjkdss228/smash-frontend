@@ -12,6 +12,7 @@ const ImageList = styled.ul`
   li {
     height: 8em;
     width: 10em;
+    margin-right: .5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,9 +40,8 @@ export default function PostImages() {
   return (
     <Container>
       <ImageList>
-        {/* TODO: 같은 url의 이미지 여러 개가 전달될 가능성이 있는가? */}
         {post.imageUrls.map((imageUrl, index) => (
-          <li key={imageUrl}>
+          <li key={`등록된 이미지 ${index + 1}`}>
             <Image
               src={imageUrl}
               alt={`등록된 이미지 ${index + 1}`}

@@ -157,7 +157,7 @@ export default function SignUpForm({
             formError={formError}
             register={register}
             name="phoneNumber"
-            requiredErrorMessage="전화번호를 입력해주세요"
+            requiredErrorMessage="전화번호를 입력해주세요."
             patternValue={/^\d{11}$/}
             patternErrorMessage="11자리 전화번호 숫자를 입력해야 합니다. (01012345678)"
             clearErrors={clearErrors}

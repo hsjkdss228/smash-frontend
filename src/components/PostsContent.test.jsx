@@ -89,7 +89,7 @@ describe('PostsContent', () => {
 
         expect(screen.queryByText('내가 쓴 글')).toBe(null);
         expect(screen.queryByText('참가 신청 중')).toBe(null);
-        expect(screen.queryByText('참가 중')).toBe(null);
+        expect(screen.queryByText('참가 예정')).toBe(null);
       });
     });
 
@@ -134,8 +134,8 @@ describe('PostsContent', () => {
         });
       });
 
-      context('참가 중인 사용자인 경우', () => {
-        it('참가 중이라는 메세지 출력', () => {
+      context('참가 예정인 사용자인 경우', () => {
+        it('참가 예정이라는 메세지 출력', () => {
           renderPostsContent({
             imageUrl,
             hits,
@@ -148,12 +148,12 @@ describe('PostsContent', () => {
             registerStatus: 'accepted',
           });
 
-          screen.getByText('참가 중');
+          screen.getByText('참가 예정');
         });
       });
 
       context('어떤 상태도 아닌 경우', () => {
-        it('참가 중이라는 메세지 출력', () => {
+        it('참가 예정이라는 메세지 출력', () => {
           renderPostsContent({
             imageUrl,
             hits,
@@ -168,7 +168,7 @@ describe('PostsContent', () => {
 
           expect(screen.queryByText('내가 쓴 글')).toBe(null);
           expect(screen.queryByText('참가 신청 중')).toBe(null);
-          expect(screen.queryByText('참가 중')).toBe(null);
+          expect(screen.queryByText('참가 예정')).toBe(null);
         });
       });
     });
