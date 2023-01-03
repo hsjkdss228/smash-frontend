@@ -169,7 +169,7 @@ export default function PostsContent({
             ) : registerStatus === 'processing' ? (
               <p>참가 신청 중</p>
             ) : registerStatus === 'accepted' ? (
-              <p>참가 중</p>
+              <p>참가 예정</p>
             ) : null
           ) : null}
         </RegisterStatus>

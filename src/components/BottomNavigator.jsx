@@ -79,6 +79,7 @@ export default function BottomNavigator() {
           홈
         </BottomNavigatorButton>
         <BottomNavigatorButton
+          id="navigate-write-button"
           type="button"
           url={location.pathname.includes('/write') ? writeButtonSelected : writeButton}
           onClick={() => navigatePage('/write')}

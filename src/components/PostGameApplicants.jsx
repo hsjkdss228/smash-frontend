@@ -149,7 +149,10 @@ export default function PostGameApplicants({
         ) : (
           <ul>
             {applicants.map((applicant) => (
-              <Applicant key={applicant.registerId}>
+              <Applicant
+                className="applicant"
+                key={applicant.registerId}
+              >
                 <ApplicantProfile>
                   <img
                     src={applicant.userInformation.profileImageUrl}
@@ -167,7 +170,9 @@ export default function PostGameApplicants({
                 </ApplicantInformation>
                 <ApplicantScoreAndSeeProfile>
                   <Score>
-                    신청자 평점
+                    평점:
+                    {' '}
+                    {applicant.userInformation.mannerScore}
                   </Score>
                   <SeeProfile>
                     프로필 확인하기
@@ -175,6 +180,7 @@ export default function PostGameApplicants({
                 </ApplicantScoreAndSeeProfile>
                 <Buttons>
                   <Button
+                    className="accept-button"
                     type="button"
                     disabled={cannotAcceptRegister}
                     onClick={() => (
@@ -184,6 +190,7 @@ export default function PostGameApplicants({
                     수락
                   </Button>
                   <Button
+                    className="reject-button"
                     type="button"
                     onClick={() => (
                       handleClickRegisterReject(applicant.registerId)

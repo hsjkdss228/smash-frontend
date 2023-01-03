@@ -24,11 +24,11 @@ const UserName = styled.div`
   }
 `;
 
-const MessageToUser = styled.div`
-  font-size: 1.25em;
-  text-align: center;
-  margin-bottom: 2em;
-`;
+// const MessageToUser = styled.div`
+//   font-size: 1.25em;
+//   text-align: center;
+//   margin-bottom: 2em;
+// `;
 
 const Buttons = styled.nav`
   button {
@@ -51,14 +51,6 @@ export default function Welcome({
             님, 반갑습니다.
           </p>
         </UserName>
-        <MessageToUser>
-          <p>
-            우리들의 스포츠 매칭 시스템 SMASH에서
-          </p>
-          <p>
-            원하는 운동을 찾고, 사람들과 함께 즐겨보아요.
-          </p>
-        </MessageToUser>
         <Buttons>
           <PrimaryButton
             type="button"

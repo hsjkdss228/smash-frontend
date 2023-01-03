@@ -26,7 +26,7 @@ const testServer = setupServer(
               game: {
                 id: 1,
                 type: '축구',
-                date: '2022년 10월 19일 13:00~16:00',
+                date: '2022년 10월 19일 오후 01:00 ~ 오후 04:00',
                 currentMemberCount: 16,
                 targetMemberCount: 22,
                 registerId: -1,
@@ -44,7 +44,7 @@ const testServer = setupServer(
               game: {
                 id: 1,
                 type: '농구',
-                date: '2022년 10월 20일 15:00~17:00',
+                date: '2022년 10월 20일 오후 03:00 ~ 오후 05:00',
                 currentMemberCount: 2,
                 targetMemberCount: 12,
                 registerId: 10,
@@ -543,7 +543,7 @@ const testServer = setupServer(
         .substring('bearer '.length);
 
       if (exercise.name === '스케이트'
-        && game.date === new Date('2022-12-31T00:00:00.000Z').toISOString()
+        && game.date === new Date('2022-12-31T09:00:00.000Z').toISOString()
         && game.startTimeAmPm === 'am'
         && game.startHour === '10'
         && game.startMinute === '00'

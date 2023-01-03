@@ -138,6 +138,7 @@ export default class NoticeStore extends Store {
       .find((notice) => notice.id === targetId);
     if (found && found.status === 'unread') {
       await noticeApiService.readNotice(found.id);
+      found.status = 'read';
       await this.fetchUnreadNoticeCount();
     }
   }

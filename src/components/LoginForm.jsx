@@ -152,7 +152,7 @@ export default function LoginForm({
             <PrimaryButton
               type="submit"
             >
-              로그인
+              LOGIN
             </PrimaryButton>
             <SecondaryButton
               type="button"
