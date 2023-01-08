@@ -12,6 +12,16 @@ export default class PlaceApiService {
     const { data } = await axios.get(url);
     return data;
   }
+
+  async searchPlace(placeNameSearching) {
+    const url = `${apiBaseUrl}/places/search`;
+    const { data } = await axios.get(url, {
+      params: {
+        keyword: placeNameSearching,
+      },
+    });
+    return data;
+  }
 }
 
 export const placeApiService = new PlaceApiService();

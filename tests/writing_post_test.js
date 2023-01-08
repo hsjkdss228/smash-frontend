@@ -7,6 +7,62 @@ Before(({ I }) => {
   I.clearDatabases();
 });
 
+Scenario('장소 입력 (등록된 장소를 입력하는 경우)', ({ I }) => {
+  // Given
+  I.setupPlacesToWritePost();
+  I.login({
+    username: 'user1234',
+    password: 'Password!1',
+  });
+
+  // When
+  I.amOnPage('/write');
+  I.fillField('장소 이름 검색', '대전');
+  I.click('대전 월드컵경기장');
+
+  // Then
+  I.seeElement('[value="대전 월드컵경기장"]');
+  I.seeElement('[value="대전 유성구 월드컵대로 32"]');
+});
+
+Scenario('장소 입력 (사용자가 직접 장소를 입력하는 경우)', ({ I }) => {
+  // Given
+  I.setupWritingPostCase();
+  I.login({
+    username: 'user1234',
+    password: 'Password!1',
+  });
+
+  // When
+  I.amOnPage('/write');
+  I.click('직접 입력');
+  I.fillField('장소 이름', '제주 월드컵경기장');
+  I.fillField('장소 주소', '제주 서귀포시 월드컵로 33');
+
+  // Then
+  I.seeElement('[value="제주 월드컵경기장"]');
+  I.seeElement('[value="제주 서귀포시 월드컵로 33"]');
+});
+
+Scenario('입력을 초기화하는 경우', ({ I }) => {
+// Given
+  I.setupWritingPostCase();
+  I.login({
+    username: 'user1234',
+    password: 'Password!1',
+  });
+
+  // When
+  I.amOnPage('/write');
+  I.fillPostForm();
+  I.click('초기화');
+
+  // Then
+  I.see('정말로 입력 내용을 초기화하시겠습니까?');
+  I.click('예');
+  I.seeEmptyPostForms();
+});
+
 Scenario('정상적으로 게시글을 등록하는 경우', ({ I }) => {
   // Given
   I.setupWritingPostCase();
@@ -85,11 +141,11 @@ Scenario('장소를 입력하지 않은 경우', ({ I }) => {
   // When
   I.amOnPage('/write');
   I.fillPostForm();
-  I.clearInputField('#input-place-name');
+  I.click('직접 입력');
   I.click('작성하기');
 
   // Then
-  I.seeElement('[placeholder="장소를 입력하지 않았습니다."]');
+  I.seeElement('[placeholder="장소를 지정하지 않았습니다."]');
 });
 
 Scenario('모집 인원을 입력하지 않은 경우', ({ I }) => {

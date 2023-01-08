@@ -65,6 +65,9 @@ module.exports = function () {
       this.amOnPage(`${backdoorBaseUrl}/setup-rejecting-registration-case`);
     },
 
+    setupPlacesToWritePost() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-places-to-write-post`);
+    },
     setupWritingPostCase() {
       this.amOnPage(`${backdoorBaseUrl}/setup-writing-post-case`);
     },
@@ -108,6 +111,7 @@ module.exports = function () {
       this.fillField('end hour', '12');
       this.fillField('end minute', '30');
       this.fillField('장소', '김천종합운동장');
+      this.click('김천종합운동장');
       this.fillField('모집 인원', '15');
       this.fillField('상세 내용', '상주 상무 선수단과 친선경기에 참여하실 분들을 모집합니다.');
     },
@@ -158,6 +162,15 @@ module.exports = function () {
       this.see('로그아웃');
       this.dontSee('체험용 계정 선택');
       this.dontSee('로그인');
+    },
+    seeEmptyPostForms() {
+      this.seeElement('[placeholder="종목 이름을 입력해주세요."]');
+      this.seeNumberOfElements('[placeholder="00"]', 4);
+      this.seeElement('[placeholder="장소 이름 검색"]');
+      this.seeElement('[placeholder="선택된 장소 이름"]');
+      this.seeElement('[placeholder="선택된 장소 주소"]');
+      this.seeElement('[placeholder="운동 모집 인원 (2명 이상)"]');
+      this.seeElement('[placeholder="운동 상세 내용을 입력해주세요."]');
     },
   });
 };

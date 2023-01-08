@@ -3,6 +3,7 @@
 import Store from './Store';
 
 import { postApiService } from '../services/PostApiService';
+import { placeApiService } from '../services/PlaceApiService';
 
 const timeInputCheck = /^[\d]*$/;
 const dateOffset = 1000 * 60 * 60 * 9;
@@ -10,6 +11,9 @@ const dateOffset = 1000 * 60 * 60 * 9;
 export default class PostFormStore extends Store {
   constructor() {
     super();
+
+    this.searchPlaceMode = true;
+    this.inputPlaceDirectlyMode = false;
 
     this.gameExercise = '';
     this.gameDate = new Date();
@@ -19,7 +23,14 @@ export default class PostFormStore extends Store {
     this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
+
+    this.placeSearchTimerId = '';
+    this.placeNameSearching = '';
+    this.searchedPlaces = [];
     this.placeName = '';
+    this.placeAddress = '';
+    this.isRegisteredPlace = true;
+
     this.gameTargetMemberCount = 0;
     this.postDetail = '';
 
@@ -32,13 +43,33 @@ export default class PostFormStore extends Store {
       BLANK_GAME_END_AM_PM: '',
       BLANK_GAME_END_HOUR: '',
       BLANK_GAME_END_MINUTE: '',
-      BLANK_PLACE_NAME: '',
+      BLANK_PLACE: '',
       NULL_GAME_TARGET_MEMBER_COUNT: '',
       BLANK_POST_DETAIL: '',
     };
     this.hasFormErrors = false;
 
     this.serverError = '';
+  }
+
+  changeInputPlaceModeToSearch() {
+    this.searchPlaceMode = true;
+    this.inputPlaceDirectlyMode = false;
+    this.placeNameSearching = '';
+    this.searchedPlaces = [];
+    this.placeName = '';
+    this.placeAddress = '';
+    this.isRegisteredPlace = true;
+    this.publish();
+  }
+
+  changeInputPlaceModeToInputDirectly() {
+    this.searchPlaceMode = false;
+    this.inputPlaceDirectlyMode = true;
+    this.placeName = '';
+    this.placeAddress = '';
+    this.isRegisteredPlace = false;
+    this.publish();
   }
 
   changeGameExercise(exercise) {
@@ -153,10 +184,38 @@ export default class PostFormStore extends Store {
     this.publish();
   }
 
-  changePlaceName(place) {
-    this.formErrors.BLANK_PLACE_NAME = '';
+  changePlaceNameSearching(placeNameSearching) {
+    this.formErrors.BLANK_PLACE = '';
     this.clearServerError();
-    this.placeName = place;
+    this.placeNameSearching = placeNameSearching;
+
+    this.publish();
+  }
+
+  async searchPlace() {
+    const data = await placeApiService.searchPlace(this.placeNameSearching);
+    this.searchedPlaces = data.searchedPlaces;
+    this.publish();
+  }
+
+  selectPlace(index) {
+    const selectedPlace = this.searchedPlaces[index];
+    this.placeName = selectedPlace.name;
+    this.placeAddress = selectedPlace.address;
+    this.publish();
+  }
+
+  changePlaceNameDirectly(placeName) {
+    this.formErrors.BLANK_PLACE = '';
+    this.clearServerError();
+    this.placeName = placeName;
+    this.publish();
+  }
+
+  changePlaceAddressDirectly(placeAddress) {
+    this.formErrors.BLANK_PLACE = '';
+    this.clearServerError();
+    this.placeAddress = placeAddress;
     this.publish();
   }
 
@@ -216,9 +275,9 @@ export default class PostFormStore extends Store {
           .BLANK_GAME_END_MINUTE = '날짜 및 시간을 입력하지 않았습니다.';
         this.hasFormErrors = true;
       }
-      if (this.placeName === '') {
+      if (this.placeName === '' || this.placeAddress === '') {
         this.formErrors
-          .BLANK_PLACE_NAME = '장소를 입력하지 않았습니다.';
+          .BLANK_PLACE = '장소를 지정하지 않았습니다.';
         this.hasFormErrors = true;
       }
       if (this.gameTargetMemberCount === ''
@@ -256,6 +315,8 @@ export default class PostFormStore extends Store {
       };
       const place = {
         name: this.placeName,
+        address: this.placeAddress,
+        isRegisteredPlace: this.isRegisteredPlace,
       };
 
       const data = await postApiService.createPost({
@@ -282,7 +343,7 @@ export default class PostFormStore extends Store {
       BLANK_GAME_END_AM_PM: '',
       BLANK_GAME_END_HOUR: '',
       BLANK_GAME_END_MINUTE: '',
-      BLANK_PLACE_NAME: '',
+      BLANK_PLACE: '',
       NULL_GAME_TARGET_MEMBER_COUNT: '',
       BLANK_POST_DETAIL: '',
     };
@@ -302,7 +363,11 @@ export default class PostFormStore extends Store {
     this.gameEndTimeAmPm = '';
     this.gameEndHour = '';
     this.gameEndMinute = '';
+    this.placeSearchTimerId = '';
+    this.searchedPlaces = [];
+    this.placeNameSearching = '';
     this.placeName = '';
+    this.placeAddress = '';
     this.gameTargetMemberCount = '';
     this.postDetail = '';
     this.clearFormErrors();
