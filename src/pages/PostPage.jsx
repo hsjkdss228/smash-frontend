@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Post from '../components/Post';
+import Post from '../components/post/Post';
 
 export default function PostPage() {
   const location = useLocation();

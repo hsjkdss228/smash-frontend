@@ -2,7 +2,6 @@ import context from 'jest-plugin-context';
 import PostFormStore from './PostFormStore';
 
 import { postApiService } from '../services/PostApiService';
-import { placeApiService } from '../services/PlaceApiService';
 
 let postFormStore;
 

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import Welcome from '../components/Welcome';
+import Welcome from '../components/welcome/Welcome';
 
 export default function WelcomePage() {
   const location = useLocation();
