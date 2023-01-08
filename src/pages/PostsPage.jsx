@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import ComponentScreenContainer from '../components/ui/ComponentScreenContainer';
-import Posts from '../components/Posts';
-import ModalConfirm from '../components/ModalConfirm';
-import PostsSearchAndSettings from '../components/PostsSearchAndSettings';
+import Posts from '../components/posts/Posts';
+import ModalConfirm from '../components/modal/ModalConfirm';
+import PostsSearchAndSettings from '../components/posts/PostsSearchAndSettings';
 
 export default function PostsPage() {
   const [actionMessage, setActionMessage] = useState('');

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import useUserStore from '../hooks/useUserStore';
-import SignUpForm from '../components/SignUpForm';
+import SignUpForm from '../components/sign-up-form/SignUpForm';
 
 export default function SignUpPage() {
   const location = useLocation();

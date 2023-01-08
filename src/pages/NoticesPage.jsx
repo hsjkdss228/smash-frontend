@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 
-import Notices from '../components/Notices';
+import Notices from '../components/notices/Notices';
 
 export default function NoticesPage() {
   const [accessToken] = useLocalStorage('accessToken', '');

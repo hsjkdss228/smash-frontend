@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 
-import PostForm from '../components/PostForm';
+import PostForm from '../components/post-form/PostForm';
 
 export default function PostFormPage() {
   const [accessToken] = useLocalStorage('accessToken', '');

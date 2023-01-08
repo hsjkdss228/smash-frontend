@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/login/LoginForm';
 
 export default function LoginPage() {
   const location = useLocation();

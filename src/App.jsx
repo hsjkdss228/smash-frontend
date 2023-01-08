@@ -12,12 +12,12 @@ import { registerApiService } from './services/RegisterApiService';
 import { noticeApiService } from './services/NoticeApiService';
 import { userApiService } from './services/UserApiService';
 
-import Header from './components/Header';
+import Header from './components/header/Header';
 import PostsPage from './pages/PostsPage';
 import PostListMapPage from './pages/PostListMapPage';
 import PostPage from './pages/PostPage';
 import PostFormPage from './pages/PostFormPage';
-import BottomNavigator from './components/BottomNavigator';
+import BottomNavigator from './components/bottom-navigator/BottomNavigator';
 import GlobalStyle from './styles/GlobalStyle';
 import LoginPage from './pages/LoginPage';
 import NoticesPage from './pages/NoticesPage';
