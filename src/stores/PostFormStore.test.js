@@ -2,6 +2,7 @@ import context from 'jest-plugin-context';
 import PostFormStore from './PostFormStore';
 
 import { postApiService } from '../services/PostApiService';
+import { placeApiService } from '../services/PlaceApiService';
 
 let postFormStore;
 
@@ -170,15 +171,60 @@ describe('PostFormStore', () => {
     });
   });
 
-  context('운동 장소 상태 변경 함수가 호출되면', () => {
-    const gamePlaceName = '운동 장소';
+  context('검색할 운동 장소 이름을 변경하는 함수가 호출되면', () => {
+    const gamePlaceNameSearching = '대구';
 
-    it('받아온 값을 운동 장소 상태에 반영 후 publish', () => {
-      postFormStore.changePlaceName(gamePlaceName);
+    context('검색 타이머가 활성화된 상태였을 경우', () => {
+      beforeEach(() => {
+        postFormStore.placeSearchTimerId = 'id';
+      });
+
+      it('받아온 값을 운동 장소 이름 상태에 반영 후 publish', async () => {
+        await postFormStore.changePlaceNameSearching(gamePlaceNameSearching);
+
+        const { placeNameSearching } = postFormStore;
+        expect(placeNameSearching).toBe('대구');
+        expect(postFormStore.formErrors.BLANK_PLACE).toBeFalsy();
+        expect(postFormStore.serverError).toBeFalsy();
+      });
+    });
+  });
+
+  context('운동 장소를 검색하는 함수가 호출되면', () => {
+    beforeEach(() => {
+      postFormStore.placeNameSearching = '대구';
+    });
+
+    it('반환되는 검색된 장소 배열을 상태로 저장 후 publish', async () => {
+      await postFormStore.searchPlace();
+
+      const { searchedPlaces } = postFormStore;
+      expect(searchedPlaces.length).toBe(2);
+    });
+  });
+
+  context('운동 장소 이름 상태를 직접 변경하는 함수가 호출되면', () => {
+    const gamePlaceName = '운동 장소 이름';
+
+    it('받아온 값을 운동 장소 이름 상태에 반영 후 publish', () => {
+      postFormStore.changePlaceNameDirectly(gamePlaceName);
 
       const { placeName } = postFormStore;
-      expect(placeName).toBe('운동 장소');
-      expect(postFormStore.formErrors.BLANK_PLACE_NAME).toBeFalsy();
+      expect(placeName).toBe('운동 장소 이름');
+      expect(postFormStore.formErrors.BLANK_PLACE).toBeFalsy();
+      expect(postFormStore.serverError).toBeFalsy();
+    });
+  });
+
+  context('운동 장소 주소 상태를 직접 변경하는 함수가 호출되면', () => {
+    const gamePlaceAddress = '운동 장소 주소';
+
+    it('받아온 값을 운동 장소 주소 상태에 반영 후 publish', () => {
+      postFormStore.changePlaceAddressDirectly(gamePlaceAddress);
+
+      const { placeAddress } = postFormStore;
+      expect(placeAddress).toBe('운동 장소 주소');
+      expect(postFormStore.formErrors.BLANK_PLACE).toBeFalsy();
       expect(postFormStore.serverError).toBeFalsy();
     });
   });
@@ -218,6 +264,8 @@ describe('PostFormStore', () => {
       postFormStore.gameEndHour = '04';
       postFormStore.gameEndMinute = '30';
       postFormStore.placeName = '롯데월드 아이스링크';
+      postFormStore.placeAddress = '서울 송파구 올림픽로 240';
+      postFormStore.isRegisteredPlace = true;
       postFormStore.gameTargetMemberCount = '12';
       postFormStore.postDetail = '스케이트 입문자 모집!';
     });
@@ -240,6 +288,8 @@ describe('PostFormStore', () => {
       postFormStore.gameEndHour = '04';
       postFormStore.gameEndMinute = '30';
       postFormStore.placeName = '';
+      postFormStore.placeAddress = '';
+      postFormStore.isRegisteredPlace = false;
       postFormStore.gameTargetMemberCount = '12';
       postFormStore.postDetail = '';
     });
@@ -255,8 +305,8 @@ describe('PostFormStore', () => {
       expect(formErrors.BLANK_GAME_DATE).toBeFalsy();
       expect(formErrors.BLANK_GAME_START_HOUR)
         .toBe('날짜 및 시간을 입력하지 않았습니다.');
-      expect(formErrors.BLANK_PLACE_NAME)
-        .toBe('장소를 입력하지 않았습니다.');
+      expect(formErrors.BLANK_PLACE)
+        .toBe('장소를 지정하지 않았습니다.');
       expect(formErrors.BLANK_POST_DETAIL)
         .toBe('상세 내용을 입력하지 않았습니다.');
       expect(hasFormErrors).toBeTruthy();
@@ -281,6 +331,7 @@ describe('PostFormStore', () => {
       expect(postFormStore.gameEndHour).toBeFalsy();
       expect(postFormStore.gameEndMinute).toBeFalsy();
       expect(postFormStore.placeName).toBeFalsy();
+      expect(postFormStore.placeAddress).toBeFalsy();
       expect(postFormStore.gameTargetMemberCount).toBeFalsy();
       expect(postFormStore.postDetail).toBeFalsy();
       Object.entries(postFormStore.formErrors).forEach((error) => {
@@ -300,6 +351,8 @@ describe('PostFormStore', () => {
         postFormStore.gameEndHour = '04';
         postFormStore.gameEndMinute = '30';
         postFormStore.placeName = '서버 에러가 발생하는 장소 이름';
+        postFormStore.placeAddress = '서버 에러가 발생하는 장소 주소';
+        postFormStore.isRegisteredPlace = true;
         postFormStore.gameTargetMemberCount = '12';
         postFormStore.postDetail = '스케이트 입문자 모집!';
         await postFormStore.createPost();

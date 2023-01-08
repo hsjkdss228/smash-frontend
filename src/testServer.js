@@ -241,6 +241,38 @@ const testServer = setupServer(
     },
   ),
 
+  // searchPlace
+  rest.get(
+    `${apiBaseUrl}/places/search`,
+    async (request, response, context) => {
+      const placeName = await request.url.searchParams.get('keyword');
+
+      if (placeName === '대구') {
+        return response(
+          context.status(200),
+          context.json({
+            searchedPlaces: [
+              {
+                id: 1,
+                name: 'DGB대구은행파크',
+                address: '대구 북구 고성로 191',
+              },
+              {
+                id: 2,
+                name: '대구삼성라이온즈파크',
+                address: '대구 수성구 야구전설로 1',
+              },
+            ],
+          }),
+        );
+      }
+
+      return response(
+        context.status(400),
+      );
+    },
+  ),
+
   // fetchPlace
   rest.get(
     `${apiBaseUrl}/places/:placeId`,
@@ -551,6 +583,8 @@ const testServer = setupServer(
         && game.endHour === '04'
         && game.endMinute === '30'
         && place.name === '롯데월드 아이스링크'
+        && place.address === '서울 송파구 올림픽로 240'
+        && place.isRegisteredPlace === true
         && game.targetMemberCount === '12'
         && post.detail === '스케이트 입문자 모집!'
         && accessToken === 'userId 1') {

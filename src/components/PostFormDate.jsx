@@ -91,6 +91,7 @@ export default function PostFormDate() {
             onChange={(date) => handleChangeGameDate(date)}
             dateFormat="yyyy년 MM월 dd일"
             inline
+            disabledKeyboardNavigation
           />
         </DatePickerWrapper>
       </DateSection>
